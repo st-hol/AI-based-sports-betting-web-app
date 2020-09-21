@@ -1,3 +1,3 @@
-# sports-betting-application-spring
+# AI-based-sports-betting-web-app
 
-final module at mentoring course
+diplome project at KPI
