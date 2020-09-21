@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<div class="row">
+    <div class="col home-column">
+        <h1 th:text="#{bets.for.event}"></h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${event.title}"></h5>
+                <p class="card-text"
+                   th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
+                <p class="card-text"
+                   th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>
+            </div>
+        </div>
+
+        <h1 class="display-4" th:text="#{bets.header}"></h1>
+        <th:block th:each="bet : ${bets}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${bet.description}"></h5>
+                    <p class="card-text"
+                       th:text="${bet.type.name}"></p>
+
+                    <a class="border border-primary rounded bg-primary text-light"
+                       th:href="@{'/player/wager?eventId=' + ${event.id} + '&betId=' + ${bet.id}}"
+                       th:text="#{new.wager}"></a>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

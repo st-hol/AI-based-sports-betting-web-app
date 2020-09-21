@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Please sign in</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<div class="container">
+    <div class="login-page col-lg-4 col-md-7">
+        <ul>
+            <li th:class="${e.global}? globalerr : fielderr" th:each="e : ${#fields.detailedErrors()}">
+                <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+                <span th:text="${e.message}">The error message</span>
+            </li>
+        </ul>
+
+        <div class="alert alert-danger" role="alert" th:if="${notEnoughMoney}" th:text="#{not.enough.money}">
+        </div>
+
+        <form action="#" class="form-signin" method="post" th:action="@{/player/wager}" th:object="${wagerForm}">
+
+            <input hidden th:value="${event.id}" name="sportEventId" >
+            <input hidden th:value="${bet.id}" name="betId" >
+
+            <h1 th:text="#{event}"></h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${event.title} + ': ' + ${event.startDate}"></h5>
+                    <!--                  type -->
+                    <p class="card-text"
+                       th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
+                    <p class="card-text"
+                       th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>
+                </div>
+            </div>
+
+            <h1 th:text="#{bet}"></h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${bet.description}"></h5>
+                    <p class="card-text"
+                       th:text="${bet.type.name}"></p>
+                </div>
+            </div>
+
+            <h2 th:text="#{new.wager}"></h2>
+            <div class="form-group">
+                <label class="sr-only" for="amount">Amount</label>
+                <input autofocus class="form-control" id="amount" name="amount"
+                       required th:placeholder="#{form.new.wager.amount}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-form-label" for="currency" th:text="#{home.user.currency}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" disabled id="currency" name="currency" readonly
+                           th:value="${user.currency}" type="text">
+                </div>
+            </div>
+
+            <div class="input-group form-group">
+                <select class="form-control currency-selector" name="outcome" required>
+                    <th:block th:each="outcome : ${outcomes}">
+                        <option th:text="${outcome.description}" th:value="${outcome.id}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" th:text="#{form.submit}" type="submit"></button>
+        </form>
+
+        <div class="change-view form-group">
+            <a th:href="@{'/player/bets?eventId=' + ${event.id}}" th:text="#{go.to.bets}"></a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

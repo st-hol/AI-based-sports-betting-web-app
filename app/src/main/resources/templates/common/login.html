@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Please sign in</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="login-page col-lg-4 col-md-7">
+        <ul>
+            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+                <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+                <span th:text="${e.message}">The error message</span>
+            </li>
+        </ul>
+
+        <form action="#" th:action="@{/login}"  class="form-signin" method="post">
+
+            <div class="alert alert-success" role="alert" th:if="${message}" th:text="#{login.logout.alert}">
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${error}" th:text="#{login.error.alert}"></div>
+
+            <h2 th:text="#{form.login.header}"></h2>
+            <div class="form-group">
+                <label class="sr-only" for="username">Username</label>
+                <input autofocus class="form-control" id="username" name="username"
+                       required th:placeholder="#{form.login.placeholder.email}" type="text">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="password">Password</label>
+                <input class="form-control" id="password" name="password"
+                       th:placeholder="#{form.login.placeholder.password}"
+                       type="password">
+            </div>
+            <button class="btn btn-primary" th:text="#{form.registration.login.link}" type="submit"></button>
+            <div class="change-view form-group">
+                <a href="/registration" th:text="#{form.login.registration.hint}"></a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

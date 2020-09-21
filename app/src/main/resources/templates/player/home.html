@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Home</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<div class="row col-lg-7">
+    <div class="home-column col">
+        <h1 class="display-4" th:text="#{home.user.header}"></h1>
+        <form action="/player/home/update-info" method="post">
+            <input name="_method" type="hidden" value="PUT"/>
+            <input name="id" th:value="${user.id}" type="hidden">
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="email" th:text="#{home.user.email}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="email" name="email" readonly th:value="${user.email}"
+                           type="text"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="name" th:text="#{home.user.name}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="name" name="name" th:value="${user.name}"
+                           type="text"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="birthDate" th:text="#{home.user.birthDate}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="birthDate" name="birthDate" readonly th:value="${user.birth}"
+                           type="text"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="balance" th:text="#{home.user.balance}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" disabled id="balance" name="balance" readonly
+                           th:value="${user.balance} + ' ' + ${user.currency}"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="accountNumber"
+                       th:text="#{home.user.accountNmber}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="accountNumber" name="accountNumber" th:value="${user.accountNumber}"
+                           type="number">
+                </div>
+            </div>
+            <button class="btn btn-primary col-sm-12" th:text="#{home.user.submit}" type="submit"></button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
