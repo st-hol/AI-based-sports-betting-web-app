@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head>
+    <meta charset="UTF-8">
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="row bg-dark" th:fragment="header">
+    <div class="col-md-12">
+        <p></p>
+        <h2 class="text-center text-light" th:text="#{login.header.welcome}"></h2>
+        <p class="text-center text-light" th:text="#{login.header.description}"></p>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,118 @@
+.personal-cabinet-wrapper{
+    float: right;
+    margin-top: 100px;
+    width: 80%;
+}
+
+.sidebar {
+    transition: 0.5s;
+    top: 82px;
+    position: fixed;
+    width: 300px;
+    height: 100vh;
+    background: orange;
+    font-size: 0.45em;
+}
+
+.sdbr-open-btn {
+    transition: 0.5s;
+    width: 110px;
+    height: 100vh;
+    /*position: relative;*/
+    position: fixed;
+    top: 82px;
+    padding: 3% 3.5%;
+    background: orange;
+}
+
+.show-sidebar{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10%;
+}
+
+
+.show-sidebar:hover {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1070px) {
+    .sidebar, .sdbr-open-btn{
+        top: 126px;
+    }
+    .sdbr-open-btn{
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 801px) {
+    .sidebar, .sdbr-open-btn{
+        top: 71px;
+    }
+}
+
+
+
+.nav {
+    position: relative;
+    /*margin: 0 15%;*/
+    text-align: right;
+    top: 30%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-weight: bold;
+}
+
+.nav ul {
+    list-style: none;
+}
+.nav ul li {
+    position: relative;
+    margin: 3.2em 0;
+}
+.nav ul li a {
+    font-size: 14px;
+
+    line-height: 110%;
+    /*line-height: 5em;*/
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.4em;
+    color: rgba(255, 255, 255, 0.70);
+    display: block;
+    transition: all ease-out 300ms;
+}
+.nav ul li.active a {
+    position: relative;
+    z-index: 1000;
+
+    /*color: white;*/
+    color: darkred;
+    font-weight: bold;
+    text-shadow: white 2px 2px 5px;
+}
+.nav ul li.active a:hover {
+    cursor: pointer;
+}
+
+
+.nav ul li:not(.active)::after {
+    opacity: 0.1;
+}
+.nav ul li:not(.active):hover a {
+    /*color: rgba(255, 255, 255, 1);*/
+    color: red;
+    text-shadow: white 2px 2px 5px;
+}
+.nav ul li::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 0.2em;
+    /*background: black;*/
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(to right, orange, lightyellow);
+}

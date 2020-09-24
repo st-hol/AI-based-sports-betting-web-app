@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <title></title>
+</head>
+<body>
+
+<ul th:fragment="land-navbar" class="topnav" id="myTopnav">
+    <li id="log-li">
+        <a href="#top" class="activeMenuItem" id="log">
+            <img th:src="@{image/orangmin.png}" alt="">
+        </a>
+    </li>
+    <li>
+        <a href="#about" th:text="#{land.list.of.upcoming}">
+        </a>
+    </li>
+    <li>
+        <a href="#best" th:text="#{land.u.steps}">
+        </a>
+    </li>
+    <li>
+        <a href="#team" th:text="#{land.slide.title}">
+        </a>
+    </li>
+    <li sec:authorize="isAuthenticated()">
+        <a href="/shit" th:text="#{land.slide.title}"></a>
+    </li>
+
+    <li class="contact-us" sec:authorize="isAuthenticated()">
+        <a href="/logout">logout</a>
+    </li>
+    <li class="contact-us" sec:authorize="isAnonymous()">
+        <a href="/login">Sign in</a>
+    </li>
+
+
+    <li class="my-nav-soc-li">
+        <div class="navbar-nav ml-auto">
+            <div th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">
+
+                <div th:if="${(param.lang != null)}">
+                    <a class="nav-item nav-link"
+                       th:href="@{${urlBuilder.replaceQueryParam('lang', 'ua').build().toUriString()}}"
+                       th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                        <img class="soc-icon" th:src="@{image/locale/ukr.png}" alt="">
+                    </a>
+                    <a class="nav-item nav-link"
+                       th:href="@{${urlBuilder.replaceQueryParam('lang', 'eng').build().toUriString()}}"
+                       th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                        <img class="soc-icon" th:src="@{image/locale/eng.png}" alt="">
+                    </a>
+                </div>
+                <div th:if="${(param.lang == null)}">
+                    <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=ua)}">
+                        <img class="soc-icon" th:src="@{image/locale/ukr.png}" alt="">
+                    </a>
+                    <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=eng)}">
+                        <img class="soc-icon" th:src="@{image/locale/eng.png}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="icon"><a href="javascript:void(0);" style="font-size:15px; margin: 0; padding: 8px 0 0;"
+                        onclick="myFunction()">
+        <img style="width: 37px; color: white;" th:src="@{image/share/menu-white.png}" alt="">
+        <!-- &#9776; --></a>
+    </li>
+</ul>
+</body>
+</html>
