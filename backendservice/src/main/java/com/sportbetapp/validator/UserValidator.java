@@ -10,8 +10,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.sportbetapp.domain.user.User;
-import com.sportbetapp.dto.UserDto;
-import com.sportbetapp.service.UserService;
+import com.sportbetapp.dto.user.UserDto;
+import com.sportbetapp.service.user.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 

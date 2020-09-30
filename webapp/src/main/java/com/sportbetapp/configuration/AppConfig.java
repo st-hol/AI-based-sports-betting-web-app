@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import com.sportbetapp.db.TestDataPopulatingBean;
 
 
 @Configuration
@@ -22,18 +21,5 @@ public class AppConfig {
         return messageSource;
     }
 
-//    @Bean
-//    public Scanner scanner() {
-//        return new Scanner(System.in);
-//    }
-//
-//    @Bean
-//    public Random random() {
-//        return new Random();
-//    }
 
-//    @Bean
-//    public TestDataPopulatingBean bettingDataPoolHolder() {
-//        return new TestDataPopulatingBean();
-//    }
 }

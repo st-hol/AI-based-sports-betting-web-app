@@ -26,6 +26,7 @@
         <module>domain</module>
         <module>ai</module>
         <module>backendservice</module>
+        <module>logging</module>
     </modules>
 
     <dependencies>

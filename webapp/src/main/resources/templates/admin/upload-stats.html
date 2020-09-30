@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="#{admin.upload.template}"></title>
+
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/personal-cabinet.css}">
+    <script th:src="@{/js/main.js}"></script>
+
+</head>
+<body>
+<noscript>
+    <h2 th:text="#{no.js}"></h2>
+</noscript>
+
+<!--navbar-->
+<!--<jsp:include page="${pageContext.request.contextPath}/jsp/common/navbar-cabinet.jsp"/>-->
+
+
+<div class="upload-container">
+    <div class="upload-header">
+        <h3 th:text="#{admin.upload.template}"></h3>
+    </div>
+    <div class="upload-content">
+        <div class="single-upload">
+            <br>
+            <h6 th:text="#{put.txt.here}"></h6>
+            <form id="singleUploadForm" name="singleUploadForm">
+                <input id="singleFileUploadInput" type="file" name="file" class="file-input" required/>
+                <br><br>
+                <button type="submit" class="primary submit-btn" th:text="#{label.submit}"></button>
+
+
+                <div class="upload-response">
+                    <div id="singleFileUploadError"></div>
+                    <div id="singleFileUploadSuccess"></div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="center-block">
+            <div class="row justify-content-center">
+                <div class="">
+                    <h4 th:text="#{admin.you.admin}"></h4>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="">
+                    <h4 th:text="#{admin.you.can}"></h4>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="">
+                    <h4 th:text="#{admin.notice.filename}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

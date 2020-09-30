@@ -49,20 +49,20 @@
                     <a class="nav-item nav-link"
                        th:href="@{${urlBuilder.replaceQueryParam('lang', 'ua').build().toUriString()}}"
                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                        <img class="soc-icon" th:src="@{image/locale/ukr.png}" alt="">
+                        <img class="soc-icon" th:src="@{/image/locale/ukr.png}" alt="">
                     </a>
                     <a class="nav-item nav-link"
                        th:href="@{${urlBuilder.replaceQueryParam('lang', 'eng').build().toUriString()}}"
                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                        <img class="soc-icon" th:src="@{image/locale/eng.png}" alt="">
+                        <img class="soc-icon" th:src="@{/image/locale/eng.png}" alt="">
                     </a>
                 </div>
                 <div th:if="${(param.lang == null)}">
                     <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=ua)}">
-                        <img class="soc-icon" th:src="@{image/locale/ukr.png}" alt="">
+                        <img class="soc-icon" th:src="@{/image/locale/ukr.png}" alt="">
                     </a>
                     <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=eng)}">
-                        <img class="soc-icon" th:src="@{image/locale/eng.png}" alt="">
+                        <img class="soc-icon" th:src="@{/image/locale/eng.png}" alt="">
                     </a>
                 </div>
             </div>
@@ -70,7 +70,7 @@
     </li>
     <li class="icon"><a href="javascript:void(0);" style="font-size:15px; margin: 0; padding: 8px 0 0;"
                         onclick="myFunction()">
-        <img style="width: 37px; color: white;" th:src="@{image/share/menu-white.png}" alt="">
+        <img style="width: 37px; color: white;" th:src="@{/image/share/menu-white.png}" alt="">
         <!-- &#9776; --></a>
     </li>
 </ul>

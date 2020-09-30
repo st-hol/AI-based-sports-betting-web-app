@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Events</title>
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${bet.description}"></h5>
                     <p class="card-text"
-                       th:text="${bet.type.name}"></p>
+                       th:text="${bet.type.value}"></p>
 
                     <a class="border border-primary rounded bg-primary text-light"
                        th:href="@{'/player/wager?eventId=' + ${event.id} + '&betId=' + ${bet.id}}"

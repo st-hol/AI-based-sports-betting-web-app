@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.sportbetapp.domain.Wager;
+import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.type.Currency;
 import com.sportbetapp.domain.user.role.Role;
 
@@ -60,9 +60,10 @@ public class User {
     void preInsert() {
         if (this.roles.isEmpty()) {
             Role role = new Role();
-            role.setId(2L);
-            role.setName("ADMIN");
+            role.setId(1L);
+            role.setName("USER");
             roles.add(role);
         }
+        //todo acc number
     }
 }

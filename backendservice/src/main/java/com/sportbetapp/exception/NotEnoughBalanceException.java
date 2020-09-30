@@ -1,6 +1,6 @@
 package com.sportbetapp.exception;
 
-import com.sportbetapp.dto.CreateWagerDto;
+import com.sportbetapp.dto.betting.CreateWagerDto;
 
 public class NotEnoughBalanceException extends Exception {
 
