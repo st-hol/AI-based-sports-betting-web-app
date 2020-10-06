@@ -12,12 +12,5 @@
     <artifactId>ai</artifactId>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>com.sportbetapp</groupId>
-            <artifactId>backendservice</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 
 </project>

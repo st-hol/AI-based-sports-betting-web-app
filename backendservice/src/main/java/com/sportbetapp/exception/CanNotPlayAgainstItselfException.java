@@ -4,7 +4,7 @@ import com.sportbetapp.dto.predicting.PredictionDto;
 
 public class CanNotPlayAgainstItselfException extends Exception {
 
-    private PredictionDto dto;
+    private final PredictionDto dto;
 
     public CanNotPlayAgainstItselfException(PredictionDto dto) {
         this.dto = dto;

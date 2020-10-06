@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sportbetapp.domain.type.Currency;
 import com.sportbetapp.domain.type.SportType;
 
 import lombok.AllArgsConstructor;
@@ -41,6 +42,8 @@ public class SportEvent {
     private LocalDateTime endDate;
     @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bet> bets;
+    @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL)
+    private List<PlayerSide> playerSides;
     @OneToOne(mappedBy = "sportEvent")
     private Result result;
 

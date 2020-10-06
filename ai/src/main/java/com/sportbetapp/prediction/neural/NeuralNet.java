@@ -1,12 +1,13 @@
-/*
- * * Name: Andrew Ward
-Student ID: 15002106
- */
 package com.sportbetapp.prediction.neural;
 
 import java.util.Random;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NeuralNet {
 
     private static final double BOUND = 10.0;

@@ -24,7 +24,7 @@
         <div class="alert alert-danger" role="alert" th:if="${canNotPlayAgainstYourself}" th:text="#{not.play.against.yourself}">
         </div>
 
-        <form action="#" class="form-signin" method="post" th:action="@{/admin/prediction}" th:object="${predictionForm}">
+        <form action="#" class="form-signin" method="post" th:action="@{/admin/predict}" th:object="${predictionForm}">
 
             <h1 th:text="#{event}"></h1>
 <!--            <div class="card">-->
@@ -51,7 +51,7 @@
             <div class="input-group form-group">
                 <select class="form-control currency-selector" name="homeTeamName" required>
                     <th:block th:each="team : ${listOfTeams}">
-                        <option th:text="${team}" th:value="${team}"></option>
+                        <option th:text="${team.name}" th:value="${team.name}"></option>
                     </th:block>
                 </select>
             </div>
@@ -60,22 +60,24 @@
             <div class="input-group form-group">
                 <select class="form-control currency-selector" name="awayTeamName" required>
                     <th:block th:each="team : ${listOfTeams}">
-                        <option th:text="${team}" th:value="${team}"></option>
+                        <option th:text="${team.name}" th:value="${team.name}"></option>
                     </th:block>
                 </select>
             </div>
 
+            <input type="hidden" name="sportType" th:value="${sportType.value}">
+
             <h2 th:text="#{prediction.home.team.score}"></h2>
             <div class="form-group">
-                <label class="sr-only" for="homeTeamScore">homeTeamScore</label>
-                <input autofocus class="form-control" id="homeTeamScore" name="homeTeamScore"
+                <label class="sr-only" for="guessHomeTeamScore">guessHomeTeamScore</label>
+                <input autofocus class="form-control" id="guessHomeTeamScore" name="guessHomeTeamScore"
                        required th:placeholder="#{prediction.home.team.score}" type="text">
             </div>
 
             <h2 th:text="#{prediction.away.team.score}"></h2>
             <div class="form-group">
-                <label class="sr-only" for="homeTeamScore">homeAwayScore</label>
-                <input autofocus class="form-control" id="homeAwayScore" name="homeAwayScore"
+                <label class="sr-only" for="guessAwayTeamScore">guessAwayTeamScore</label>
+                <input autofocus class="form-control" id="guessAwayTeamScore" name="guessAwayTeamScore"
                        required th:placeholder="#{prediction.away.team.score}" type="text">
             </div>
 

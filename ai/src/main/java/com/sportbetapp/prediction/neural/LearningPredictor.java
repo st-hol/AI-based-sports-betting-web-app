@@ -1,22 +1,19 @@
-/*
- * * Name: Andrew Ward
-Student ID: 15002106
- */
 package com.sportbetapp.prediction.neural;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.*;
+import lombok.extern.slf4j.Slf4j;
 
 
+@Slf4j
 public class LearningPredictor {
 
     private static final double NORMALISATION_COEFFICIENT = 0.00392;
     private static final double LEAST_MEAN_SQUARE_ERROR = 0.001;
     private static final double TEACHING_STEP = 0.01;
 
-    //Attributes
     private static final double HOME = 1.0;
     private static final double DRAW = 0.5;
     private static final double AWAY = 0.0;
@@ -36,14 +33,15 @@ public class LearningPredictor {
 
     private int maxTests = 5;
 
-    public void processLearn(double homeTeam, double awayTeam) {
+
+    public Map<String, String> processLearn(double homeTeam, double awayTeam) {
         NeuralNet nn = new NeuralNet();
         nn.initializeNeuralNetwork();
         //train NN
         processTraining(nn);
         double average = calculateAverage(homeTeam, awayTeam, nn);
         //Based on result, output either home win/draw/away win
-        decideResult(average);
+        return decideResult(average);
     }
 
     private void processTraining(NeuralNet nn) {
@@ -83,7 +81,7 @@ public class LearningPredictor {
             nn.inputAt(2, 1);
             output = nn.calculateNet();
         }
-        System.out.println("The mean square error of " + epochs +
+        log.info("The mean square error of " + epochs +
                 " epoch is " + mse);
     }
 
@@ -94,24 +92,31 @@ public class LearningPredictor {
             double result = nn.recall(normalise(homeTeam), normalise(awayTeam), i, input);
             predictionResults.add(result);
             average += result;
-            System.out.println("Test " + (i + 1) + ": " + result);
+            log.info("Test " + (i + 1) + ": " + result);
         }
 
         average = average / maxTests;
         return average;
     }
 
-    private void decideResult(double average) {
-        System.out.println("Average: " + average);
+    /**
+     * @param average
+     * @return result dto
+     */
+    private Map<String, String> decideResult(double average) {
+        log.info("Average: " + average);
         if (average <= 0.3) {
-            System.out.println("Win for away team");
-            JOptionPane.showMessageDialog(null, "Win for Away Team");
+            log.info("Win for away team");
+            return Map.of("home", "loss",
+                    "away", "win");
         } else if (average >= 0.5) {
-            System.out.println("Win for home team");
-            JOptionPane.showMessageDialog(null, "Win for Home team");
+            log.info("Win for home team");
+            return Map.of("home", "win",
+                    "away", "loss");
         } else {
-            System.out.println("Draw");
-            JOptionPane.showMessageDialog(null, "draw");
+            log.info("Draw");
+            return Map.of("home", "draw",
+                    "away", "draw");
         }
     }
 

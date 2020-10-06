@@ -8,12 +8,16 @@ import com.sportbetapp.domain.betting.PlayerSide;
 import com.sportbetapp.domain.type.SportType;
 import com.sportbetapp.dto.predicting.PredictionDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
+import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
 
 public interface PredictionService {
 
-    void makePrediction(PredictionDto dto) throws CanNotPlayAgainstItselfException;
+    void makePrediction(PredictionDto dto) throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException;
 
     void processStatisticFile(MultipartFile file);
 
     List<PlayerSide> getAllTeamsForSportType(SportType sportType);
+
+    void makePredictionForSportEvent(Long sportEventId) throws CanNotPlayAgainstItselfException,
+            NoPredictAnalysisDataAvailableException;
 }

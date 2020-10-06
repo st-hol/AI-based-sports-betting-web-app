@@ -3,13 +3,9 @@ package com.sportbetapp.dto.predicting;
 import lombok.Data;
 
 @Data
-public class PredictionDto {
+public class PredictSportEventDto {
     private String homeTeamName;
     private String awayTeamName;
-
-    private int guessHomeTeamScore;
-    private int guessAwayTeamScore;
-
     private String sportType;
     private boolean useOnlyStatisticRecords;
 }

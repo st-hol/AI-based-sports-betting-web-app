@@ -43,6 +43,8 @@ public class PlayerSide {
     @OneToMany(mappedBy = "playerSide", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PredictionRecord> predictionRecords;
 
+    @ManyToOne
+    private SportEvent sportEvent;
 
     @Data
     static class PlayerSideId implements Serializable {

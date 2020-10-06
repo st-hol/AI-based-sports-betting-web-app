@@ -1,7 +1,3 @@
-/*
- * Name: Andrew Ward
-Student ID: 15002106
- */
 package com.sportbetapp.prediction;
 
 import java.awt.*;
@@ -16,6 +12,10 @@ import javax.swing.*;
 import com.sportbetapp.prediction.classifier.NaiveBayesClassifier;
 import com.sportbetapp.prediction.neural.LearningPredictor;
 
+/**
+ * @deprecated : it was just for test purpose
+ */
+@Deprecated
 public class PredictorUI {
 
     //Array of strings for team names
@@ -30,7 +30,7 @@ public class PredictorUI {
     private int numFixt = 38;       //number of fixtures
     private int numFields = 3;      //number of fields for each fixture
 
-    //2D arrays for home and away teams, 1 to store previous fixtures, 
+    //2D arrays for home and away teams, 1 to store previous fixtures,
     //the other prediction. 1 of each for home and away
     private String[][] teamData1 = new String[numFixt][numFields];
     private String[][] testData1 = new String[3][2];
@@ -116,7 +116,7 @@ public class PredictorUI {
 
 
     public void predict() {
-        //create new Naive Bayes classifiers for hoem and away
+        //create new Naive Bayes classifiers for home and away
         NaiveBayesClassifier team1 = new NaiveBayesClassifier();
         NaiveBayesClassifier team2 = new NaiveBayesClassifier();
 

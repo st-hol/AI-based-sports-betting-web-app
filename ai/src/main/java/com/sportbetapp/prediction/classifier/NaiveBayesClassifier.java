@@ -1,10 +1,12 @@
-/*
- * * Name: Andrew Ward
-Student ID: 15002106
- */
 package com.sportbetapp.prediction.classifier;
 
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NaiveBayesClassifier {
 
     private static final double M_COEFFICIENT = 2.0;
@@ -39,20 +41,18 @@ public class NaiveBayesClassifier {
                 //sets the result as the probability returned for the given category
                 result[i] = calculateProbability(testData[k], CATEGORIES[i], homePred, awayPred);
                 //prints out probability of each category
-                System.out.println("Probability of category [" + CATEGORIES[i] + "] : " + result[i]);
+                log.info("Probability of category [" + CATEGORIES[i] + "] : " + result[i]);
                 if (result[i] > max) {
                     max = result[i];
                     maxPosition = i;
                 }
                 average += result[i];
             }
-
-            System.out.println("Naive Bayes Classifier:");
-            System.out.println("the " + k + " test data is classified as category [" + CATEGORIES[maxPosition] + "] with " + max);
-
+            log.info("Naive Bayes Classifier:");
+            log.info("the " + k + " test data is classified as category [" + CATEGORIES[maxPosition] + "] with " + max);
         }
         average = average / N_CATEGORIES;
-        System.out.println("Average: " + average);
+        log.info("Average: " + average);
         return max;
     }
 
@@ -106,7 +106,7 @@ public class NaiveBayesClassifier {
             E.g. score 2 goals then prob of winning, losing and drawing is output
             based on previous results when scoring multiple goals. 
             */
-            System.out.println("Attribute:Count " + test[i] + " : " + count[i] +
+            log.info("Attribute:Count " + test[i] + " : " + count[i] +
                     " (probability = " + ((double) count[i] + M_COEFFICIENT * P_COEFFICIENT) /
                     ((double) numCategory + M_COEFFICIENT) + ")");
 

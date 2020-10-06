@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Wagers</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+
+
+<div class="alert alert-danger" role="alert" th:if="${eventAlreadyStarted}" th:text="#{event.already.started}">
+</div>
+
+<div class="container border border-primary rounded mt-2">
+    <div class="row bg-primary">
+        <h6 class="text-center text-light font-weight-normal p-2 pl-4" th:text="#{home.wager.header}"></h6>
+    </div>
+
+
+    <table class="w-100">
+        <tr>
+            <th th:text="#{sport.event.type}"></th>
+            <th th:text="#{sport.event.title}"></th>
+            <th th:text="#{sport.event.home.team.name}"></th>
+            <th th:text="#{sport.event.away.team.name}"></th>
+            <th th:text="#{sport.event.start.date}"></th>
+            <th th:text="#{sport.event.end.date}"></th>
+            <th th:text="#{sport.event.result}"></th>
+        </tr>
+        <th:block th:each="sportEvent : ${sportEvents}">
+            <tr>
+                <td th:text="${sportEvent.sportType}"></td>
+                <td th:text="${sportEvent.title}"></td>
+                <td th:text="${sportEvent.playerSides[0].name}"></td>
+                <td th:text="${sportEvent.playerSides[1].name}"></td>
+                <td th:text="${sportEvent.startDate}"></td>
+                <td th:text="${sportEvent.endDate}"></td>
+                <td th:text="${sportEvent.startDate}"></td>
+                <td>
+                    <form id="predictSportEventForm" method="POST" th:action="@{/admin/predict-sport-event/{sportEventId}(sportEventId=${sportEvent.id})}">
+                        <input name="_method" type="hidden" value="POST">
+                        <input class="border border-primary rounded bg-primary text-light" th:value="#{form.predict}"
+                               type="submit">
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+
+
+</body>
+</html>
