@@ -1,5 +1,6 @@
 package com.sportbetapp.domain.betting;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -14,10 +15,12 @@ import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.type.Currency;
 import com.sportbetapp.domain.type.SportType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +29,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -34,19 +38,20 @@ public class SportEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
     private String title;
     private SportType sportType;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bet> bets;
     @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL)
     private List<PlayerSide> playerSides;
     @OneToOne(mappedBy = "sportEvent")
     private Result result;
-
+    @OneToOne(mappedBy = "sportEvent")
+    private HistoricRecord historicRecord;
 
     @Override
     public boolean equals(Object o) {

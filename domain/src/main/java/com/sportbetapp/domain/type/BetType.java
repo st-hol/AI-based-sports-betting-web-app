@@ -2,7 +2,8 @@ package com.sportbetapp.domain.type;
 
 import com.sportbetapp.domain.type.typed.StringTypeEnum;
 
-public enum BetType  implements StringTypeEnum {
+public enum BetType implements StringTypeEnum {
+
     WINNER("Winner", 1.5),
     EXACT_GAME_SCORE("Exact game score", 3),
     BOTH_WILL_SCORE_AT_LEAST_BY_ONE_HIT("Both will score at least by one hit", 0.5),
@@ -18,17 +19,8 @@ public enum BetType  implements StringTypeEnum {
         this.coefficient = coefficient;
     }
 
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public double getCoefficient() {
         return coefficient;
-    }
-
-    public void setCoefficient(double coefficient) {
-        this.coefficient = coefficient;
     }
 
     @Override

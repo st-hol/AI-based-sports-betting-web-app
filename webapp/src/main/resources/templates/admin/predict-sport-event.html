@@ -41,7 +41,7 @@
                 <td th:text="${sportEvent.playerSides[1].name}"></td>
                 <td th:text="${sportEvent.startDate}"></td>
                 <td th:text="${sportEvent.endDate}"></td>
-                <td th:text="${sportEvent.startDate}"></td>
+                <td th:text="1"></td>
                 <td>
                     <form id="predictSportEventForm" method="POST" th:action="@{/admin/predict-sport-event/{sportEventId}(sportEventId=${sportEvent.id})}">
                         <input name="_method" type="hidden" value="POST">

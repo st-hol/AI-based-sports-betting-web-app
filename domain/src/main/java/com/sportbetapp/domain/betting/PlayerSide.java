@@ -40,7 +40,7 @@ public class PlayerSide {
     @Id
     private SportType sportType;
 
-    @OneToMany(mappedBy = "playerSide", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "playerSide")
     private List<PredictionRecord> predictionRecords;
 
     @ManyToOne

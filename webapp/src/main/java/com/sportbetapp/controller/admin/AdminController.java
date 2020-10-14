@@ -2,12 +2,15 @@ package com.sportbetapp.controller.admin;
 
 import static com.sportbetapp.domain.type.SportType.FOOTBALL;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,14 +24,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sportbetapp.domain.betting.Bet;
 import com.sportbetapp.domain.betting.PlayerSide;
 import com.sportbetapp.domain.betting.SportEvent;
+import com.sportbetapp.dto.betting.CreateSportEventDto;
+import com.sportbetapp.dto.betting.PlayerSideDto;
 import com.sportbetapp.dto.payload.UploadFileResponse;
 import com.sportbetapp.dto.predicting.PredictSportEventDto;
 import com.sportbetapp.dto.predicting.PredictionDto;
+import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
 import com.sportbetapp.service.betting.SportEventService;
+import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.predicting.PredictionService;
+import com.sportbetapp.service.predicting.StatisticUploadService;
 import com.sportbetapp.service.user.UserService;
+import com.sportbetapp.validator.ChooseSportTypeValidator;
+import com.sportbetapp.validator.CreateSportEventValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,9 +48,17 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 
     @Autowired
+    private CreateSportEventValidator createSportEventValidator;
+    @Autowired
+    private ChooseSportTypeValidator chooseSportTypeValidator;
+    @Autowired
     private UserService userService;
     @Autowired
     private PredictionService predictionService;
+    @Autowired
+    private PredictSportEventService predictSportEventService;
+    @Autowired
+    private StatisticUploadService statisticUploadService;
     @Autowired
     private SportEventService sportEventService;
 
@@ -61,7 +79,7 @@ public class AdminController {
 
     @PostMapping("/predict")
     public String createPrediction(@ModelAttribute("predictionForm") PredictionDto dto)
-            throws CanNotPlayAgainstItselfException {
+            throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException {
         predictionService.makePrediction(dto);
         return "redirect:/admin/predictions";
     }
@@ -70,9 +88,10 @@ public class AdminController {
     public String formSportEventPrediction(Model model) {
 //        model.addAttribute("sportEvents", sportEventService.findAll());
         model.addAttribute("sportEvents", new SportEvent() {{
+            setId(1L);
             setBets(Arrays.asList(new Bet() {{
-                setStartDate(LocalDateTime.MIN);
-                setEndDate(LocalDateTime.MAX);
+                setStartDate(LocalDate.MIN);
+                setEndDate(LocalDate.MAX);
             }}));
             setPlayerSides(Arrays.asList(
                     new PlayerSide() {{
@@ -89,13 +108,13 @@ public class AdminController {
 //        model.addAttribute("sportType", FOOTBALL);
 //        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
 //        model.addAttribute("predictionForm", new PredictSportEventDto());
-        return "/admin/predictor";
+        return "/admin/predict-sport-event";
     }
 
     @PostMapping("/predict-sport-event/{sportEventId}")
     public String createSportEventPrediction(@PathVariable Long sportEventId)
-            throws NoPredictAnalysisDataAvailableException {
-        predictionService.makePredictionForSportEvent(sportEventId);
+            throws NoPredictAnalysisDataAvailableException, CanNotPlayAgainstItselfException {
+        predictSportEventService.makePredictionForSportEvent(sportEventId);
         return "redirect:/admin/predict-sport-event";
     }
 
@@ -109,9 +128,36 @@ public class AdminController {
     @ResponseBody
     @PostMapping("/upload-stats")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        predictionService.processStatisticFile(file);
+        statisticUploadService.processStatisticFile(file);
 
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
+    }
+
+
+    @GetMapping("/get-teams-by-sport")
+    @ResponseBody
+    public List<PlayerSideDto> getTeamsBySportType(@RequestParam("sportType") String sportType){
+        return predictSportEventService.getAllTeamsForSportType(sportType);
+    }
+
+    @GetMapping("/create-sport-event")
+    public String createSportEventForm(Model model){
+        model.addAttribute("listOfTypes", sportEventService.findAllSportTypes());
+        model.addAttribute("createSportEventForm", new CreateSportEventDto());
+        return "admin/create-sport-event";
+    }
+
+    @PostMapping("/create-sport-event")
+    public String registration(@ModelAttribute("createSportEventForm") CreateSportEventDto createSportEventForm,
+                               BindingResult bindingResult, Model model) {
+        createSportEventValidator.validate(createSportEventForm, bindingResult);
+        if (bindingResult.hasErrors()) {
+            log.info("createSportEventForm. form had errors.");
+            model.addAttribute("listOfTypes", sportEventService.findAllSportTypes());
+            return "admin/create-sport-event";
+        }
+        sportEventService.createNewSportEvent(createSportEventForm);
+        return "redirect:/admin/create-sport-event";
     }
 
     @ExceptionHandler(CanNotPlayAgainstItselfException.class)

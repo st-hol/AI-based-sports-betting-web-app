@@ -10,10 +10,7 @@ public enum SportType implements StringTypeEnum {
     BASEBALL("Baseball"),
     HOCKEY("Hockey"),
     TENNIS("Tennis"),
-    TABLE_TENNIS("Table tennis"),
-    BOXING("Boxing"),
-    WRESTLING("Wrestling"),
-    FENCING("Fencing");
+    TABLE_TENNIS("Table tennis");
 
     private String value;
 
@@ -21,18 +18,13 @@ public enum SportType implements StringTypeEnum {
         this.value = value;
     }
 
+    public static SportType of(String value) {
+        return TypeEnum.findEnumValueOrThrowException(SportType.class, value);
+    }
 
     @Override
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public static SportType of(String value) {
-        return TypeEnum.findEnumValueOrThrowException(SportType.class, value);
     }
 
     @Override
