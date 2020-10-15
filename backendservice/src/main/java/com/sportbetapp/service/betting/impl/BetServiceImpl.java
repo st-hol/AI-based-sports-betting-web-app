@@ -33,14 +33,19 @@ public class BetServiceImpl implements BetService {
         return betRepository.save(bet);
     }
 
-    @Override
-    public List<Bet> findAllBySportEvent(SportEvent event) {
-        return betRepository.findAllBySportEvent(event);
-    }
+//    @Override
+//    public List<Bet> findAllBySportEvent(SportEvent event) {
+//        return betRepository.findAllBySportEvent(event);
+//    }
 
     @Override
     public void deleteAll() {
         betRepository.deleteAll();
+    }
+
+    @Override
+    public List<Bet> populateStandardBetsForNewSportEvent() {
+        return Lists.newArrayList(betRepository.findAll());
     }
 
 }

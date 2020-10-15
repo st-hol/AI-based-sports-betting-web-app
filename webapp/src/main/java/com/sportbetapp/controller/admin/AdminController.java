@@ -65,11 +65,6 @@ public class AdminController {
 
     @GetMapping("/predict")
     public String formPrediction(Model model) {
-//        model.addAttribute("listOfTeams", Arrays.asList("Arsenal", "Bournemouth", "Brighton", "Burnley",
-//                "Chelsea", "Crystal Palace", "Everton", "Huddersfield", "Leicester",
-//                "Liverpool", "Manchester City", "Manchester United", "Newcastle",
-//                "Southampton", "Watford", "West Ham"));
-
         model.addAttribute("listOfTeams", predictionService.getAllTeamsForSportType(FOOTBALL)); //todo stub rm
         model.addAttribute("sportType", FOOTBALL);
 //        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
@@ -86,24 +81,7 @@ public class AdminController {
 
     @GetMapping("/predict-sport-event")
     public String formSportEventPrediction(Model model) {
-//        model.addAttribute("sportEvents", sportEventService.findAll());
-        model.addAttribute("sportEvents", new SportEvent() {{
-            setId(1L);
-            setBets(Arrays.asList(new Bet() {{
-                setStartDate(LocalDate.MIN);
-                setEndDate(LocalDate.MAX);
-            }}));
-            setPlayerSides(Arrays.asList(
-                    new PlayerSide() {{
-                        setSportType(FOOTBALL);
-                        setName("Bournemouth");
-                    }},
-                    new PlayerSide() {{
-                        setSportType(FOOTBALL);
-                        setName("Arsenal");
-                    }}
-                                        ));
-        }});
+        model.addAttribute("sportEvents", sportEventService.findAll());
 
 //        model.addAttribute("sportType", FOOTBALL);
 //        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
@@ -174,25 +152,5 @@ public class AdminController {
         return formSportEventPrediction(model); // todo id
     }
 
-    //    @GetMapping("/predict-sport-event")
-//    public String formPrediction(Model model) {
-//        model.addAttribute("listOfTeams", Arrays.asList("Arsenal", "Bournemouth", "Brighton", "Burnley",
-//                "Chelsea", "Crystal Palace", "Everton", "Huddersfield", "Leicester",
-//                "Liverpool", "Manchester City", "Manchester United", "Newcastle",
-//                "Southampton", "Watford", "West Ham"));
-//
-//        model.addAttribute("listOfTeams", predictionService.getAllTeamsForSportType(FOOTBALL)); //todo stub rm
-//
-////        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
-//        model.addAttribute("predictionForm", new PredictionDto());
-//        return "/admin/predictor";
-//    }
-//
-//    @PostMapping("/predict-sport-event")
-//    public String createPrediction(@ModelAttribute("predictionForm") PredictionDto dto)
-//            throws CanNotPlayAgainstItselfException {
-//        predictionService.makePrediction(dto);
-//        return "redirect:/admin/predictions";
-//    }
 
 }

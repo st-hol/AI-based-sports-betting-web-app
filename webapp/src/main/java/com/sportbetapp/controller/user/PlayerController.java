@@ -20,7 +20,7 @@ import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.service.betting.BetService;
-import com.sportbetapp.service.betting.OutcomeService;
+import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.service.betting.WagerService;
@@ -41,7 +41,7 @@ public class PlayerController {
     @Autowired
     private BetService betService;
     @Autowired
-    private OutcomeService outcomeService;
+    private GuessService guessService;
 
 
     @GetMapping({"/home", "/"})
@@ -69,14 +69,14 @@ public class PlayerController {
         return "player/events";
     }
 
-    @GetMapping("/bets")
-    public String listAllBetsByEvent(Model model,
-                                     @RequestParam(value = "eventId") Long eventId) {
-        SportEvent sportEvent = sportEventService.findById(eventId);
-        model.addAttribute("event", sportEvent);
-        model.addAttribute("bets", betService.findAllBySportEvent(sportEvent));
-        return "player/bets";
-    }
+//    @GetMapping("/bets")
+//    public String listAllBetsByEvent(Model model,
+//                                     @RequestParam(value = "eventId") Long eventId) {
+//        SportEvent sportEvent = sportEventService.findById(eventId);
+//        model.addAttribute("event", sportEvent);
+//        model.addAttribute("bets", betService.findAllBySportEvent(sportEvent));
+//        return "player/bets";
+//    }
 
     @GetMapping("/wager")
     public String formWager(Model model,
@@ -86,7 +86,7 @@ public class PlayerController {
         model.addAttribute("event", sportEventService.findById(eventId));
         model.addAttribute("bet", bet);
         model.addAttribute("user", userService.obtainCurrentPrincipleUser());
-        model.addAttribute("outcomes", outcomeService.findAllByBet(bet));
+        model.addAttribute("outcomes", guessService.findAllByBet(bet));
         model.addAttribute("wagerForm", new CreateWagerDto());
         return "/player/new-wager";
     }

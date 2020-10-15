@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.sportbetapp.domain.betting.SportEvent;
@@ -22,7 +24,6 @@ import lombok.ToString;
 @Entity
 public class HistoricRecord extends PredictionRecord{
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sport_event_id", referencedColumnName = "id")
-    private SportEvent sportEvent;//corresponding sport event
+    @ManyToOne
+    private SportEvent sportEvent; //corresponding sport event
 }

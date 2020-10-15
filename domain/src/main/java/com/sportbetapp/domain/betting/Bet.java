@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.type.BetType;
 
 import lombok.AllArgsConstructor;
@@ -31,22 +32,18 @@ public class Bet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private SportEvent sportEvent;
-
     private String description;
 
     private BetType type;
 
     @OneToMany(mappedBy = "bet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Outcome> outcomes; //different outcomes are created by user
+    private List<Guess> guesses; //different outcomes are created by user
 
     @Override
     public String toString() {
         return "Bet{" +
-                "description='" + description + '\'' +
                 ", type=" + type +
-                ", outcomes=" + outcomes +
+                ", guesses=" + guesses +
                 '}';
     }
 
@@ -59,14 +56,12 @@ public class Bet {
             return false;
         }
         Bet bet = (Bet) o;
-        return Objects.equals(sportEvent, bet.sportEvent) &&
-                Objects.equals(description, bet.description) &&
+        return Objects.equals(id, bet.id) &&
                 type == bet.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sportEvent, description, type);
+        return Objects.hash(id, type);
     }
-
 }

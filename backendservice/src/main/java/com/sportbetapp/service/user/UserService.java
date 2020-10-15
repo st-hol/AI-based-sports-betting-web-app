@@ -3,7 +3,7 @@ package com.sportbetapp.service.user;
 
 import java.util.List;
 
-import com.sportbetapp.domain.betting.Outcome;
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.dto.user.UserDto;
@@ -28,6 +28,6 @@ public interface UserService {
 
     void makeWager(CreateWagerDto wagerDto) throws NotEnoughBalanceException;
 
-    List<User> findAllByOutcome(Outcome outcome);
+    List<User> findAllByOutcome(Guess guess);
 
 }

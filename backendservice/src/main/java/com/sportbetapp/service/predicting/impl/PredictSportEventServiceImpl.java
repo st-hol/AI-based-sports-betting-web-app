@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -50,8 +51,10 @@ import com.sportbetapp.prediction.classifier.NaiveBayesClassifier;
 import com.sportbetapp.prediction.neural.LearningPredictor;
 import com.sportbetapp.repository.betting.PlayerSideRepository;
 import com.sportbetapp.repository.betting.ResultRepository;
+import com.sportbetapp.repository.betting.SportEventRepository;
 import com.sportbetapp.repository.predicting.HitScoreRepository;
 import com.sportbetapp.repository.predicting.PredictionRecordRepository;
+import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.predicting.PredictionService;
 
@@ -67,6 +70,8 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
     @Autowired
     private ResultRepository resultRepository;
     @Autowired
+    private SportEventService sportEventService;
+    @Autowired
     private PredictionServiceImpl predictionService;
 
 
@@ -74,9 +79,9 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
     public void makePredictionForSportEvent(Long sportEventId)
             throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException {
         //1. find sport event by Id
-        SportEvent sportEvent = stubSE();
+        SportEvent sportEvent = sportEventService.findById(sportEventId);
 
-        List<PlayerSide> playerSides = sportEvent.getPlayerSides();
+        List<PlayerSide> playerSides = Lists.newArrayList(sportEvent.getPlayerSides());
 
         PredictionDto predictionDto = new PredictionDto();
         predictionDto.setSportType(Objects.requireNonNull(playerSides
@@ -106,27 +111,6 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
                 .collect(Collectors.toList());
     }
 
-
-    @NotNull
-    private SportEvent stubSE() {
-        return new SportEvent() {{
-            setId(1L);
-            setBets(Arrays.asList(new Bet() {{
-                setStartDate(LocalDate.MIN);
-                setEndDate(LocalDate.MAX);
-            }}));
-            setPlayerSides(Arrays.asList(
-                    new PlayerSide() {{
-                        setSportType(FOOTBALL);
-                        setName("Bournemouth");
-                    }},
-                    new PlayerSide() {{
-                        setSportType(FOOTBALL);
-                        setName("Arsenal");
-                    }}
-                                        ));
-        }};
-    }
 
 
 }

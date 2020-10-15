@@ -1,6 +1,5 @@
 package com.sportbetapp.domain.betting;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+
+import com.sportbetapp.domain.betting.guess.Guess;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +34,9 @@ public class Result {
     private SportEvent sportEvent;
 
     @ManyToMany
-    @JoinTable(name = "winner_outcomes_has_result",
+    @JoinTable(name = "winner_guesses_has_result",
             joinColumns = @JoinColumn(name = "result_id"),
-            inverseJoinColumns = @JoinColumn(name = "winner_outcome_id"))
-    private Set<Outcome> winnerOutcomes; // only one result for all outcomes so it is winner
+            inverseJoinColumns = @JoinColumn(name = "winner_guess_id"))
+    private Set<Guess> winnerGuesses; // only one result for all outcomes so it is winner
 
 }

@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.sportbetapp.domain.betting.Outcome;
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllByOutcome(Outcome outcome) {
+    public List<User> findAllByOutcome(Guess guess) {
 //        return userRepository.findAllByOutcome(outcome);
         return null;
     }

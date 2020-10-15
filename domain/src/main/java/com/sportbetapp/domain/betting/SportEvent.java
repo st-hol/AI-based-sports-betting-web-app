@@ -4,17 +4,23 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.type.Currency;
 import com.sportbetapp.domain.type.SportType;
@@ -26,7 +32,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString
 @Getter
 @Setter
 @Builder
@@ -44,14 +49,18 @@ public class SportEvent {
     private SportType sportType;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bet> bets;
-    @OneToMany(mappedBy = "sportEvent", cascade = CascadeType.ALL)
-    private List<PlayerSide> playerSides;
+    @OneToMany(mappedBy = "sportEvent")
+    private List<Guess> guesses;
     @OneToOne(mappedBy = "sportEvent")
     private Result result;
-    @OneToOne(mappedBy = "sportEvent")
-    private HistoricRecord historicRecord;
+    @OneToMany(mappedBy = "sportEvent")
+    private List<HistoricRecord> historicRecords;
+
+    @ManyToMany
+    @JoinTable(name = "sport_event_has_player_sides",
+            joinColumns = @JoinColumn(name = "sport_event_id"),
+            inverseJoinColumns =  {@JoinColumn(name = "player_side_name"), @JoinColumn(name = "player_side_sport_type")})
+    private Set<PlayerSide> playerSides;
 
     @Override
     public boolean equals(Object o) {
@@ -69,6 +78,6 @@ public class SportEvent {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, startDate, endDate, bets, result);
+        return Objects.hash(title, startDate, endDate, guesses, result);
     }
 }

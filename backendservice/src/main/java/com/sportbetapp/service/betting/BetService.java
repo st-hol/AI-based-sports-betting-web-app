@@ -11,7 +11,9 @@ public interface BetService {
     Bet findById(Long id);
     Bet save(Bet bet);
 
-    List<Bet> findAllBySportEvent(SportEvent event);
+//    List<Bet> findAllBySportEvent(SportEvent event);
 
     void deleteAll();
+
+    List<Bet> populateStandardBetsForNewSportEvent();
 }

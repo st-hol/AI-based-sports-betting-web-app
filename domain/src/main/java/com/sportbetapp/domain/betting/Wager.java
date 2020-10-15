@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.type.Currency;
 import com.sportbetapp.domain.user.User;
 
@@ -34,7 +35,7 @@ public class Wager {
     private User user;
 
     @ManyToOne
-    private Outcome outcome;
+    private Guess guess;
 
     private BigDecimal amount;
 
@@ -47,11 +48,4 @@ public class Wager {
 
     private boolean isWinner;
 
-    @Override
-    public String toString() {
-        return "Wager{" +
-                "amount=" + amount +
-                ", isWinner=" + isWinner +
-                '}';
-    }
 }
