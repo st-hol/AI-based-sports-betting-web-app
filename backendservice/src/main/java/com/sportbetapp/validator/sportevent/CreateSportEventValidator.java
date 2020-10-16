@@ -1,4 +1,4 @@
-package com.sportbetapp.validator;
+package com.sportbetapp.validator.sportevent;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

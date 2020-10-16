@@ -40,7 +40,7 @@
         <th:block th:each="wager : ${wagers}">
             <tr>
                 <td>
-                    <form id="removeForm" method="post" th:action="@{/player/wager/{wagerId}(wagerId=${wager.id})}">
+                    <form id="removeForm" method="post" th:action="@{/user/wager/{wagerId}(wagerId=${wager.id})}">
                         <input name="_method" type="hidden" value="DELETE">
                         <input name="id" th:value="${wager.id}" type="hidden"/>
                         <input class="border border-primary rounded bg-primary text-light" th:value="#{form.remove}"

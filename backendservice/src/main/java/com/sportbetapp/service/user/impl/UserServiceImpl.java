@@ -118,17 +118,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void makeWager(CreateWagerDto wagerDto) throws NotEnoughBalanceException {
-        User currentUser = obtainCurrentPrincipleUser();
-        BigDecimal wagerAmount = wagerDto.getAmount();
-        BigDecimal playerBalance = currentUser.getBalance();
-//        OutcomeOdd outcomeOdd = outcomeOddService.findByOutcome(wagerDto.getOutcome());
-        if (checkHasEnoughMoney(wagerAmount, currentUser)) {
-            currentUser.setBalance(playerBalance.subtract(wagerAmount));
-//            Wager wager = populateWager(wagerAmount, currentUser, outcomeOdd);
-//            wagerService.save(wager);
-        } else {
-            throw new NotEnoughBalanceException("Sorry bro. Not enough money.", wagerDto);
-        }
+//        User currentUser = obtainCurrentPrincipleUser();
+//        BigDecimal wagerAmount = wagerDto.getAmount();
+//        BigDecimal playerBalance = currentUser.getBalance();
+////        OutcomeOdd outcomeOdd = outcomeOddService.findByOutcome(wagerDto.getOutcome());
+//        if (checkHasEnoughMoney(wagerAmount, currentUser)) {
+//            currentUser.setBalance(playerBalance.subtract(wagerAmount));
+////            Wager wager = populateWager(wagerAmount, currentUser, outcomeOdd);
+////            wagerService.save(wager);
+//        } else {
+//            throw new NotEnoughBalanceException("Sorry bro. Not enough money.", wagerDto);
+//        }
     }
 
     @Override

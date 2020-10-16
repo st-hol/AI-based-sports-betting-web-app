@@ -11,8 +11,7 @@ import lombok.Setter;
 @Setter
 public class BetDto {
     private Long id;
-    private String description;
-    private List<OutcomeDto> outcomes;
     private Long sportEventId;
+    private String description;
     private BetType type;
 }

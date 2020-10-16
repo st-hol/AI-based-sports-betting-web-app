@@ -9,6 +9,7 @@ public enum BetType implements StringTypeEnum {
     BOTH_WILL_SCORE_AT_LEAST_BY_ONE_HIT("Both will score at least by one hit", 0.5),
     BOTH_WILL_NOT_SCORE_ANY_GOALS("Both will not score any hits", 0.5),
     GOALS_BY_TEAM("Hits by team", 2),
+    MISSES_BY_TEAM("Misses by team", 2),
     GOALS_MORE_THAN("Hits more than", 0.5),
     MISSES_MORE_THAN("Misses more than", 0.5);
 

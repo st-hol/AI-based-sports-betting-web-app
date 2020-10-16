@@ -2,9 +2,6 @@ package com.sportbetapp.controller.admin;
 
 import static com.sportbetapp.domain.type.SportType.FOOTBALL;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sportbetapp.domain.betting.Bet;
-import com.sportbetapp.domain.betting.PlayerSide;
-import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.dto.betting.CreateSportEventDto;
 import com.sportbetapp.dto.betting.PlayerSideDto;
 import com.sportbetapp.dto.payload.UploadFileResponse;
-import com.sportbetapp.dto.predicting.PredictSportEventDto;
 import com.sportbetapp.dto.predicting.PredictionDto;
-import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
 import com.sportbetapp.service.betting.SportEventService;
@@ -37,8 +29,8 @@ import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.predicting.PredictionService;
 import com.sportbetapp.service.predicting.StatisticUploadService;
 import com.sportbetapp.service.user.UserService;
-import com.sportbetapp.validator.ChooseSportTypeValidator;
-import com.sportbetapp.validator.CreateSportEventValidator;
+import com.sportbetapp.validator.sportevent.ChooseSportTypeValidator;
+import com.sportbetapp.validator.sportevent.CreateSportEventValidator;
 
 import lombok.extern.slf4j.Slf4j;
 

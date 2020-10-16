@@ -1,4 +1,4 @@
-package com.sportbetapp.validator;
+package com.sportbetapp.validator.sportevent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

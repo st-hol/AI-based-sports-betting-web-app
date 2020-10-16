@@ -1,6 +1,7 @@
 package com.sportbetapp.domain.betting;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public class PlayerSide {
     @JoinTable(name = "sport_event_has_player_sides",
             joinColumns = {@JoinColumn(name = "player_side_name"), @JoinColumn(name = "player_side_sport_type")},
             inverseJoinColumns = @JoinColumn(name = "sport_event_id"))
-    private Set<SportEvent> sportEvents;
+    private Set<SportEvent> sportEvents = new LinkedHashSet<>();
 
     @Data
     static class PlayerSideId implements Serializable {

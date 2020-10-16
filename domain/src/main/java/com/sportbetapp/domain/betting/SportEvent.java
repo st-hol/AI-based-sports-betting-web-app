@@ -2,6 +2,7 @@ package com.sportbetapp.domain.betting;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class SportEvent {
     @JoinTable(name = "sport_event_has_player_sides",
             joinColumns = @JoinColumn(name = "sport_event_id"),
             inverseJoinColumns =  {@JoinColumn(name = "player_side_name"), @JoinColumn(name = "player_side_sport_type")})
-    private Set<PlayerSide> playerSides;
+    private Set<PlayerSide> playerSides = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

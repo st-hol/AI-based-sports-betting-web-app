@@ -3,6 +3,7 @@ package com.sportbetapp.service.betting.impl;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,19 +74,23 @@ public class SportEventServiceImpl implements SportEventService {
                 .sportType(sportType)
                 .startDate(createSportEventForm.getStartDate())
                 .playerSides(
-                        Sets.newHashSet(
-                        playerSideRepository.findByNameAndSportType(createSportEventForm.getHomeTeamName(), sportType),
-                        playerSideRepository.findByNameAndSportType(createSportEventForm.getAwayTeamName(), sportType))
+                        Sets.newLinkedHashSet(
+                                List.of(playerSideRepository
+                                                .findByNameAndSportType(createSportEventForm.getHomeTeamName(), sportType),
+                                        playerSideRepository
+                                                .findByNameAndSportType(createSportEventForm.getAwayTeamName(), sportType)))
                             )
                 .endDate(createSportEventForm.getEndDate())
                 .build();
 
         SportEvent sportEventCreated = sportEventRepository.save(sportEvent);
 //        sportEventCreated.setPlayerSides(Sets.newHashSet(
-//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getHomeTeamName(), sportType),
-//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getAwayTeamName(), sportType)));
+//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getHomeTeamName(),
+//                        sportType),
+//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getAwayTeamName(),
+//                        sportType)));
 
-        log.info("create sport event {}", sportEvent);
+        log.info("created new sport event {}", sportEvent);
         return sportEventCreated;
     } // do not need to create bets. they are not coupled to SE anymore
 

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Please sign in</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/radio-btn.css}">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script th:src="@{/js/make-wager.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<div class="container">
+    <div class="login-page col-lg-4 col-md-7">
+
+        <div class="alert alert-danger" role="alert" th:if="${notEnoughMoney}" th:text="#{not.enough.money}">
+        </div>
+
+        <form action="#" class="form-signin" method="post" th:action="@{/user/make-wager}"
+              th:object="${guessWagerForm}">
+
+            <ul>
+                <li th:class="${e.global}? globalerr : fielderr" th:each="e : ${#fields.detailedErrors()}">
+                    <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+                    <span th:text="${e.message}">The error message</span>
+                </li>
+            </ul>
+
+
+            <!--static-->
+            <input hidden th:value="${event.id}" name="sportEventId"/>
+            <input hidden th:value="${event.sportType.value}" name="sportEventId"/>
+            <input hidden th:value="-1" name="betType" id="betType"/>
+            <!--static-->
+
+            <br>
+            <hr>
+            <h2 th:text="#{event}"></h2>
+            <br>
+            <!-- info-->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${event.title} + ': ' + ${event.startDate}"></h5>
+                    <!--                  type -->
+                    <p class="card-text"
+                       th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
+                    <p class="card-text"
+                       th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>
+                </div>
+            </div>
+            <!-- info-->
+
+            <!--choose bet-->
+
+            <br>
+            <hr>
+            <h3 th:text="#{choose.bet.type}"></h3>
+            <br>
+            <div class="input-group form-group">
+                <select class="form-control currency-selector" name="bet" id="chooseBet" required>
+                    <th:block th:each="bet : ${bets}">
+                        <option th:text="${bet.type.value}" th:value="${bet.type}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <!--choose bet-->
+
+
+            <!--            inputs-->
+            <br>
+            <hr>
+            <h3 th:text="#{input.bet.values}"></h3>
+            <br>
+            <!-- winner-->
+            <div class="form-group" id="inputWinner">
+                <label th:text="#{winner.player.side.is}" class="" for="winnerPlayerSideName"></label>
+                <div class="input-group form-group">
+                    <select
+                            class="form-control"
+                            name="winnerPlayerSideName"
+                            id="winnerPlayerSideName" required>
+                        <th:block th:each="playerSide : ${event.playerSides}">
+                            <option th:text="${playerSide.name}"
+                                    th:value="${playerSide.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </div>
+            <!-- winner-->
+
+            <!--scores-->
+            <div class="form-group" id="inputScores">
+                <label class="" for="homeTeamScore"
+                       th:text="${event.playerSides[0].name} + ' will score:'">
+                </label>
+                <input required th:placeholder="#{input.score}" type="text"
+                       autofocus class="form-control"
+                       id="homeTeamScore"
+                       name="homeTeamScore"/>
+
+
+                <label for="awayTeamScore" th:text="${event.playerSides[1].name} + ' will score:'">
+                </label>
+                <input required th:placeholder="#{input.score}" type="text"
+                       autofocus class="form-control" id="awayTeamScore" name="awayTeamScore"/>
+
+            </div>
+            <!--scores-->
+
+            <!--bothScoredAtLeastOne-->
+            <div class="form-group" id="inputBothScoredAtLeastOne">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <input type="radio" id="bothScoredAtLeastOne1" name="bothScoredAtLeastOne">
+                            <label for="bothScoredAtLeastOne1">yes</label>
+
+                            <div class="check"></div>
+                        </li>
+                        <li>
+                            <input type="radio" id="bothScoredAtLeastOne2" name="bothScoredAtLeastOne">
+                            <label for="bothScoredAtLeastOne2">no</label>
+
+                            <div class="check">
+                                <div class="inside"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--bothScoredAtLeastOne-->
+
+            <!--bothNotScoredAtLeastOne-->
+            <div class="form-group" id="inputBothNotScoredAnyGoals">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <input type="radio" id="bothNotScoredAnyGoals1" name="bothNotScoredAnyGoals">
+                            <label for="bothNotScoredAnyGoals1">yes</label>
+
+                            <div class="check"></div>
+                        </li>
+                        <li>
+                            <input type="radio" id="bothNotScoredAnyGoals2" name="bothNotScoredAnyGoals">
+                            <label for="bothNotScoredAnyGoals2">no</label>
+
+                            <div class="check">
+                                <div class="inside"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--bothNotScoredAtLeastOne-->
+
+
+            <!--goals By Team-->
+            <div class="form-group" id="inputGoalsByTeam">
+
+                <div class="input-group form-group">
+                    <select class="form-control" name="teamNameThatScoredCertainNumOfGoals"
+                            id="teamNameThatScoredCertainNumOfGoals" required>
+                        <th:block th:each="playerSide : ${event.playerSides}">
+                            <option th:text="${playerSide.name}"
+                                    th:value="${playerSide.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <label for="numGoalsScoredByCertainTeam"></label>
+                <input autofocus class="form-control" name="numGoalsScoredByCertainTeam"
+                       id="numGoalsScoredByCertainTeam"
+                       required th:placeholder="#{input.score}" type="text">
+            </div>
+            <!--goals By Team-->
+
+            <!--misses By Team-->
+            <div class="form-group" id="inputMissesByTeam">
+
+                <div class="input-group form-group">
+                    <select class="form-control" name="teamNameThatMissedCertainNumOfGoals"
+                            id="teamNameThatMissedCertainNumOfGoals" required>
+                        <th:block th:each="playerSide : ${event.playerSides}">
+                            <option th:text="${playerSide.name}"
+                                    th:value="${playerSide.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <label for="numGoalsMissedByCertainTeam">numGoalsScoredByCertainTeam</label>
+                <input autofocus class="form-control" name="numGoalsMissedByCertainTeam"
+                       id="numGoalsMissedByCertainTeam"
+                       required th:placeholder="#{input.score}" type="text">
+            </div>
+            <!--misses By Team-->
+
+            <!--goals By Team More Than-->
+            <div class="form-group" id="inputGoalsByTeamMoreThan">
+
+                <div class="input-group form-group">
+                    <select class="form-control" name="teamNameThatScoredGoalsMoreThanCertainNum"
+                            id="teamNameThatScoredGoalsMoreThanCertainNum" required>
+                        <th:block th:each="playerSide : ${event.playerSides}">
+                            <option th:text="${playerSide.name}"
+                                    th:value="${playerSide.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <label
+                        for="goalsScoredMoreThanCertainNumByTeam">goalsScoredMoreThanCertainNumByTeam</label>
+                <input autofocus class="form-control" name="goalsScoredMoreThanCertainNumByTeam"
+                       id="goalsScoredMoreThanCertainNumByTeam"
+                       required th:placeholder="#{input.score}" type="text">
+            </div>
+            <!--goals By Team More Than-->
+
+
+            <!--misses By Team More Than-->
+            <div class="form-group" id="inputMissesByTeamMoreThan">
+
+                <div class="input-group form-group">
+                    <select class="form-control" name="teamNameThatMissedGoalsMoreThanCertainNum"
+                            id="teamNameThatMissedGoalsMoreThanCertainNum" required>
+                        <th:block th:each="playerSide : ${event.playerSides}">
+                            <option th:text="${playerSide.name}"
+                                    th:value="${playerSide.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <label
+                        for="goalsMissedMoreThanCertainNumByTeam">goalsMissedMoreThanCertainNumByTeam</label>
+                <input autofocus class="form-control" name="goalsMissedMoreThanCertainNumByTeam"
+                       id="goalsMissedMoreThanCertainNumByTeam"
+                       required th:placeholder="#{input.score}" type="text">
+            </div>
+            <!--misses By Team More Than-->
+
+
+            <hr>
+            <br>
+            <h3 th:text="#{new.wager}"></h3>
+            <div class="form-group">
+                <label for="amount"></label>
+                <input autofocus class="form-control" id="amount" name="amount"
+                       required th:placeholder="#{form.new.wager.amount}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="currency" th:text="#{home.user.currency}"></label>
+                <div class="col-sm-9">
+                    <input class="form-control" disabled id="currency" name="currency" readonly
+                           th:value="${user.currency}" type="text">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" th:text="#{form.submit}" type="submit"></button>
+        </form>
+
+        <div class="change-view form-group">
+            <a th:href="@{'/user/bets?eventId=' + ${event.id}}" th:text="#{go.to.bets}"></a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

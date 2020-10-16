@@ -33,7 +33,7 @@
                        th:text="${bet.type.value}"></p>
 
                     <a class="border border-primary rounded bg-primary text-light"
-                       th:href="@{'/player/wager?eventId=' + ${event.id} + '&betId=' + ${bet.id}}"
+                       th:href="@{'/user/wager?eventId=' + ${event.id} + '&betId=' + ${bet.id}}"
                        th:text="#{new.wager}"></a>
                 </div>
             </div>

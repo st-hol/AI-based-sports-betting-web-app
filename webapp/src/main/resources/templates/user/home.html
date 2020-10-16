@@ -15,7 +15,7 @@
 <div class="row col-lg-7">
     <div class="home-column col">
         <h1 class="display-4" th:text="#{home.user.header}"></h1>
-        <form action="/player/home/update-info" method="post">
+        <form action="/user/home/update-info" method="post">
             <input name="_method" type="hidden" value="PUT"/>
             <input name="id" th:value="${user.id}" type="hidden">
             <div class="form-group row">
