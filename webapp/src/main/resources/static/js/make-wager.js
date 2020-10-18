@@ -37,7 +37,7 @@ const inputIdsList = [
 
 $(document).ready(function () {
     $('#displayAfterBetChosen').css({'display': 'none'});
-    disableAllInputs(betTypeToInputBlockIdsMap);
+    hideAllInputs(betTypeToInputBlockIdsMap);
     const chooseBet = $('#chooseBet');
     if (chooseBet.val() !== "") {
         processSelectChange(null);
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
 });
 
-function disableAllInputs(betTypeToInputBlockIdsMap) {
+function hideAllInputs(betTypeToInputBlockIdsMap) {
     $.each(betTypeToInputBlockIdsMap, function (key, value) {
         $('#'.concat(value)).css({'display': 'none'});
     });
@@ -58,7 +58,7 @@ function processSelectChange(event) {
     const chooseBet = $('#chooseBet').val();
 
     if (chooseBet && chooseBet !== "") {
-        makeTheInputActiveDisableOthers(chooseBet, betTypeToInputBlockIdsMap, inputIdsList);
+        makeTheInputActiveHideOthers(chooseBet, betTypeToInputBlockIdsMap, inputIdsList);
 
         if (event) {
             event.preventDefault();
@@ -66,7 +66,7 @@ function processSelectChange(event) {
     }
 }
 
-function makeTheInputActiveDisableOthers(newActive, betTypeToInputBlockIdsMap, inputIdsList) {
+function makeTheInputActiveHideOthers(newActive, betTypeToInputBlockIdsMap, inputIdsList) {
     clearAllInputs(inputIdsList);
     const activeId = betTypeToInputBlockIdsMap[newActive];
     updateBetId(betTypeToInputBlockIdsMap, activeId);
@@ -91,7 +91,18 @@ function getKeyByValue(inputMap, value) {
 
 function clearAllInputs(inputIdsList) {
     $.each(inputIdsList, function (ind, el) {
-        $('#'.concat(el)).val('');
+        // var inp = $('#'.concat(el));
+        // if (inp.attr('type') && inp.attr('type') === 'text') {
+        //     inp.val('');
+        // } else if (inp.attr('type') && inp.attr('type') === 'number') {
+        //     inp.val(-1);
+        // } else {
+        //     inp.val(undefined);
+        // }
+
+        var inp = $('#'.concat(el));
+        inp.val(null);
+        inp.removeAttr('required');
     });
 }
 

@@ -26,8 +26,6 @@ public interface UserService {
 
     UserDto convertToUserDto(User user);
 
-    void makeWager(CreateWagerDto wagerDto) throws NotEnoughBalanceException;
-
     List<User> findAllByOutcome(Guess guess);
 
 }

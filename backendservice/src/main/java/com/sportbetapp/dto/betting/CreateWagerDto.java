@@ -29,15 +29,15 @@ public class CreateWagerDto {
     private Boolean bothNotScoredAnyGoals;
 
     private String teamNameThatScoredCertainNumOfGoals;
-    private int numGoalsScoredByCertainTeam;
+    private Integer numGoalsScoredByCertainTeam;
 
     private String teamNameThatMissedCertainNumOfGoals;
-    private int numGoalsMissedByCertainTeam;
+    private Integer numGoalsMissedByCertainTeam;
 
     private String teamNameThatScoredGoalsMoreThanCertainNum;
-    private int goalsScoredMoreThanCertainNumByTeam;
+    private Integer goalsScoredMoreThanCertainNumByTeam;
 
     private String teamNameThatMissedGoalsMoreThanCertainNum;
-    private int goalsMissedMoreThanCertainNumByTeam;
+    private Integer goalsMissedMoreThanCertainNumByTeam;
 
 }

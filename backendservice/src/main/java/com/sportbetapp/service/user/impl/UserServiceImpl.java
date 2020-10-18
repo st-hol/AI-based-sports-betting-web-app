@@ -116,20 +116,7 @@ public class UserServiceImpl implements UserService {
         return emptyNames.toArray(result);
     }
 
-    @Override
-    public void makeWager(CreateWagerDto wagerDto) throws NotEnoughBalanceException {
-//        User currentUser = obtainCurrentPrincipleUser();
-//        BigDecimal wagerAmount = wagerDto.getAmount();
-//        BigDecimal playerBalance = currentUser.getBalance();
-////        OutcomeOdd outcomeOdd = outcomeOddService.findByOutcome(wagerDto.getOutcome());
-//        if (checkHasEnoughMoney(wagerAmount, currentUser)) {
-//            currentUser.setBalance(playerBalance.subtract(wagerAmount));
-////            Wager wager = populateWager(wagerAmount, currentUser, outcomeOdd);
-////            wagerService.save(wager);
-//        } else {
-//            throw new NotEnoughBalanceException("Sorry bro. Not enough money.", wagerDto);
-//        }
-    }
+
 
     @Override
     public List<User> findAllByOutcome(Guess guess) {
@@ -137,18 +124,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private Wager populateWager(BigDecimal wagerAmount, User currentUser) {
-        Wager wager = new Wager();
-        wager.setUser(currentUser);
-//        wager.setOutcomeOdd(outcomeOdd);
-        wager.setCurrency(currentUser.getCurrency());
-        wager.setAmount(wagerAmount);
-        wager.setCreationTime(LocalDateTime.now());
-        return wager;
-    }
 
-    private boolean checkHasEnoughMoney(BigDecimal wagerAmount, User user) {
-        return user.getBalance().compareTo(wagerAmount) >= 0;
-    }
 
 }

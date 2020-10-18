@@ -33,7 +33,7 @@
 
             <!--static-->
             <input hidden th:value="${event.id}" name="sportEventId"/>
-            <input hidden th:value="${event.sportType.value}" name="sportEventId"/>
+            <input hidden th:value="${event.sportType}" name="sportType"/>
             <input hidden th:value="-1" name="betType" id="betType"/>
             <!--static-->
 
@@ -61,7 +61,7 @@
             <h3 th:text="#{choose.bet.type}"></h3>
             <br>
             <div class="input-group form-group">
-                <select class="form-control currency-selector" name="bet" id="chooseBet" required>
+                <select class="form-control currency-selector" name="betType" id="chooseBet" required>
                     <th:block th:each="bet : ${bets}">
                         <option th:text="${bet.type.value}" th:value="${bet.type}"></option>
                     </th:block>
@@ -97,7 +97,7 @@
                 <label class="" for="homeTeamScore"
                        th:text="${event.playerSides[0].name} + ' will score:'">
                 </label>
-                <input required th:placeholder="#{input.score}" type="text"
+                <input required th:placeholder="#{input.score}" type="number"
                        autofocus class="form-control"
                        id="homeTeamScore"
                        name="homeTeamScore"/>
@@ -105,7 +105,7 @@
 
                 <label for="awayTeamScore" th:text="${event.playerSides[1].name} + ' will score:'">
                 </label>
-                <input required th:placeholder="#{input.score}" type="text"
+                <input required th:placeholder="#{input.score}" type="number"
                        autofocus class="form-control" id="awayTeamScore" name="awayTeamScore"/>
 
             </div>
@@ -174,7 +174,7 @@
                 <label for="numGoalsScoredByCertainTeam"></label>
                 <input autofocus class="form-control" name="numGoalsScoredByCertainTeam"
                        id="numGoalsScoredByCertainTeam"
-                       required th:placeholder="#{input.score}" type="text">
+                       required th:placeholder="#{input.score}" type="number">
             </div>
             <!--goals By Team-->
 
@@ -194,7 +194,7 @@
                 <label for="numGoalsMissedByCertainTeam">numGoalsScoredByCertainTeam</label>
                 <input autofocus class="form-control" name="numGoalsMissedByCertainTeam"
                        id="numGoalsMissedByCertainTeam"
-                       required th:placeholder="#{input.score}" type="text">
+                       required th:placeholder="#{input.score}" type="number">
             </div>
             <!--misses By Team-->
 
@@ -215,7 +215,7 @@
                         for="goalsScoredMoreThanCertainNumByTeam">goalsScoredMoreThanCertainNumByTeam</label>
                 <input autofocus class="form-control" name="goalsScoredMoreThanCertainNumByTeam"
                        id="goalsScoredMoreThanCertainNumByTeam"
-                       required th:placeholder="#{input.score}" type="text">
+                       required th:placeholder="#{input.score}" type="number">
             </div>
             <!--goals By Team More Than-->
 
@@ -237,7 +237,7 @@
                         for="goalsMissedMoreThanCertainNumByTeam">goalsMissedMoreThanCertainNumByTeam</label>
                 <input autofocus class="form-control" name="goalsMissedMoreThanCertainNumByTeam"
                        id="goalsMissedMoreThanCertainNumByTeam"
-                       required th:placeholder="#{input.score}" type="text">
+                       required th:placeholder="#{input.score}" type="number">
             </div>
             <!--misses By Team More Than-->
 
@@ -248,7 +248,7 @@
             <div class="form-group">
                 <label for="amount"></label>
                 <input autofocus class="form-control" id="amount" name="amount"
-                       required th:placeholder="#{form.new.wager.amount}" type="text">
+                       required th:placeholder="#{form.new.wager.amount}" type="number">
             </div>
 
             <div class="form-group">

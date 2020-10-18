@@ -16,8 +16,6 @@ public interface SportEventService {
 
     void deleteAll();
 
-    Optional<SportEvent> findByWager(Wager wager);
-
     List<SportType> findAllSportTypes();
 
     SportEvent createNewSportEvent(CreateSportEventDto createSportEventForm);

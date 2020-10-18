@@ -13,7 +13,7 @@ import com.sportbetapp.dto.betting.PlayerSideDto;
 
 
 @Repository
-public interface PlayerSideRepository extends CrudRepository<PlayerSide, Long> {
+public interface PlayerSideRepository extends CrudRepository<PlayerSide, PlayerSide.PlayerSideId> {
     boolean existsByName(String name);
 
     PlayerSide findByNameAndSportType(String name, SportType sportType);

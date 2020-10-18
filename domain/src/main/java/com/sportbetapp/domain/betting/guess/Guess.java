@@ -1,5 +1,6 @@
 package com.sportbetapp.domain.betting.guess;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public abstract class Guess {
     private SportEvent sportEvent;
 
     @OneToMany(mappedBy = "guess")
-    protected List<Wager> wagers;
+    protected List<Wager> wagers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "winner_guesses_has_result",

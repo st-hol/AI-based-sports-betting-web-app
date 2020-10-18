@@ -35,7 +35,6 @@ public class SportEventServiceImpl implements SportEventService {
     @Autowired
     private BetService betService;
 
-
     @Override
     public List<SportEvent> findAll() {
         return Lists.newArrayList(sportEventRepository.findAll());
@@ -57,12 +56,6 @@ public class SportEventServiceImpl implements SportEventService {
     }
 
     @Override
-    public Optional<SportEvent> findByWager(Wager wager) {
-//        return sportEventRepository.findByWager(wager, LocalDateTime.now());
-        return null;
-    }
-
-    @Override
     public List<SportType> findAllSportTypes() {
         return Arrays.asList(SportType.values());
     }
@@ -74,22 +67,14 @@ public class SportEventServiceImpl implements SportEventService {
                 .sportType(sportType)
                 .startDate(createSportEventForm.getStartDate())
                 .playerSides(
-                        Sets.newLinkedHashSet(
-                                List.of(playerSideRepository
-                                                .findByNameAndSportType(createSportEventForm.getHomeTeamName(), sportType),
-                                        playerSideRepository
-                                                .findByNameAndSportType(createSportEventForm.getAwayTeamName(), sportType)))
-                            )
+                        List.of(playerSideRepository
+                                        .findByNameAndSportType(createSportEventForm.getHomeTeamName(), sportType),
+                                playerSideRepository
+                                        .findByNameAndSportType(createSportEventForm.getAwayTeamName(), sportType)))
                 .endDate(createSportEventForm.getEndDate())
                 .build();
 
         SportEvent sportEventCreated = sportEventRepository.save(sportEvent);
-//        sportEventCreated.setPlayerSides(Sets.newHashSet(
-//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getHomeTeamName(),
-//                        sportType),
-//                        playerSideRepository.findByNameAndSportType(createSportEventForm.getAwayTeamName(),
-//                        sportType)));
-
         log.info("created new sport event {}", sportEvent);
         return sportEventCreated;
     } // do not need to create bets. they are not coupled to SE anymore

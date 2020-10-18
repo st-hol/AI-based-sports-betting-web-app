@@ -96,7 +96,7 @@ public class PredictionServiceImpl implements PredictionService {
     }
 
     private List<PredictionRecord> savePredictedResults(PredictionDto dto, Map<String, String> result,
-                                      String[][] testData1, String[][] testData2) {
+                                                        String[][] testData1, String[][] testData2) {
         ResultCategory homeTeamResult = ResultCategory.of(result.getOrDefault("home", "draw"));
         ResultCategory awayTeamResult = ResultCategory.of(result.getOrDefault("away", "draw"));
 
@@ -174,20 +174,27 @@ public class PredictionServiceImpl implements PredictionService {
 
         int first = getScoreUsingInts(homeMinMax.getLeft(), homeMinMax.getRight());
         int second = getScoreUsingInts(awayMinMax.getLeft(), awayMinMax.getRight());
-        if (winnerSide.equals(FieldRelation.HOME) && first < second) {
-            first = first + second;
-            second = first - second;
-            first = first - second;
-        } else if (winnerSide.equals(FieldRelation.AWAY) && first > second) {
-            second = second + first;
-            first = second - first;
-            second = second - first;
-        } else if (first == second) {
-            int lossScore = first - new Random().nextInt(first);
-            if (winnerSide.equals(FieldRelation.HOME)) {
-                second = lossScore;
+        if (winnerSide.equals(FieldRelation.HOME)) {
+            if (first < second) {
+                first = first + second;
+                second = first - second;
+                first = first - second;
+            } else if (first == second) {
+                second--;
+            }
+        } else if (winnerSide.equals(FieldRelation.AWAY)) {
+            if (first > second) {
+                second = second + first;
+                first = second - first;
+                second = second - first;
+            } else if (second == first) {
+                first--;
+            }
+        } else if (winnerSide.equals(FieldRelation.NONE) && first != second) {
+            if (new Random().nextBoolean()) {
+                second = first;
             } else {
-                first = lossScore;
+                first = second;
             }
         }
         return Pair.of(first, second);
@@ -204,14 +211,9 @@ public class PredictionServiceImpl implements PredictionService {
         ResultCategory resultCategory;
         if (winnerSide.equals(FieldRelation.NONE)) {
             resultCategory = ResultCategory.DRAW;
-            if (new Random().nextBoolean()) {
-                away = home;
-            } else {
-                home = away;
-            }
-        } else if (home > away) {
+        } else if (winnerSide.equals(FieldRelation.HOME)) {
             resultCategory = ResultCategory.WIN;
-        } else if (home < away) {
+        } else if (winnerSide.equals(FieldRelation.AWAY)) {
             resultCategory = ResultCategory.LOSS;
         } else {
             throw new UnsupportedOperationException("Can not determine result");

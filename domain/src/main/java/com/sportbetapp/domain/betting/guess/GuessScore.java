@@ -21,4 +21,10 @@ public class GuessScore extends Guess {
     private Integer homeTeamScore;
     private Integer awayTeamScore;
 
+    private String teamNameScored;
+    private Integer teamScores;
+
+    private String teamNameMissed;
+    private Integer teamMisses;
+
 }

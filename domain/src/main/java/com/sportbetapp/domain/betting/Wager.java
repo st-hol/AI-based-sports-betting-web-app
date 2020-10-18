@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.type.Currency;
+import com.sportbetapp.domain.type.OutcomeType;
 import com.sportbetapp.domain.user.User;
 
 import lombok.AllArgsConstructor;
@@ -44,8 +45,6 @@ public class Wager {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationTime;
 
-    private boolean isProcessed;
-
-    private boolean isWinner;
+    private OutcomeType outcomeType;
 
 }

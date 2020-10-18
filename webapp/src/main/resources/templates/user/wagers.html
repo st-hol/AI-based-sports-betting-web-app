@@ -26,16 +26,13 @@
 
     <table class="w-100">
         <tr>
-            <th></th>
-            <th th:text="#{wager.index}"></th>
-            <th th:text="#{wager.title}"></th>
-            <th th:text="#{event.type}"></th>
-            <th th:text="#{bet.type}"></th>
-            <th th:text="#{outcome.value}"></th>
-            <th th:text="#{home.wager.odd}"></th>
+            <th>X</th>
+            <th th:text="#{wager.guess.bet.type.value}"></th>
+            <th th:text="#{wager.guess.sportEvent.title}"></th>
+            <th th:text="#{wager.guess.sportEvent.sportType}"></th>
+            <th th:text="#{wager.creation.time}"></th>
             <th th:text="#{wager.amount}"></th>
-            <th th:text="#{wager.isWinner}"></th>
-            <th th:text="#{waged.isProcessed}"></th>
+            <th th:text="#{wager.outcome.type}"></th>
         </tr>
         <th:block th:each="wager : ${wagers}">
             <tr>
@@ -47,15 +44,12 @@
                                type="submit">
                     </form>
                 </td>
-                <td th:text="${wager.outcomeOdd.outcome.bet.sportEvent.id}">index</td>
-                <td th:text="${wager.outcomeOdd.outcome.bet.sportEvent.title} + ' ' + ${wager.outcomeOdd.validUntil}"></td>
-                <td th:text="${wager.outcomeOdd.outcome.bet.sportEvent.class.simpleName}"></td>
-                <td th:text="${wager.outcomeOdd.outcome.bet.type.name}"></td>
-                <td th:text="${wager.outcomeOdd.outcome.description}"></td>
-                <td th:text="${wager.outcomeOdd.value}"></td>
+                <td th:text="${wager.guess.bet.type.value}">index</td>
+                <td th:text="${wager.guess.sportEvent.title}"></td>
+                <td th:text="${wager.guess.sportEvent.sportType}"></td>
+                <td th:text="${wager.creationTime}"></td>
                 <td th:text="${wager.amount} + ' ' + ${wager.currency}"></td>
-                <td th:text="${wager.winner}"></td>
-                <td th:text="${wager.processed}"></td>
+                <td th:text="${wager.outcomeType.value}"></td>
             </tr>
         </th:block>
     </table>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sportbetapp.domain.betting.Bet;
 import com.sportbetapp.domain.betting.SportEvent;
+import com.sportbetapp.domain.type.BetType;
 
 public interface BetService {
     List<Bet> findAll();
@@ -16,4 +17,6 @@ public interface BetService {
     void deleteAll();
 
     List<Bet> populateStandardBetsForNewSportEvent();
+
+    Bet findByBetType(BetType betType);
 }

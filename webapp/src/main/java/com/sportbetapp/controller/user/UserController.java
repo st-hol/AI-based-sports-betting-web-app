@@ -25,6 +25,7 @@ import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NotEnoughBalanceException;
+import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.service.betting.BetService;
 import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.SportEventService;
@@ -41,7 +42,6 @@ public class UserController {
 
     @Autowired
     private MakeNewWagerValidator makeNewWagerValidator;
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -80,62 +80,39 @@ public class UserController {
     }
 
     @GetMapping("/make-wager")
-    public String formWager(Model model,
-                            @RequestParam(value = "eventId") Long eventId) {
+    public String formNewWager(Model model,
+                               @RequestParam(value = "eventId") Long eventId) {
         model.addAttribute("guessWagerForm", new CreateWagerDto());
+
         model.addAttribute("bets", betService.populateStandardBetsForNewSportEvent());
         model.addAttribute("event", sportEventService.findById(eventId));
-//         model.addAttribute("user", userService.obtainCurrentPrincipleUser());
-        model.addAttribute("user", new User());
+        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
+
         return "/user/make-wager";
     }
 
     @PostMapping("/make-wager")
-    public String createNewWager(BindingResult bindingResult,
-                                 @ModelAttribute("guessWagerForm") CreateWagerDto wagerDto)
-            throws NotEnoughBalanceException {
+    public String createNewWager(@ModelAttribute("guessWagerForm") CreateWagerDto wagerDto,
+                                 BindingResult bindingResult, Model model)
+            throws NotEnoughBalanceException, NotExistingGuessException {
 
         makeNewWagerValidator.validate(wagerDto, bindingResult);
         if (bindingResult.hasErrors()) {
             log.info("createSportEventForm. form had errors.");
-//            model.addAttribute("listOfTypes", sportEventService.findAllSportTypes());
-            return "admin/create-sport-event";
+            model.addAttribute("bets", betService.populateStandardBetsForNewSportEvent());
+            model.addAttribute("event", sportEventService.findById(wagerDto.getSportEventId()));
+            model.addAttribute("betType", wagerDto.getBetType());
+            model.addAttribute("user", userService.obtainCurrentPrincipleUser());
+            return "user/make-wager";
         }
-        userService.makeWager(wagerDto);
+        wagerService.createWagerWithGuess(wagerDto);
         return "redirect:/user/wagers";
     }
 
-//    @GetMapping("/bets")
-//    public String listAllBetsByEvent(Model model,
-//                                     @RequestParam(value = "eventId") Long eventId) {
-//        SportEvent sportEvent = sportEventService.findById(eventId);
-//        model.addAttribute("event", sportEvent);
-//        model.addAttribute("bets", betService.findAllBySportEvent(sportEvent));
-//        return "player/bets";
-//    }
-
-    @GetMapping("/wager")
-    public String formWager(Model model,
-                            @RequestParam(value = "betId") Long betId,
-                            @RequestParam(value = "eventId") Long eventId) {
-        Bet bet = betService.findById(betId);
-        model.addAttribute("event", sportEventService.findById(eventId));
-        model.addAttribute("bet", bet);
-        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
-        model.addAttribute("outcomes", guessService.findAllByBet(bet));
-        model.addAttribute("wagerForm", new CreateWagerDto());
-        return "/user/new-wager";
-    }
-
-    @PostMapping("/wager")
-    public String createWager(@ModelAttribute("wagerForm") CreateWagerDto wagerDto) throws NotEnoughBalanceException {
-        userService.makeWager(wagerDto);
-        return "redirect:/user/wagers";
-    }
 
     @DeleteMapping("/wager/{idWager}")
     public String deleteWager(@PathVariable Long idWager) throws EventAlreadyStartedException {
-        wagerService.deleteById(idWager);
+        wagerService.deleteWager(idWager);
         return "redirect:/user/wagers";
     }
 
@@ -144,10 +121,8 @@ public class UserController {
         log.error("Not enough money for wager: {}", exception.getMessage());
         model.addAttribute("notEnoughMoney", true);
         CreateWagerDto requestForm = ((NotEnoughBalanceException) exception).getWagerDto();
-//        Long betId = requestForm.getBetId();
-        Long betId = 1L;
         Long sportEventId = requestForm.getSportEventId();
-        return formWager(model, betId, sportEventId);
+        return formNewWager(model, sportEventId);
     }
 
     @ExceptionHandler(EventAlreadyStartedException.class)

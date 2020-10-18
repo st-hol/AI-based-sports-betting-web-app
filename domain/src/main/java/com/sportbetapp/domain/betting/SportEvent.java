@@ -48,6 +48,7 @@ public class SportEvent {
     private LocalDate startDate;
     private String title;
     private SportType sportType;
+//    private boolean isPredicted;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @OneToMany(mappedBy = "sportEvent")
@@ -57,11 +58,12 @@ public class SportEvent {
     @OneToMany(mappedBy = "sportEvent")
     private List<HistoricRecord> historicRecords;
 
+
     @ManyToMany
     @JoinTable(name = "sport_event_has_player_sides",
             joinColumns = @JoinColumn(name = "sport_event_id"),
             inverseJoinColumns =  {@JoinColumn(name = "player_side_name"), @JoinColumn(name = "player_side_sport_type")})
-    private Set<PlayerSide> playerSides = new LinkedHashSet<>();
+    private List<PlayerSide> playerSides;
 
     @Override
     public boolean equals(Object o) {

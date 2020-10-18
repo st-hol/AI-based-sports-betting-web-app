@@ -58,10 +58,10 @@ public class PlayerSide {
     @JoinTable(name = "sport_event_has_player_sides",
             joinColumns = {@JoinColumn(name = "player_side_name"), @JoinColumn(name = "player_side_sport_type")},
             inverseJoinColumns = @JoinColumn(name = "sport_event_id"))
-    private Set<SportEvent> sportEvents = new LinkedHashSet<>();
+    private List<SportEvent> sportEvents;
 
     @Data
-    static class PlayerSideId implements Serializable {
+    public static class PlayerSideId implements Serializable {
         private String name;
         private SportType sportType;
     }

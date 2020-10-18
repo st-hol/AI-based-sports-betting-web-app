@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.user.User;
+import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.exception.EventAlreadyStartedException;
+import com.sportbetapp.exception.NotEnoughBalanceException;
+import com.sportbetapp.exception.NotExistingGuessException;
 
 public interface WagerService {
     List<Wager> findAll();
@@ -14,5 +17,7 @@ public interface WagerService {
 
     List<Wager> findAllByUser(User user);
 
-    void deleteById(Long idWager) throws EventAlreadyStartedException;
+    void deleteWager(Long idWager) throws EventAlreadyStartedException;
+
+    void createWagerWithGuess(CreateWagerDto wagerDto) throws NotEnoughBalanceException, NotExistingGuessException;
 }
