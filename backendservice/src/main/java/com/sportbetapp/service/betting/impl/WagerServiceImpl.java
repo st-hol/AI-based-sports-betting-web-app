@@ -67,10 +67,10 @@ public class WagerServiceImpl implements WagerService {
     @Transactional
     public void deleteWager(Long idWager) throws EventAlreadyStartedException {
         if (eventAlreadyStarted(idWager)) {
-            wagerRepository.deleteById(idWager);
-        } else {
             throw new EventAlreadyStartedException("Sorry, you can not delete the wager " +
                     "on event that already started or starts in one day.");
+        } else {
+            wagerRepository.deleteById(idWager);
         }
     }
 
@@ -79,7 +79,7 @@ public class WagerServiceImpl implements WagerService {
     @Transactional
     public void createWagerWithGuess(CreateWagerDto createWagerDto)
             throws NotEnoughBalanceException, NotExistingGuessException {
-        User currentUser = userService.findById(1L); // User currentUser = obtainCurrentPrincipleUser();
+        User currentUser = userService.obtainCurrentPrincipleUser();
         Wager createdWager = populateWager(createWagerDto, currentUser);
         createGuess(createWagerDto, createdWager);
     }
@@ -119,7 +119,8 @@ public class WagerServiceImpl implements WagerService {
         Wager wager = findById(idWager);
         Guess guess = wager.getGuess();
         SportEvent sportEvent = guess.getSportEvent();
-        return sportEvent.getStartDate().isAfter(LocalDate.now());
+        return sportEvent.getStartDate().isEqual(LocalDate.now())
+                || sportEvent.getStartDate().isAfter(LocalDate.now());
     }
 
 }

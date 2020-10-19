@@ -47,7 +47,7 @@ public abstract class Guess {
     @ManyToOne
     private SportEvent sportEvent;
 
-    @OneToMany(mappedBy = "guess")
+    @OneToMany(mappedBy = "guess", orphanRemoval = true)
     protected List<Wager> wagers = new ArrayList<>();
 
     @ManyToMany

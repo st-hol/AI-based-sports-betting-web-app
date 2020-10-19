@@ -42,9 +42,28 @@ $(document).ready(function () {
     if (chooseBet.val() !== "") {
         processSelectChange(null);
     }
+
     $(chooseBet.on('change', function (event) {
         processSelectChange(event);
     }));
+
+    $('input[type=radio][name=bothScoredAtLeastOne]').on('change', function() {
+        if ($("#bothScoredAtLeastOne1").is(":checked")) {
+            $("input[type=radio][name=bothScoredAtLeastOne]").val(true);
+        }
+        else if ($("#bothScoredAtLeastOne2").is(":checked")) {
+            $("input[type=radio][name=bothScoredAtLeastOne]").val(false);
+        }
+    });
+
+    $('input[type=radio][name=bothNotScoredAnyGoals]').on('change', function() {
+        if ($("#bothNotScoredAnyGoals1").is(":checked")) {
+            $("input[type=radio][name=bothNotScoredAnyGoals]").val(true);
+        }
+        else if ($("#bothNotScoredAnyGoals2").is(":checked")) {
+            $("input[type=radio][name=bothNotScoredAnyGoals]").val(true);
+        }
+    });
 
 });
 
@@ -91,15 +110,6 @@ function getKeyByValue(inputMap, value) {
 
 function clearAllInputs(inputIdsList) {
     $.each(inputIdsList, function (ind, el) {
-        // var inp = $('#'.concat(el));
-        // if (inp.attr('type') && inp.attr('type') === 'text') {
-        //     inp.val('');
-        // } else if (inp.attr('type') && inp.attr('type') === 'number') {
-        //     inp.val(-1);
-        // } else {
-        //     inp.val(undefined);
-        // }
-
         var inp = $('#'.concat(el));
         inp.val(null);
         inp.removeAttr('required');

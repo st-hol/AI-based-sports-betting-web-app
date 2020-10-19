@@ -116,13 +116,13 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <input type="radio" id="bothScoredAtLeastOne1" name="bothScoredAtLeastOne">
+                            <input value="true" type="radio" id="bothScoredAtLeastOne1" name="bothScoredAtLeastOne">
                             <label for="bothScoredAtLeastOne1">yes</label>
 
                             <div class="check"></div>
                         </li>
                         <li>
-                            <input type="radio" id="bothScoredAtLeastOne2" name="bothScoredAtLeastOne">
+                            <input value="false"  type="radio" id="bothScoredAtLeastOne2" name="bothScoredAtLeastOne">
                             <label for="bothScoredAtLeastOne2">no</label>
 
                             <div class="check">
@@ -139,13 +139,13 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <input type="radio" id="bothNotScoredAnyGoals1" name="bothNotScoredAnyGoals">
+                            <input value="true" type="radio" id="bothNotScoredAnyGoals1" name="bothNotScoredAnyGoals">
                             <label for="bothNotScoredAnyGoals1">yes</label>
 
                             <div class="check"></div>
                         </li>
                         <li>
-                            <input type="radio" id="bothNotScoredAnyGoals2" name="bothNotScoredAnyGoals">
+                            <input value="false" type="radio" id="bothNotScoredAnyGoals2" name="bothNotScoredAnyGoals">
                             <label for="bothNotScoredAnyGoals2">no</label>
 
                             <div class="check">
@@ -254,8 +254,8 @@
             <div class="form-group">
                 <label for="currency" th:text="#{home.user.currency}"></label>
                 <div class="col-sm-9">
-                    <input class="form-control" disabled id="currency" name="currency" readonly
-                           th:value="${user.currency}" type="text">
+                    <input class="form-control" id="currency" name="currency"
+                           readonly th:value="${user.currency}" type="text">
                 </div>
             </div>
 

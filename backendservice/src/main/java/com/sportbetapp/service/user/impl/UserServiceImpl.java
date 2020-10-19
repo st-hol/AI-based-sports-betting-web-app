@@ -25,6 +25,7 @@ import com.sportbetapp.repository.user.UserRepository;
 import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.service.betting.WagerService;
 import com.google.common.collect.Lists;
+import com.sportbetapp.util.math.BigDecimalUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -117,13 +118,15 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
-    public List<User> findAllByOutcome(Guess guess) {
-//        return userRepository.findAllByOutcome(outcome);
-        return null;
+    public void addWinAmountToBalance(User winnerUser, Wager wager) {
+        BigDecimal betValue = wager.getAmount();
+        BigDecimal coefficient = BigDecimal.valueOf(wager.getGuess().getBet().getType().getCoefficient());
+        BigDecimal winValue = BigDecimalUtils.multiply(betValue, coefficient);
+        BigDecimal newBalance = BigDecimalUtils.add(winValue, winnerUser.getBalance());
+        winnerUser.setBalance(newBalance);
+        this.save(winnerUser);
     }
-
 
 
 }

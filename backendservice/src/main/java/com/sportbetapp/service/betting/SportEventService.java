@@ -19,4 +19,5 @@ public interface SportEventService {
     List<SportType> findAllSportTypes();
 
     SportEvent createNewSportEvent(CreateSportEventDto createSportEventForm);
+
 }

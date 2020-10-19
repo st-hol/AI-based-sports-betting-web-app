@@ -72,7 +72,7 @@ public class GuessFactoryImpl extends GuessFactory {
                 GuessBothWillScore guessBothNotScoreAny = new GuessBothWillScore();
                 populateCommonGuessFields(createWagerDto, guessBothNotScoreAny);
                 //guess specific
-                guessBothNotScoreAny.setBothScoredAtLeastOne(createWagerDto.getBothNotScoredAnyGoals());
+                guessBothNotScoreAny.setBothNotScoredAnyGoals(createWagerDto.getBothNotScoredAnyGoals());
                 return guessBothNotScoreAny;
             case GOALS_BY_TEAM:
                 GuessGoals guessGoalsByTeam = new GuessGoals();

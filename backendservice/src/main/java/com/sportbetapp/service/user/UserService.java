@@ -3,6 +3,7 @@ package com.sportbetapp.service.user;
 
 import java.util.List;
 
+import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
@@ -26,6 +27,5 @@ public interface UserService {
 
     UserDto convertToUserDto(User user);
 
-    List<User> findAllByOutcome(Guess guess);
-
+    void addWinAmountToBalance(User winnerUser, Wager wager);
 }

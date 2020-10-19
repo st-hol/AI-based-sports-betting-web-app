@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.betting.guess.GuessWinner;
 import com.sportbetapp.domain.predicting.PredictionRecord;
 import com.sportbetapp.domain.type.SportType;
@@ -48,11 +49,8 @@ public class PlayerSide {
     @OneToMany(mappedBy = "playerSide")
     private List<PredictionRecord> predictionRecords;
 
-    @ManyToOne
-    private SportEvent sportEvent;
-
-    @OneToOne(mappedBy = "playerSide")
-    private GuessWinner guessWinner;
+    @OneToMany(mappedBy = "playerSide")
+    private List<GuessWinner> guessWinners;
 
     @ManyToMany
     @JoinTable(name = "sport_event_has_player_sides",

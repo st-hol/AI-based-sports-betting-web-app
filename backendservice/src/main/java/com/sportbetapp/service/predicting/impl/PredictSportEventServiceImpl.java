@@ -34,6 +34,7 @@ import com.google.common.collect.Streams;
 import com.sportbetapp.domain.betting.Bet;
 import com.sportbetapp.domain.betting.PlayerSide;
 import com.sportbetapp.domain.betting.SportEvent;
+import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
@@ -54,7 +55,9 @@ import com.sportbetapp.repository.betting.ResultRepository;
 import com.sportbetapp.repository.betting.SportEventRepository;
 import com.sportbetapp.repository.predicting.HitScoreRepository;
 import com.sportbetapp.repository.predicting.PredictionRecordRepository;
+import com.sportbetapp.service.betting.GameOutcomeDecidingService;
 import com.sportbetapp.service.betting.SportEventService;
+import com.sportbetapp.service.betting.WagerService;
 import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.predicting.PredictionService;
 
@@ -73,6 +76,10 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
     private SportEventService sportEventService;
     @Autowired
     private PredictionServiceImpl predictionService;
+    @Autowired
+    private WagerService wagerService;
+    @Autowired
+    private GameOutcomeDecidingService gameOutcomeDecidingService;
 
 
     @Override
@@ -97,7 +104,7 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
         predictionRecordRepository.saveAll(historicRecords);
 
         //but also need update result/bet/wagers&outcomes
-        //todo
+        gameOutcomeDecidingService.determineResults(sportEvent);
     }
 
 

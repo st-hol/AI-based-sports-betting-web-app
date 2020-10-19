@@ -41,4 +41,6 @@ public class ResultServiceImpl implements ResultService {
     public void deleteAllBySportEvent(SportEvent sportEvent) {
         resultRepository.deleteAllBySportEvent(sportEvent);
     }
+
+
 }

@@ -48,7 +48,7 @@ public class SportEvent {
     private LocalDate startDate;
     private String title;
     private SportType sportType;
-//    private boolean isPredicted;
+//todo   private boolean isPredicted;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @OneToMany(mappedBy = "sportEvent")
