@@ -31,7 +31,7 @@
             <th th:text="#{sport.event.away.team.name}"></th>
             <th th:text="#{sport.event.start.date}"></th>
             <th th:text="#{sport.event.end.date}"></th>
-            <th th:text="#{sport.event.result}"></th>
+            <th th:text="#{sport.event.use.only.stat}"></th>
         </tr>
         <th:block th:each="sportEvent : ${sportEvents}">
             <tr>
@@ -41,13 +41,32 @@
                 <td th:text="${sportEvent.playerSides[1].name}"></td>
                 <td th:text="${sportEvent.startDate}"></td>
                 <td th:text="${sportEvent.endDate}"></td>
-                <td th:text="1"></td>
                 <td>
-                    <form id="predictSportEventForm" method="POST" th:action="@{/admin/predict-sport-event/{sportEventId}(sportEventId=${sportEvent.id})}">
+                    <form th:if="${sportEvent.alreadyPredicted == false}"
+                          id="predictSportEventForm" method="POST" th:object="${createPredictorForm}"
+                          th:action="@{/admin/predict-sport-event/{sportEventId}(sportEventId=${sportEvent.id})}">
                         <input name="_method" type="hidden" value="POST">
-                        <input class="border border-primary rounded bg-primary text-light" th:value="#{form.predict}"
-                               type="submit">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" th:id="'option1-' + ${sportEvent.id}" name="useOnlyStatisticRecords1"
+                                       class="custom-control-input" value="true" th:field="*{useOnlyStatisticRecords}">
+                                <label class="custom-control-label" th:for="'option1-' + ${sportEvent.id}"
+                                       th:text="#{yes}"></label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" th:id="'option2-' + ${sportEvent.id}" name="useOnlyStatisticRecords2"
+                                       class="custom-control-input" value="false" th:field="*{useOnlyStatisticRecords}">
+                                <label class="custom-control-label" th:for="'option2-' + ${sportEvent.id}"
+                                       th:text="#{no}"></label>
+                            </div>
+                            <input class="border border-primary rounded bg-primary text-light"
+                                   th:value="#{form.predict}" type="submit">
+                        </div>
                     </form>
+
+                    <div style="margin: 0 auto; text-align: center" class="alert-dark" th:if="${sportEvent.alreadyPredicted == true}"
+                          th:text="#{sport.event.is.already}">
+                    </div>
                 </td>
             </tr>
         </th:block>

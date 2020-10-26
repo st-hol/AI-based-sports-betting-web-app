@@ -7,9 +7,9 @@ public class PredictionDto {
     private String homeTeamName;
     private String awayTeamName;
 
-    private int guessHomeTeamScore;
-    private int guessAwayTeamScore;
+    private Integer guessHomeTeamScore;
+    private Integer guessAwayTeamScore;
 
     private String sportType;
-    private boolean useOnlyStatisticRecords;
+    private Boolean useOnlyStatisticRecords;
 }

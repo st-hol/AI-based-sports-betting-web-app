@@ -46,6 +46,8 @@ import com.sportbetapp.dto.betting.PlayerSideDto;
 import com.sportbetapp.dto.predicting.PredictSportEventDto;
 import com.sportbetapp.dto.predicting.PredictionDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
+import com.sportbetapp.exception.EventAlreadyPredictedException;
+import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.FileStorageException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
 import com.sportbetapp.prediction.classifier.NaiveBayesClassifier;
@@ -83,10 +85,14 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
 
 
     @Override
-    public void makePredictionForSportEvent(Long sportEventId)
-            throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException {
+    public void makePredictionForSportEvent(Long sportEventId, Boolean onlyStat)
+            throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException, EventAlreadyPredictedException {
         //1. find sport event by Id
         SportEvent sportEvent = sportEventService.findById(sportEventId);
+
+        if (sportEvent.isAlreadyPredicted()){
+            throw new EventAlreadyPredictedException();
+        }
 
         List<PlayerSide> playerSides = Lists.newArrayList(sportEvent.getPlayerSides());
 
@@ -94,9 +100,10 @@ public class PredictSportEventServiceImpl implements PredictSportEventService {
         predictionDto.setSportType(Objects.requireNonNull(playerSides
                 .stream()
                 .findAny().orElse(null))
-                .getSportType().getValue());
+                .getSportType().toString());
         predictionDto.setHomeTeamName(playerSides.get(0).getName());
         predictionDto.setAwayTeamName(playerSides.get(1).getName());
+        predictionDto.setUseOnlyStatisticRecords(onlyStat);
 
         //simple prediction
         List<PredictionRecord> historicRecords = predictionService.makePrediction(predictionDto);

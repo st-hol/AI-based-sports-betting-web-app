@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
@@ -24,7 +25,6 @@ import com.sportbetapp.domain.predicting.PredictionRecord;
 import com.sportbetapp.domain.type.FieldRelation;
 import com.sportbetapp.domain.type.ResultCategory;
 import com.sportbetapp.domain.type.SportType;
-import com.sportbetapp.dto.betting.PlayerSideDto;
 import com.sportbetapp.dto.predicting.PredictionDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
@@ -69,16 +69,24 @@ public class PredictionServiceImpl implements PredictionService {
     }
 
     private List<PredictionRecord> predict(PredictionDto predictionDto) throws NoPredictAnalysisDataAvailableException {
-        int homePred = predictionDto.getGuessHomeTeamScore();   //home team score prediction
-        int awayPred = predictionDto.getGuessAwayTeamScore();   //away team score prediction
-
         //2D arrays for home and away teams, 1 to store previous fixtures,
         //the other prediction. 1 of each for home and away
-        predictionDto.setSportType(SportType.FOOTBALL.getValue());//todo stub remove
         String[][] teamData1 = populateTeamDataByPlayerSide(predictionDto, FieldRelation.HOME);
         String[][] testData1 = new String[3][2];
         String[][] teamData2 = populateTeamDataByPlayerSide(predictionDto, FieldRelation.AWAY);
         String[][] testData2 = new String[3][2];
+
+        int homePred; //home team score prediction
+        int awayPred; //away team score prediction
+        if (Objects.isNull(predictionDto.getGuessHomeTeamScore())
+                || Objects.isNull(predictionDto.getGuessAwayTeamScore())) {
+            homePred = populateBestOrWorstPlayScore(teamData1);
+            awayPred = populateBestOrWorstPlayScore(teamData2);
+        } else {
+            homePred = predictionDto.getGuessHomeTeamScore();
+            awayPred = predictionDto.getGuessAwayTeamScore();
+        }
+
 
         String[] scoreHome = {String.valueOf(homePred), String.valueOf(awayPred)};
         testData1[0] = scoreHome;
@@ -96,29 +104,29 @@ public class PredictionServiceImpl implements PredictionService {
     }
 
     private List<PredictionRecord> savePredictedResults(PredictionDto dto, Map<String, String> result,
-                                                        String[][] testData1, String[][] testData2) {
+                                                        String[][] teamData1, String[][] teamData2) {
         ResultCategory homeTeamResult = ResultCategory.of(result.getOrDefault("home", "draw"));
         ResultCategory awayTeamResult = ResultCategory.of(result.getOrDefault("away", "draw"));
 
         List<HitScore> hitScores = new ArrayList<>();
         if (homeTeamResult.equals(ResultCategory.WIN) && awayTeamResult.equals(ResultCategory.LOSS)) {
-            Pair<Integer, Integer> bestWorstWinScoreHome = populateBestWorstWinScore(testData1);
-            Pair<Integer, Integer> bestWorstLossScoreAway = populateBestWorstLossScore(testData2);
+            Pair<Integer, Integer> bestWorstWinScoreHome = populateBestWorstWinScore(teamData1);
+            Pair<Integer, Integer> bestWorstLossScoreAway = populateBestWorstLossScore(teamData2);
             hitScores = populateHitScoreResult(bestWorstWinScoreHome, bestWorstLossScoreAway, FieldRelation.HOME);
         } else if (homeTeamResult.equals(ResultCategory.LOSS) && awayTeamResult.equals(ResultCategory.WIN)) {
-            Pair<Integer, Integer> bestWorstLossScoreHome = populateBestWorstLossScore(testData1);
-            Pair<Integer, Integer> bestWorstWinScoreAway = populateBestWorstWinScore(testData2);
+            Pair<Integer, Integer> bestWorstLossScoreHome = populateBestWorstLossScore(teamData1);
+            Pair<Integer, Integer> bestWorstWinScoreAway = populateBestWorstWinScore(teamData2);
             hitScores = populateHitScoreResult(bestWorstLossScoreHome, bestWorstWinScoreAway, FieldRelation.AWAY);
         } else if (homeTeamResult.equals(ResultCategory.DRAW) && awayTeamResult.equals(ResultCategory.DRAW)) {
-            Pair<Integer, Integer> bestWorstDrawScoreHome = populateBestWorstDrawScore(testData2);
-            Pair<Integer, Integer> bestWorstDrawScoreAway = populateBestWorstDrawScore(testData1);
+            Pair<Integer, Integer> bestWorstDrawScoreHome = populateBestWorstDrawScore(teamData2);
+            Pair<Integer, Integer> bestWorstDrawScoreAway = populateBestWorstDrawScore(teamData1);
             hitScores = populateHitScoreResult(bestWorstDrawScoreHome, bestWorstDrawScoreAway, FieldRelation.NONE);
         }
 
         PlayerSide homePlayerSide = playerSideRepository.findByNameAndSportType(dto.getHomeTeamName(),
-                SportType.of(dto.getSportType()));
+                SportType.valueOf(dto.getSportType()));
         PlayerSide awayPlayerSide = playerSideRepository.findByNameAndSportType(dto.getAwayTeamName(),
-                SportType.of(dto.getSportType()));
+                SportType.valueOf(dto.getSportType()));
 
 
         //history save
@@ -166,6 +174,16 @@ public class PredictionServiceImpl implements PredictionService {
                 .mapToInt(testRecord -> Integer.parseInt(testRecord[0]))
                 .max().orElse(0);
         return Pair.of(min, max);
+    }
+
+    private int populateBestOrWorstPlayScore(String[][] testData) {
+        int min = Arrays.stream(testData)
+                .mapToInt(testRecord -> Integer.parseInt(testRecord[0]))
+                .min().orElse(0);
+        int max = Arrays.stream(testData)
+                .mapToInt(testRecord -> Integer.parseInt(testRecord[0]))
+                .max().orElse(0);
+        return new Random().nextBoolean() ? min : max;
     }
 
     private Pair<Integer, Integer> adjustScoresAccordingToWinner(Pair<Integer, Integer> homeMinMax,
@@ -263,14 +281,14 @@ public class PredictionServiceImpl implements PredictionService {
         PlayerSide teamPlayer;
         if (fieldRelation.equals(FieldRelation.HOME)) {
             teamPlayer = playerSideRepository.findByNameAndSportType(dto.getHomeTeamName(),
-                    SportType.of(dto.getSportType()));
+                    SportType.valueOf(dto.getSportType()));
         } else {
             teamPlayer = playerSideRepository.findByNameAndSportType(dto.getAwayTeamName(),
-                    SportType.of(dto.getSportType()));
+                    SportType.valueOf(dto.getSportType()));
         }
 
         Supplier<List<? extends PredictionRecord>> teamDataSupplier;
-        if (dto.isUseOnlyStatisticRecords()) {
+        if (dto.getUseOnlyStatisticRecords() != null && dto.getUseOnlyStatisticRecords()) {
             teamDataSupplier = () -> predictionRecordRepository.findAllUsingOnlyStatisticType(teamPlayer);
         } else {
             teamDataSupplier = () -> predictionRecordRepository.findAllUsingBothTypes(teamPlayer);

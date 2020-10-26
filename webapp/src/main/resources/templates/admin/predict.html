@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Please sign in</title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script th:src="@{/js/predict.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<div class="container">
+    <div class="login-page col-lg-4 col-md-7">
+
+
+        <form action="#" class="form-signin" method="post" th:action="@{/admin/predict}" th:object="${predictionForm}">
+
+            <div th:if="${#fields.hasErrors('*')}">
+                <div th:each="e : ${#fields.detailedErrors()}"
+                     th:class="${e.global} ? globalerr : fielderr">
+                    <p class="alert alert-danger" role="alert" th:text="${e.message}">The error message</p>
+                </div>
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${canNotPlayAgainstItself}"
+                 th:text="#{cant.play.against.itself}">
+            </div>
+
+            <div class="alert alert-success" role="alert" th:if="${(param.success != null) and (param.success[0] == 'true')}"
+                 th:text="#{success}">
+            </div>
+
+            <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+            <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
+
+            <h2 th:text="#{choose.sport.type}"></h2>
+            <div class="input-group form-group">
+                <select class="form-control currency-selector" name="sportType" id="sportType" required>
+                    <th:block th:each="type : ${listOfTypes}">
+                        <option th:text="${type.value}" th:value="${type}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+
+            <div id="displayAfterSportTypeChosen">
+                <h2 th:text="#{bet}"></h2>
+
+
+                <h2 th:text="#{prediction.home.team.name}"></h2>
+                <div class="input-group form-group">
+                    <select id="dropdownTeams1" class="form-control currency-selector" name="homeTeamName" required>
+                    </select>
+                </div>
+
+                <h2 th:text="#{prediction.away.team.name}"></h2>
+                <div class="input-group form-group">
+                    <select id="dropdownTeams2" class="form-control currency-selector" name="awayTeamName" required>
+                    </select>
+                </div>
+
+<!--                <h2 th:text="#{prediction.home.team.score}"></h2>-->
+<!--                <div class="form-group">-->
+<!--                    <label class="sr-only" for="guessHomeTeamScore">guessHomeTeamScore</label>-->
+<!--                    <input autofocus class="form-control" id="guessHomeTeamScore" name="guessHomeTeamScore"-->
+<!--                           required th:placeholder="#{prediction.home.team.score}" type="text">-->
+<!--                </div>-->
+
+<!--                <h2 th:text="#{prediction.away.team.score}"></h2>-->
+<!--                <div class="form-group">-->
+<!--                    <label class="sr-only" for="guessAwayTeamScore">guessAwayTeamScore</label>-->
+<!--                    <input autofocus class="form-control" id="guessAwayTeamScore" name="guessAwayTeamScore"-->
+<!--                           required th:placeholder="#{prediction.away.team.score}" type="text">-->
+<!--                </div>-->
+
+                <div class="form-group">
+                    <p th:text="#{use.only.stat}"></p>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="option1" name="useOnlyStatisticRecords1" class="custom-control-input"
+                               value="true" th:field="*{useOnlyStatisticRecords}">
+                        <label class="custom-control-label" for="option1" th:text="#{yes}"></label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="option2" name="useOnlyStatisticRecords2" class="custom-control-input"
+                               value="false" th:field="*{useOnlyStatisticRecords}">
+                        <label class="custom-control-label" for="option2" th:text="#{no}"></label>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" th:text="#{form.submit}" type="submit"></button>
+            </div>
+        </form>
+
+        <!--        <div class="change-view form-group">-->
+        <!--            <a th:href="@{'/user/bets?eventId=' + ${event.id}}" th:text="#{go.to.bets}"></a>-->
+        <!--        </div>-->
+
+    </div>
+</div>
+</body>
+</html>

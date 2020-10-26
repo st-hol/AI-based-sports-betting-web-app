@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,7 +49,8 @@ public class SportEvent {
     private LocalDate startDate;
     private String title;
     private SportType sportType;
-//todo   private boolean isPredicted;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private boolean alreadyPredicted;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @OneToMany(mappedBy = "sportEvent")

@@ -10,12 +10,8 @@ public class Application {
     }
 }
 
-
 // todo
-// remove orphan guess, - need fix or not?
-// nlp bothwill + fixed!
-// old event disable -
-// global params -
-// scheduler -
+// scheduler and global params -
 // ui -
 // integration with payment system - need or not?
+// remove orphan guess, - need fix or not?

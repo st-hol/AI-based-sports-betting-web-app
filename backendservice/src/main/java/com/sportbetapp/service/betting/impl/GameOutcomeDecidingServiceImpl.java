@@ -193,6 +193,7 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
 
     public void determineSportEventResult(SportEvent sportEvent, Result winnerResult) {
         sportEvent.setResult(winnerResult);
+        sportEvent.setAlreadyPredicted(true);
         sportEventService.save(sportEvent);
     }
 
