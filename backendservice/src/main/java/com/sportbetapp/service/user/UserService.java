@@ -1,6 +1,7 @@
 package com.sportbetapp.service.user;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.sportbetapp.domain.betting.Wager;
@@ -27,5 +28,7 @@ public interface UserService {
 
     UserDto convertToUserDto(User user);
 
-    void addWinAmountToBalance(User winnerUser, Wager wager);
+    BigDecimal addWinAmountToBalance(User winnerUser, Wager wager);
+
+    void compensateBalance(User user, BigDecimal amountCompensation);
 }

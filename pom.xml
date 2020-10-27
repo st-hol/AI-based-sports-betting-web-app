@@ -27,6 +27,7 @@
         <module>ai</module>
         <module>backendservice</module>
         <module>logging</module>
+        <module>scheduling</module>
     </modules>
 
     <dependencies>
@@ -97,6 +98,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
         <dependency>

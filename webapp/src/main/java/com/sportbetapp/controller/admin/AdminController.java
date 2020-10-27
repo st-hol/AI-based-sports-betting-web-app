@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sportbetapp.domain.betting.SportEvent;
+import com.sportbetapp.domain.betting.Wager;
+import com.sportbetapp.domain.technical.Pager;
 import com.sportbetapp.dto.betting.CreateSportEventDto;
 import com.sportbetapp.dto.betting.PlayerSideDto;
 import com.sportbetapp.dto.payload.UploadFileResponse;
@@ -46,6 +51,11 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    private static final int BUTTONS_TO_SHOW = 5;
+    private static final int INITIAL_PAGE = 0;
+    private static final int INITIAL_PAGE_SIZE = 3;
+    private static final int[] PAGE_SIZES = {3, 5, 10, 15, 20, 30};
 
     @Autowired
     private CreateSportEventValidator createSportEventValidator;
@@ -72,16 +82,28 @@ public class AdminController {
 
     @PostMapping("/predict")
     public String createPrediction(@ModelAttribute("predictionForm") PredictionDto dto,
-                                   RedirectAttributes redirAttr)
+                                   RedirectAttributes redirectAttributes)
             throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException {
         predictionService.makePrediction(dto);
-        redirAttr.addAttribute("success", true);
+        redirectAttributes.addAttribute("success", true);
         return "redirect:/admin/predict";
     }
 
     @GetMapping("/predict-sport-event")
-    public String formSportEventPrediction(Model model) {
-        model.addAttribute("sportEvents", sportEventService.findAll());
+    public String formSportEventPrediction(Model model,
+                                           @RequestParam("pageSize") Optional<Integer> pageSize,
+                                           @RequestParam("page") Optional<Integer> page) {
+
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        Page<SportEvent> events = sportEventService.findAllPageable(PageRequest.of(evalPage, evalPageSize));
+        Pager pager = new Pager(events.getTotalPages(), events.getNumber(), BUTTONS_TO_SHOW);
+
+        model.addAttribute("sportEvents", events);
+        model.addAttribute("selectedPageSize", evalPageSize);
+        model.addAttribute("pageSizes", PAGE_SIZES);
+        model.addAttribute("pager", pager);
+
         model.addAttribute("createPredictorForm", new CreatePredictorSportEventDto());
         return "/admin/predict-sport-event";
     }
@@ -96,7 +118,7 @@ public class AdminController {
     }
 
     @GetMapping("/upload-stats")
-    public String uploadForm() {
+    public String uploadStatsForm() {
         return "admin/upload-stats";
     }
 
@@ -106,7 +128,6 @@ public class AdminController {
         statisticUploadService.processStatisticFile(file);
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
     }
-
 
     @ResponseBody
     @GetMapping("/get-teams-by-sport")
@@ -122,9 +143,9 @@ public class AdminController {
     }
 
     @PostMapping("/create-sport-event")
-    public String registration(@ModelAttribute("createSportEventForm") CreateSportEventDto createSportEventForm,
-                               BindingResult bindingResult, Model model,
-                               RedirectAttributes redirectAttributes) {
+    public String createSportEvent(@ModelAttribute("createSportEventForm") CreateSportEventDto createSportEventForm,
+                                   BindingResult bindingResult, Model model,
+                                   RedirectAttributes redirectAttributes) {
         createSportEventValidator.validate(createSportEventForm, bindingResult);
         if (bindingResult.hasErrors()) {
             log.info("createSportEventForm. form had errors.");
@@ -150,7 +171,7 @@ public class AdminController {
     public String handleNoPredictAnalysisDataAvailableException(Model model, Exception exception) {
         log.error("NoPredictAnalysisDataAvailableException exception: {}", exception.getMessage());
         model.addAttribute("noPredictAnalysisDataAvailable", true);
-        return formSportEventPrediction(model);
+        return formSportEventPrediction(model, Optional.empty(), Optional.empty());
     }
 
 

@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.betting.Wager;
@@ -118,14 +119,28 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     * @param winnerUser
+     * @param wager
+     * @return win amount
+     */
     @Override
-    public void addWinAmountToBalance(User winnerUser, Wager wager) {
+    public BigDecimal addWinAmountToBalance(User winnerUser, Wager wager) {
         BigDecimal betValue = wager.getAmount();
         BigDecimal coefficient = BigDecimal.valueOf(wager.getGuess().getBet().getType().getCoefficient());
         BigDecimal winValue = BigDecimalUtils.multiply(betValue, coefficient);
         BigDecimal newBalance = BigDecimalUtils.add(winValue, winnerUser.getBalance());
         winnerUser.setBalance(newBalance);
         this.save(winnerUser);
+        return winValue;
+    }
+
+    @Override
+    @Transactional
+    public void compensateBalance(User user, BigDecimal amountCompensation) {
+        user.setBalance(
+                BigDecimalUtils.add(user.getBalance(), amountCompensation));
+        this.save(user);
     }
 
 

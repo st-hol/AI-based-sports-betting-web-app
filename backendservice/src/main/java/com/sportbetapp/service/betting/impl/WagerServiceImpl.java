@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.type.OutcomeType;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
+import com.sportbetapp.exception.EventAlreadyPredictedException;
 import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.exception.NotExistingGuessException;
@@ -65,12 +68,19 @@ public class WagerServiceImpl implements WagerService {
 
     @Override
     @Transactional
-    public void deleteWager(Long idWager) throws EventAlreadyStartedException {
+    public void deleteWager(Long idWager) throws EventAlreadyStartedException, EventAlreadyPredictedException {
         if (eventAlreadyStarted(idWager)) {
             throw new EventAlreadyStartedException("Sorry, you can not delete the wager " +
                     "on event that already started or starts in one day.");
+        } else if (eventAlreadyPredicted(idWager)) {
+            throw new EventAlreadyPredictedException("Sorry, you can not delete the wager " +
+                    "on event that already predicted.");
         } else {
+            Wager wager = wagerRepository.findById(idWager).orElseThrow(IllegalStateException::new);
+            BigDecimal amountCompensation = wager.getAmount();
             wagerRepository.deleteById(idWager);
+            User user = wager.getUser();
+            userService.compensateBalance(user, amountCompensation);
         }
     }
 
@@ -82,6 +92,11 @@ public class WagerServiceImpl implements WagerService {
         User currentUser = userService.obtainCurrentPrincipleUser();
         Wager createdWager = populateWager(createWagerDto, currentUser);
         createGuess(createWagerDto, createdWager);
+    }
+
+    @Override
+    public Page<Wager> findAllByUserPageable(User user, Pageable pageable) {
+        return wagerRepository.findAllByUser(user, pageable);
     }
 
     private Wager populateWager(CreateWagerDto createWagerDto, User currentUser) throws NotEnoughBalanceException {
@@ -121,6 +136,14 @@ public class WagerServiceImpl implements WagerService {
         SportEvent sportEvent = guess.getSportEvent();
         return sportEvent.getStartDate().isEqual(LocalDate.now())
                 || sportEvent.getStartDate().isAfter(LocalDate.now());
+    }
+
+
+    private boolean eventAlreadyPredicted(Long idWager) {
+        Wager wager = findById(idWager);
+        Guess guess = wager.getGuess();
+        SportEvent sportEvent = guess.getSportEvent();
+        return sportEvent.isAlreadyPredicted() || !wager.getOutcomeType().equals(OutcomeType.AWAITING);
     }
 
 }

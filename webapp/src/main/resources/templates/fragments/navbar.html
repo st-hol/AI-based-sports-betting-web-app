@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/landing.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
@@ -14,9 +14,9 @@
         <a href="#top" class="activeMenuItem nav-item nav-link" id="log">
             <img th:src="@{image/orangmin.png}" alt="">
         </a>
-        <a class="nav-item nav-link" href="/player/home" th:text="#{navbar.home}"></a>
-        <a class="nav-item nav-link" href="/player/wagers" th:text="#{navbar.wagers}"></a>
-        <a class="nav-item nav-link" href="/player/events" th:text="#{navbar.events}"></a>
+        <a class="nav-item nav-link" href="/user/home" th:text="#{navbar.home}"></a>
+        <a class="nav-item nav-link" href="/user/wagers" th:text="#{navbar.wagers}"></a>
+        <a class="nav-item nav-link" href="/user/events" th:text="#{navbar.events}"></a>
         <a class="nav-item nav-link" href="/logout" th:text="#{navbar.logout}"></a>
     </div>
     <div class="navbar-nav ml-auto">

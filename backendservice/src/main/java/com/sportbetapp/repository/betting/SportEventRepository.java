@@ -3,6 +3,8 @@ package com.sportbetapp.repository.betting;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -14,11 +16,7 @@ import com.sportbetapp.domain.betting.Wager;
 @Repository
 public interface SportEventRepository extends CrudRepository<SportEvent, Long> {
 
-//    @Query("select sp from SportEvent sp " +
-//            "inner join Bet b on b.sportEvent = sp " +
-//            "inner join Outcome o on o.bet = b " +
-//            "inner join OutcomeOdd od on od.outcome = o " +
-//            "inner join Wager w on w.outcomeOdd = od " +
-//            "where w = :wager and sp.startDate > :currentDate")
-//    Optional<SportEvent> findByWager(@Param("wager") Wager wager, @Param("currentDate") LocalDateTime currentDate);
+    Page<SportEvent> findAll(Pageable pageable);
+
+
 }

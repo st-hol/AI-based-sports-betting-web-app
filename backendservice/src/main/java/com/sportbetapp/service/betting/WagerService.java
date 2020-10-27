@@ -3,10 +3,14 @@ package com.sportbetapp.service.betting;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
+import com.sportbetapp.exception.EventAlreadyPredictedException;
 import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.exception.NotExistingGuessException;
@@ -18,8 +22,9 @@ public interface WagerService {
 
     List<Wager> findAllByUser(User user);
 
-    void deleteWager(Long idWager) throws EventAlreadyStartedException;
+    void deleteWager(Long idWager) throws EventAlreadyStartedException, EventAlreadyPredictedException;
 
     void createWagerWithGuess(CreateWagerDto wagerDto) throws NotEnoughBalanceException, NotExistingGuessException;
 
+    Page<Wager> findAllByUserPageable(User obtainCurrentPrincipleUser, Pageable pageable);
 }

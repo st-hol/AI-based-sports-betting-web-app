@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sportbetapp.domain.betting.Bet;
+import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.repository.betting.GuessRepository;
 import com.sportbetapp.service.betting.GuessService;
@@ -41,6 +42,11 @@ public class GuessServiceImpl implements GuessService {
     @Override
     public List<Guess> findAllByBet(Bet bet) {
         return guessRepository.findAllByBet(bet);
+    }
+
+    @Override
+    public List<Guess> findAllByEvent(SportEvent sportEvent) {
+        return guessRepository.findAllBySportEvent(sportEvent);
     }
 
 }

@@ -2,10 +2,13 @@ package com.sportbetapp.repository.predicting;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.sportbetapp.domain.betting.PlayerSide;
+import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
@@ -34,4 +37,7 @@ public interface PredictionRecordRepository extends CrudRepository<PredictionRec
     }
 
 
+    @Query("select hr from HistoricRecord hr " +
+            "where hr.sportEvent = :sportEvent")
+    List<PredictionRecord> findHistoricRecordsByEvent(@Param("sportEvent") SportEvent sportEvent);
 }

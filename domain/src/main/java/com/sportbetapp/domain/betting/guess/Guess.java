@@ -56,8 +56,6 @@ public abstract class Guess {
             inverseJoinColumns = @JoinColumn(name = "result_id"))
     private Set<Result> results = new HashSet<>();
 
-    //    @ManyToOne
-    //    private Result result;
 
     @Override
     public boolean equals(Object o) {

@@ -4,32 +4,74 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title th:text="#{events}"></title>
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script th:src="@{/js/pagination/pagination-events.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
 <div class="row">
+
+
     <div class="col home-column">
-        <h1 class="display-4" th:text="#{events.header}"></h1>
+        <h1 class="display-4 text-center" th:text="#{events.header}"></h1>
         <th:block th:each="event : ${events}">
-            <div class="card">
+            <div class="card container col-lg-6">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${event.title}"></h5>
                     <p class="card-text"
                        th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
                     <p class="card-text"
                        th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>
-
                 </div>
                 <div class="card-footer">
                     <a class="btn btn-primary" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"
                        th:text="#{event.to.bets}"></a>
                 </div>
             </div>
+            <br>
         </th:block>
+    </div>
+</div>
+<br>
+<br>
+<div class="container mt-2">
+    <div class="row">
+        <div class="form-group col-md-1">
+            <select class="form-control pagination" id="pageSizeSelect">
+                <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                        th:selected="${pageSize} == ${selectedPageSize}"></option>
+            </select>
+        </div>
+
+        <div th:if="${events.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="pagination justify-content-center font-weight-medium">
+                <li class="page-item" th:class="${events.number == 0} ? disabled">
+                    <a class="page-link" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                </li>
+                <li class="page-item" th:class="${events.number == 0} ? disabled">
+                    <a class="page-link"
+                       th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.number})}">&larr;</a>
+                </li>
+
+                <li class="page-item" th:class="${events.number == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                    <a class="page-link" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${page})}"
+                       th:text="${page}"></a>
+                </li>
+
+                <li class="page-item" th:class="${events.number + 1 == events.totalPages} ? disabled">
+                    <a class="page-link"
+                       th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.number + 2})}">&rarr;</a>
+                </li>
+
+                <li class="page-item" th:class="${events.number + 1 == events.totalPages} ? disabled">
+                    <a class="page-link"
+                       th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.totalPages})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,15 +20,14 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Table(name = "parameters_area")
 public class ParametersArea {
 
     @Id
     private String name;
 
-    @Column(length = 2000, columnDefinition = "varchar")
     private String value = StringUtils.EMPTY;
 
-    @Column(length = 100, columnDefinition = "varchar")
     private String description;
 
 }

@@ -7,16 +7,16 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Please sign in</title>
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
-    <script th:src="@{/js/create-sport-event.js}"></script>
+    <script th:src="@{/js/ajax/create-sport-event.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
 <div class="container">
     <div class="login-page col-lg-4 col-md-7">
 
-        <form action="#" class="form-signin" method="post" th:action="@{/admin/create-sport-event}"
+        <form action="#" class="form-signin" method="post"
+              th:action="@{/admin/create-sport-event}"
               th:object="${createSportEventForm}">
 
             <div th:if="${#fields.hasErrors('*')}">
@@ -25,6 +25,9 @@
                     <p class="alert alert-danger" role="alert" th:text="${e.message}">The error message</p>
                 </div>
             </div>
+
+            <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+            <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
 
             <div class="alert alert-success" role="alert" th:if="${(param.success != null) and (param.success[0] == 'true')}"
                  th:text="#{success}">
@@ -54,14 +57,14 @@
                     <input class="form-control" id="startDate" name="startDate"
                            onblur="if(this.value===''){this.type='text'}"
                            onfocus="(this.type='date')" th:placeholder="#{sport.event.start.date}"
-                           type="text">
+                           type="text" required>
                 </div>
                 <div class="form-group">
                     <label class="sr-only"  for="endDate">endDate</label>
                     <input class="form-control" id="endDate" name="endDate"
                            onblur="if(this.value===''){this.type='text'}"
                            onfocus="(this.type='date')" th:placeholder="#{sport.event.end.date}"
-                           type="text">
+                           type="text" required>
                 </div>
 
                 <h2 th:text="#{prediction.home.team.name}"></h2>

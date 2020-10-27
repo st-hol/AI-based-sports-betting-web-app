@@ -2,6 +2,7 @@ package com.sportbetapp.service.betting.impl;
 
 import static com.sportbetapp.domain.type.BetType.*;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +32,27 @@ import com.sportbetapp.domain.betting.guess.GuessWinner;
 import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
+import com.sportbetapp.domain.technical.Mail;
 import com.sportbetapp.domain.type.BetType;
 import com.sportbetapp.domain.type.GoalsDirection;
 import com.sportbetapp.domain.type.OutcomeType;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
+import com.sportbetapp.dto.payload.SendFileResponse;
 import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.service.betting.GameOutcomeDecidingService;
+import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.ResultService;
 import com.sportbetapp.service.betting.SportEventService;
+import com.sportbetapp.service.mail.MailService;
+import com.sportbetapp.service.predicting.PredictionService;
 import com.sportbetapp.service.user.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingService {
 
@@ -161,23 +172,36 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
     private ResultService resultService;
     @Autowired
     private SportEventService sportEventService;
+    @Autowired
+    private PredictionService predictionService;
+    @Autowired
+    private GuessService guessService;
+    @Autowired
+    private MailService mailService;
+
 
     @Override
     @Transactional
     public void determineResults(SportEvent sportEvent) {
-        PredictionRecord firstTeamRes = sportEvent.getHistoricRecords().get(0);
-        PredictionRecord secondTeamRes = sportEvent.getHistoricRecords().get(1);
+
+        List<PredictionRecord> predictionRecords = predictionService.findHistoricRecordsByEvent(sportEvent);
+
+        PredictionRecord firstTeamRes = predictionRecords.get(0);
+        PredictionRecord secondTeamRes = predictionRecords.get(1);
 
         Result winnerResult = new Result();
-        winnerResult.setSportEvent(sportEvent);
+        winnerResult.setSportEvent(sportEventService.findById(sportEvent.getId()));
         Set<Guess> winnerGuesses = new HashSet<>();
 
-        sportEvent.getGuesses().forEach(guess -> {
+        List<Guess> guesses = guessService.findAllByEvent(sportEvent);
+
+        guesses.forEach(guess -> {
             if (betTypePredicateMap.get(guess.getBet().getType()).test(guess, Pair.of(firstTeamRes, secondTeamRes))) {
                 guess.getWagers().forEach(wager -> {
                     wager.setOutcomeType(OutcomeType.SUCCESS);
                     User winnerUser = wager.getUser();
-                    userService.addWinAmountToBalance(winnerUser, wager);
+                    BigDecimal winAmount = userService.addWinAmountToBalance(winnerUser, wager);
+                    sendMailNotification(wager, winAmount);
                 });
                 winnerGuesses.add(guess);
             } else {
@@ -197,5 +221,23 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
         sportEventService.save(sportEvent);
     }
 
+
+    private void sendMailNotification(Wager wager, BigDecimal winAmount){
+        User currentUser = userService.obtainCurrentPrincipleUser();
+
+        Mail mail = new Mail();
+        mail.setFrom("Sport Bet App");
+        mail.setTo(currentUser.getEmail());
+        mail.setSubject("Sending wager result");
+        mail.setContent(String.format("Your wager id {%d} result is {%s}. Your win is {%d} ",
+                wager.getId(), wager.getOutcomeType().getValue(), winAmount.intValue()));
+
+        try {
+            mailService.sendMail(mail);
+        } catch (MessagingException ex) {
+            log.error("can not send mail {}", ex);
+        }
+
+    }
 
 }

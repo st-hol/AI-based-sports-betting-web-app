@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sportbetapp.domain.betting.PlayerSide;
+import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.predicting.PredictionRecord;
 import com.sportbetapp.domain.type.SportType;
 import com.sportbetapp.dto.predicting.PredictionDto;
@@ -18,4 +19,5 @@ public interface PredictionService {
 
     List<PlayerSide> getAllTeamsForSportType(SportType sportType);
 
+    List<PredictionRecord> findHistoricRecordsByEvent(SportEvent sportEvent);
 }

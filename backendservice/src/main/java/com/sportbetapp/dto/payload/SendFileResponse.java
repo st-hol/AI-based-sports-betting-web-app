@@ -11,6 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SendFileResponse {
     private boolean success;
-    private String fileName;
     private String email;
 }

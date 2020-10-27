@@ -13,3 +13,8 @@ INSERT IGNORE INTO `ai_bet_app`.`bet` (`id`, `type`) VALUES ('6', '5');
 INSERT IGNORE INTO `ai_bet_app`.`bet` (`id`, `type`) VALUES ('7', '6');
 INSERT IGNORE INTO `ai_bet_app`.`bet` (`id`, `type`) VALUES ('8', '7');
 INSERT IGNORE INTO `ai_bet_app`.`bet` (`id`, `type`) VALUES ('1', '0');
+
+
+INSERT IGNORE INTO parameters_area (name, value, description)
+VALUES
+('onlyStat', 'false', '');

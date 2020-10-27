@@ -15,10 +15,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.sportbetapp.domain.betting.PlayerSide;
+import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
@@ -60,6 +62,7 @@ public class PredictionServiceImpl implements PredictionService {
 
 
     @Override
+    @Transactional
     public List<PredictionRecord> makePrediction(PredictionDto dto)
             throws CanNotPlayAgainstItselfException, NoPredictAnalysisDataAvailableException {
         if (dto.getHomeTeamName().equals(dto.getAwayTeamName())) {
@@ -307,6 +310,11 @@ public class PredictionServiceImpl implements PredictionService {
     @Override
     public List<PlayerSide> getAllTeamsForSportType(SportType sportType) {
         return playerSideRepository.findAllBySportType(sportType);
+    }
+
+    @Override
+    public List<PredictionRecord> findHistoricRecordsByEvent(SportEvent sportEvent) {
+        return predictionRecordRepository.findHistoricRecordsByEvent(sportEvent);
     }
 
 }

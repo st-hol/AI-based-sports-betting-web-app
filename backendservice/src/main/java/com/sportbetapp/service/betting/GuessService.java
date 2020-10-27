@@ -4,6 +4,7 @@ package com.sportbetapp.service.betting;
 import java.util.List;
 
 import com.sportbetapp.domain.betting.Bet;
+import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.guess.Guess;
 
 public interface GuessService {
@@ -14,4 +15,7 @@ public interface GuessService {
     void deleteAll();
 
     List<Guess> findAllByBet(Bet bet);
+
+    List<Guess> findAllByEvent(SportEvent sportEvent);
+
 }

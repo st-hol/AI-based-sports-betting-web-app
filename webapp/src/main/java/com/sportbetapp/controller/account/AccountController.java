@@ -28,7 +28,7 @@ public class AccountController {
     private UserService userService;
 
     @GetMapping("/la")
-    public String ron(Model model) {
+    public String la(Model model) {
         model.addAttribute("userForm", new UserDto());
         return "common/landing";
     }
@@ -48,7 +48,7 @@ public class AccountController {
         }
         userService.registerUser(userForm);
         securityService.autoLoginAfterReg(userForm.getEmail(), userForm.getPasswordConfirm());
-        return "redirect:/player/home";
+        return "redirect:/user/home";
     }
 
     @GetMapping("/login")
