@@ -1,17 +1,20 @@
 package com.sportbetapp.service.betting.impl;
 
-import static com.sportbetapp.domain.type.BetType.*;
+import static com.sportbetapp.domain.type.BetType.BOTH_WILL_NOT_SCORE_ANY_GOALS;
+import static com.sportbetapp.domain.type.BetType.BOTH_WILL_SCORE_AT_LEAST_BY_ONE_HIT;
+import static com.sportbetapp.domain.type.BetType.EXACT_GAME_SCORE;
+import static com.sportbetapp.domain.type.BetType.GOALS_BY_TEAM;
+import static com.sportbetapp.domain.type.BetType.GOALS_MORE_THAN;
+import static com.sportbetapp.domain.type.BetType.MISSES_BY_TEAM;
+import static com.sportbetapp.domain.type.BetType.MISSES_MORE_THAN;
+import static com.sportbetapp.domain.type.BetType.WINNER;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
@@ -29,19 +32,12 @@ import com.sportbetapp.domain.betting.guess.GuessBothWillScore;
 import com.sportbetapp.domain.betting.guess.GuessGoals;
 import com.sportbetapp.domain.betting.guess.GuessScore;
 import com.sportbetapp.domain.betting.guess.GuessWinner;
-import com.sportbetapp.domain.predicting.HistoricRecord;
 import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
 import com.sportbetapp.domain.technical.Mail;
 import com.sportbetapp.domain.type.BetType;
-import com.sportbetapp.domain.type.GoalsDirection;
 import com.sportbetapp.domain.type.OutcomeType;
 import com.sportbetapp.domain.user.User;
-import com.sportbetapp.dto.betting.CreateWagerDto;
-import com.sportbetapp.dto.payload.SendFileResponse;
-import com.sportbetapp.exception.EventAlreadyStartedException;
-import com.sportbetapp.exception.NotEnoughBalanceException;
-import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.service.betting.GameOutcomeDecidingService;
 import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.ResultService;
@@ -63,14 +59,17 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
             (guess, teamsResults) -> {
                 GuessWinner guessWinner = (GuessWinner) guess;
                 String guessWinnerName = guessWinner.getPlayerSide().getName();
-                HitScore firstTeam = teamsResults.getLeft().getHitScore();
-                HitScore secondTeam = teamsResults.getRight().getHitScore();
+
+                PredictionRecord firstTeamRes = teamsResults.getLeft();
+                PredictionRecord secondTeamRes = teamsResults.getRight();
+                HitScore firstTeamScore = firstTeamRes.getHitScore();
+                HitScore secondTeamScore = secondTeamRes.getHitScore();
 
                 String actualWinnerName;
-                if (firstTeam.getHitsScored() > secondTeam.getHitsScored()) {
-                    actualWinnerName = firstTeam.getPredictionRecord().getPlayerSide().getName();
-                } else if (firstTeam.getHitsScored() < secondTeam.getHitsScored()) {
-                    actualWinnerName = secondTeam.getPredictionRecord().getPlayerSide().getName();
+                if (firstTeamScore.getHitsScored() > secondTeamScore.getHitsScored()) {
+                    actualWinnerName = firstTeamRes.getPlayerSide().getName();
+                } else if (firstTeamScore.getHitsScored() < secondTeamScore.getHitsScored()) {
+                    actualWinnerName = secondTeamRes.getPlayerSide().getName();
                 } else {
                     actualWinnerName = "";
                 }
@@ -205,7 +204,10 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
                 });
                 winnerGuesses.add(guess);
             } else {
-                guess.getWagers().forEach(wager -> wager.setOutcomeType(OutcomeType.FAILURE));
+                guess.getWagers().forEach(wager -> {
+                    wager.setOutcomeType(OutcomeType.FAILURE);
+                    sendMailNotification(wager, BigDecimal.ZERO);
+                });
             }
         });
 
@@ -215,27 +217,25 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
         determineSportEventResult(sportEvent, winnerResult);
     }
 
-    public void determineSportEventResult(SportEvent sportEvent, Result winnerResult) {
+    private void determineSportEventResult(SportEvent sportEvent, Result winnerResult) {
         sportEvent.setResult(winnerResult);
         sportEvent.setAlreadyPredicted(true);
         sportEventService.save(sportEvent);
     }
 
-
-    private void sendMailNotification(Wager wager, BigDecimal winAmount){
+    private void sendMailNotification(Wager wager, BigDecimal winAmount) {
         User currentUser = userService.obtainCurrentPrincipleUser();
 
         Mail mail = new Mail();
-        mail.setFrom("Sport Bet App");
+        mail.setFrom("SportBetApp");
         mail.setTo(currentUser.getEmail());
         mail.setSubject("Sending wager result");
-        mail.setContent(String.format("Your wager id {%d} result is {%s}. Your win is {%d} ",
+        mail.setContent(String.format("Your wager id# %d result is %s.%nYour win amount = %d.",
                 wager.getId(), wager.getOutcomeType().getValue(), winAmount.intValue()));
-
         try {
             mailService.sendMail(mail);
         } catch (MessagingException ex) {
-            log.error("can not send mail {}", ex);
+            log.error("Can not send mail {}", ex.getMessage());
         }
 
     }

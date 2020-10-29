@@ -13,7 +13,7 @@ public class Application {
 }
 
 // todo
-// scheduler and global params - and mq
+// to do not allow wager on predicted already
 // ui -
 // email + spring.mail.password=*
 // integration with payment system - need or not?
