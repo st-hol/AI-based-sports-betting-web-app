@@ -14,9 +14,4 @@ public class SportEventDto {
     private String title;
     private LocalDateTime endDate;
     private List<BetDto> bets;
-    private EventType eventType;
-
-    public enum EventType {
-        FOOTBALL_EVENT, TENNIS_EVENT
-    }
 }

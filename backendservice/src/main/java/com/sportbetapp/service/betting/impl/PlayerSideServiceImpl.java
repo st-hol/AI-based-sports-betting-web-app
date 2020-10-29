@@ -17,7 +17,6 @@ public class PlayerSideServiceImpl implements PlayerSideService {
     @Autowired
     private PlayerSideRepository playerSideRepository;
 
-
     @Override
     public List<PlayerSide> findAll() {
         return Lists.newArrayList(playerSideRepository.findAll());

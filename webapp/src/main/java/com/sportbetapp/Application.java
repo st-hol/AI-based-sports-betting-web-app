@@ -15,6 +15,6 @@ public class Application {
 // todo
 // scheduler and global params - and mq
 // ui -
-// email
+// email + spring.mail.password=*
 // integration with payment system - need or not?
 // remove orphan guess, - need fix or not?

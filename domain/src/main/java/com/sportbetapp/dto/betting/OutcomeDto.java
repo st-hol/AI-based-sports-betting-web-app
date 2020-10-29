@@ -1,17 +1,12 @@
 package com.sportbetapp.dto.betting;
 
-import java.util.List;
-
-import com.sportbetapp.domain.type.BetType;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BetDto {
+public class OutcomeDto {
     private Long id;
-    private Long sportEventId;
+    private Long betId;
     private String description;
-    private BetType type;
 }

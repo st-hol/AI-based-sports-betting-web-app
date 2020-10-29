@@ -1,13 +1,9 @@
 package com.sportbetapp.domain.betting;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -25,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.predicting.HistoricRecord;
-import com.sportbetapp.domain.type.Currency;
+import com.sportbetapp.domain.technical.messaging.UpcomingEventToPredict;
 import com.sportbetapp.domain.type.SportType;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +28,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
@@ -61,6 +55,8 @@ public class SportEvent {
     @OneToMany(mappedBy = "sportEvent")
     private List<HistoricRecord> historicRecords;
 
+    @OneToMany(mappedBy = "sportEvent")
+    private List<UpcomingEventToPredict> upcomingEventToPredict;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "sport_event_has_player_sides",

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.sportbetapp.domain.betting.PlayerSide;
 import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.predicting.HistoricRecord;
-import com.sportbetapp.domain.predicting.HitScore;
 import com.sportbetapp.domain.predicting.PredictionRecord;
 import com.sportbetapp.domain.predicting.StatisticRecord;
 

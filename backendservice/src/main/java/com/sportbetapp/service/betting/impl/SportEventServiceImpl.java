@@ -5,33 +5,30 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Sets;
-import com.sportbetapp.domain.betting.Bet;
+import com.google.common.collect.Lists;
 import com.sportbetapp.domain.betting.SportEvent;
-import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.type.SportType;
+import com.sportbetapp.dto.SportEventMessageDto;
 import com.sportbetapp.dto.betting.CreateSportEventDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
 import com.sportbetapp.exception.EventAlreadyPredictedException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
+import com.sportbetapp.jms.JmsProducer;
 import com.sportbetapp.repository.betting.PlayerSideRepository;
 import com.sportbetapp.repository.betting.SportEventRepository;
 import com.sportbetapp.service.betting.BetService;
 import com.sportbetapp.service.betting.SportEventService;
-import com.google.common.collect.Lists;
 import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.technical.ParametersAreaService;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -52,6 +49,9 @@ public class SportEventServiceImpl implements SportEventService {
 
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
+    @Autowired
+    private JmsProducer jmsProducer;
 
     @Autowired
     private ParametersAreaService parametersAreaService;
@@ -104,22 +104,26 @@ public class SportEventServiceImpl implements SportEventService {
         log.info("created new sport event {}", sportEvent);
 
         scheduleEventPredict(sportEventCreated);
-        //todo mq also     spring scheduler and message queue
+        jmsProducer.sendMessage(SportEventMessageDto.builder()
+                .id(sportEventCreated.getId())
+                .alreadyPredicted(false)
+                .title(sportEventCreated.getTitle())
+                .endDate(sportEventCreated.getEndDate())
+                .startDate(sportEventCreated.getStartDate())
+                .sportType(sportEventCreated.getSportType().toString())
+                .build());
         return sportEventCreated;
     } // do not need to create bets. they are not coupled to SE anymore
 
 
     private void scheduleEventPredict(SportEvent sportEventCreated) {
-//        threadPoolTaskScheduler.schedule(
-//                new RunnableTask("Specific time, 3 Seconds from now"),
-//                convertToDateViaInstant(sportEventCreated.getEndDate()));
-
         boolean onlyStat = Boolean.parseBoolean(
                 parametersAreaService.findById("onlyStat").getValue());
 
         threadPoolTaskScheduler.schedule(
-                new PredictingSportEventScheduledTask(sportEventCreated.getId(), onlyStat),
-                new Date(System.currentTimeMillis() + 5000));
+                new PredictingSportEventScheduledTask(predictSportEventService, sportEventCreated.getId(), onlyStat),
+                convertToDateViaInstant(sportEventCreated.getEndDate()));
+        // new Date(System.currentTimeMillis() + 5000)
     }
 
     private Date convertToDateViaInstant(LocalDate dateToConvert) {
@@ -129,12 +133,17 @@ public class SportEventServiceImpl implements SportEventService {
     }
 
 
-    private class PredictingSportEventScheduledTask implements Runnable {
+    @Getter
+    public static class PredictingSportEventScheduledTask implements Runnable {
 
-        final long sportEventId;
-        final boolean onlyStat; //from global param area
+        private final PredictSportEventService predictSportEventService;
 
-        public PredictingSportEventScheduledTask(long sportEventId, boolean onlyStat) {
+        private final long sportEventId;
+        private final boolean onlyStat; //from global param area
+
+        public PredictingSportEventScheduledTask(PredictSportEventService predictSportEventService,
+                                                 long sportEventId, boolean onlyStat) {
+            this.predictSportEventService = predictSportEventService;
             this.sportEventId = sportEventId;
             this.onlyStat = onlyStat;
         }
@@ -143,9 +152,9 @@ public class SportEventServiceImpl implements SportEventService {
         public void run() {
             try {
                 predictSportEventService.makePredictionForSportEvent(sportEventId, onlyStat);
-            } catch (CanNotPlayAgainstItselfException
-                    | NoPredictAnalysisDataAvailableException
-                    | EventAlreadyPredictedException e) {
+            } catch (EventAlreadyPredictedException e){
+                log.warn("Event was already preicted");
+            } catch (CanNotPlayAgainstItselfException | NoPredictAnalysisDataAvailableException e) {
                 log.error("An error occurred while processing prediction TASK.");
                 throw new RuntimeException(e);
             }

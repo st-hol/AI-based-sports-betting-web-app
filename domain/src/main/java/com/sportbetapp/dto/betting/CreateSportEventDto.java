@@ -1,7 +1,6 @@
 package com.sportbetapp.dto.betting;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 

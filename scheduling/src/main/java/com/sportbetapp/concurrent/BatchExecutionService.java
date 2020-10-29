@@ -14,7 +14,12 @@ public class BatchExecutionService {
     private static final Logger LOG = LoggerFactory.getLogger(BatchExecutionService.class);
     private static final int SHUTDOWN_WAIT_TIMEOUT_IN_SEC = 10;
 
-    public static void execute(Collection<? extends Runnable> tasks, int numThreads, String name) {
+    private BatchExecutionService() {
+        //to hide implicit constr.
+    }
+
+    public static void execute(Collection<? extends Runnable> tasks, int numThreads, String name,
+                               Runnable finalizing) {
         if (CollectionUtils.isEmpty(tasks)) {
             return;
         } else if (tasks.size() == 1 || numThreads <= 1) {
@@ -39,6 +44,10 @@ public class BatchExecutionService {
                 LOG.error("Cancel non-finished batch tasks");
             }
             executor.shutdownNow();
+            if (finalizing != null) {
+                finalizing.run();
+            }
         }
     }
+
 }
