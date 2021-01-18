@@ -1,7 +1,5 @@
 package com.sportbetapp.util;
 
-
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -27,7 +25,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -39,29 +36,28 @@ import com.google.common.math.DoubleMath;
 import com.sportbetapp.util.math.BigDecimalUtils;
 import com.sportbetapp.util.math.NumberUtils;
 
-@SuppressWarnings({"squid:S109", "frontier-java:AvoidToString"})
 public final class Utils {
-    public static final LocalDate ZERO_DATE = LocalDate.of(1900, 1, 1);
-    public static final LocalTime ZERO_TIME = LocalTime.MIN;
+    private static final LocalDate ZERO_DATE = LocalDate.of(1900, 1, 1);
+    private static final LocalTime ZERO_TIME = LocalTime.MIN;
     public static final LocalDateTime ZERO_DATE_TIME = LocalDateTime.of(ZERO_DATE, ZERO_TIME);
-    public static final LocalDate MAX_DATE = LocalDate.of(9999, 12, 31);
+    private static final LocalDate MAX_DATE = LocalDate.of(9999, 12, 31);
     public static final Integer MIN_YEAR = ZERO_DATE.getYear();
 
-    public static final int DECIMAL_4_MAX = 9999;
-    public static final int DECIMAL_4_MIN = -9999;
-    public static final int DECIMAL_5_MAX = 99999;
-    public static final int DECIMAL_5_MIN = -99999;
-    public static final int DECIMAL_7_MAX = 9999999;
-    public static final int DECIMAL_7_MIN = -9999999;
-    public static final String ZERO = "0";
-    public static final String ON_OBJECT = " on object ";
+    private static final int DECIMAL_4_MAX = 9999;
+    private static final int DECIMAL_4_MIN = -9999;
+    private static final int DECIMAL_5_MAX = 99999;
+    private static final int DECIMAL_5_MIN = -99999;
+    private static final int DECIMAL_7_MAX = 9999999;
+    private static final int DECIMAL_7_MIN = -9999999;
+    private static final String ZERO = "0";
+    private static final String ON_OBJECT = " on object ";
     private static final String EMPTY_STRING = "";
     private static final double DOUBLE_THRESHOLD = 0.000001;
     public static final int NUMBER_OF_DECIMALS = 2;
-    public static final int PRODUCT_SCALE = 10000;
+    private static final int PRODUCT_SCALE = 10000;
     public static final int ZERO_INT = 0;
     private static final long ZERO_LONG = 0L;
-    public static final String DELIMITER = "-";
+    private static final String DELIMITER = "-";
     private static final int HUNDRED = 100;
     private static final String ZERO_STRING_PATTERN = "^0+$";
     private static final String OBJECT_NOT_VALID = "%s object state is not valid.";
@@ -584,15 +580,6 @@ public final class Utils {
                 .anyMatch(o -> o != null && o);
     }
 
-    /**
-     * Sum value from start to end indexes. If start < end then sum values from start to last element and from first
-     * element to end.
-     *
-     * @param values list of values
-     * @param start  start index inclusive
-     * @param end    end index exclusive
-     * @return sum of values based on start and end indexes.
-     */
     public static long sum(List<Long> values, int start, int end) {
         return BigDecimalUtils.sumBigDecimalsSafe(values.stream().map(BigDecimal::new).collect(Collectors.toList()),
                 start, end)
@@ -645,24 +632,7 @@ public final class Utils {
         return StringUtils.leftPad(str, size, StringUtils.SPACE);
     }
 
-    public static String removeLeadingZeros(String value) {
-        return StringUtils.stripStart(value, ZERO);
-    }
 
-    public static int getDealClassification(int dealNumber) {
-        return (dealNumber % 1000) / 100;
-    }
-
-    public static int getDealClassification(long dealNumber) {
-        return getDealClassification((int) dealNumber);
-    }
-
-    public static String equitySubstring(String str, int start, int length) {
-        if (start >= str.length()) {
-            return StringUtils.EMPTY;
-        }
-        return str.substring(start, Math.min(str.length(), start + length));
-    }
 
     public static String safeSubstring(String s, int startIndex, int endIndex) {
         boolean isIndexesNotValid = startIndex < 0 || endIndex <= 0 || startIndex > endIndex;
@@ -723,17 +693,6 @@ public final class Utils {
         return value < 0 ? 0 : value;
     }
 
-    /**
-     * Check if first symbol of location code is numeric.
-     *
-     * <ul>
-     * <li>"0BD033"  ->   true  </li>
-     * <li>"WEE033"  ->   false </li>
-     * <li>"   "     ->   false </li>
-     * <li>""        ->   false </li>
-     * <li>null      ->   false </li>
-     * </ul>
-     */
     public static boolean isFirstDigit(String locationCode) {
         return !StringUtils.isBlank(locationCode) && Character.isDigit(locationCode.charAt(0));
     }
@@ -820,15 +779,6 @@ public final class Utils {
         return Utils.safeSubstring(val, 0, length);
     }
 
-    public static boolean isLikeEquityBlank(String value) {
-        if (value == null) {
-            return true;
-        } else {
-            String trimmedValue = value.trim();
-            return StringUtils.isBlank(trimmedValue) || trimmedValue.matches(ZERO_STRING_PATTERN);
-        }
-    }
-
     public static String replaceNonDigitSymbolsToZero(String text) {
 
         if (text == null){
@@ -890,7 +840,6 @@ public final class Utils {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camelCase);
     }
 
-    @SuppressWarnings("checkstyle:com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck")
     public static String toSnakeLowerCase(String init) {
         char[] initArray = init.toCharArray();
         if (initArray.length > 0) {

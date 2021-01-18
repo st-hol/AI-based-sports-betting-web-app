@@ -31,12 +31,12 @@ class UserServiceImplTest {
     private WagerService wagerService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void findByUsername() {
+    public void findByUsername() {
         User expected = new User();
         expected.setId(1L);
         expected.setEmail(EMAIL);
@@ -46,27 +46,4 @@ class UserServiceImplTest {
         assertThat(userService.findByUsername(EMAIL).getId(), is(1L));
     }
 
-    @Test
-    void registerUser() {
-    }
-
-    @Test
-    void obtainCurrentPrincipleUser() {
-    }
-
-    @Test
-    void updatePlayerInfo() {
-    }
-
-    @Test
-    void convertToPlayerDto() {
-    }
-
-    @Test
-    void makeWager() {
-    }
-
-    @Test
-    void findAllByOutcome() {
-    }
 }

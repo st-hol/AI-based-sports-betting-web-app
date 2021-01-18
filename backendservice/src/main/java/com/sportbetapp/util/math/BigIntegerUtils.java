@@ -11,11 +11,6 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import com.sportbetapp.util.Utils;
 
-/**
- * Utilities methods in order to perform operation with {@link BigIntegerUtils} objects.
- * Methods in this class must be null-safe.
- */
-@SuppressWarnings({"frontier-java:MathOnBigNumbers", "frontier-java:AvoidToString", "frontier-java:MathOnBoxedNumbers"})
 public final class BigIntegerUtils {
 
     private BigIntegerUtils() {

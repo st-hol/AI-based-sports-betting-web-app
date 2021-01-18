@@ -13,6 +13,7 @@ public class Application {
 }
 
 // todo
+//secuiry
 // to do not allow wager on predicted already
 // ui -
 // email + spring.mail.password=*

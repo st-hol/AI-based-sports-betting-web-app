@@ -15,13 +15,6 @@ import org.springframework.util.CollectionUtils;
 
 import com.sportbetapp.util.Utils;
 
-
-/**
- * Utilities methods in order to perform operation with {@link BigDecimal} objects.
- * Methods in this class must be null-safe.
- */
-@SuppressWarnings({"squid:S109", "frontier-java:MathOnBigNumbers", "frontier-java:AvoidToString",
-        "frontier-java:MathOnBoxedNumbers"})
 public final class BigDecimalUtils {
 
     public static final BigDecimal BIG_DECIMAL_100 = BigDecimal.valueOf(100);
@@ -185,35 +178,6 @@ public final class BigDecimalUtils {
         int beginIndex = Math.max(end - precision, 0);
         String stringRes = wrk.substring(beginIndex, end);
         return stringRes.length() == 0 ? ZERO : new BigInteger(stringRes);
-    }
-
-    /**
-     * This method is meant to round in equity style
-     *
-     * @param value     actual value to be scaled
-     * @param precision expected value precision
-     * @param scale     expected value scale
-     * @return scaled and rounded value
-     *
-     *
-     * <br>(12.345, 3, 1) ==> 12.3
-     * <br>(1, 1, 1) ==> 1.0
-     * <br>(9999.9, 5, 1) ==> 9999.9
-     * <br>(-10712.16, 5, 1) ==> -712.1
-     * <br>(-117.00, 3, 1) ==> -17.0
-     */
-    public static BigDecimal equityRound(BigDecimal value, int precision, int scale) {
-        BigDecimal number = ObjectUtils.defaultIfNull(value, BigDecimal.ZERO);
-
-        BigDecimal scaledValue = number.setScale(scale, RoundingMode.DOWN).scaleByPowerOfTen(scale);
-        int actualPrecision = number.toString().length();
-
-        if (precision < actualPrecision) {
-            return scaleAndNegate(-scale, extractBigIntegerDigitsFromRight(scaledValue, precision),
-                    number.signum() == -1);
-        } else {
-            return number;
-        }
     }
 
     private static BigDecimal scaleAndNegate(int scale, BigInteger resultValue, boolean negate) {
