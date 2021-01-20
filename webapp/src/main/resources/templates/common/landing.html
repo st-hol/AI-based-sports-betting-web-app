@@ -57,24 +57,39 @@
     <h1 class="some-text wow bounceInDown" data-wow-delay="1s" th:text="#{land.slogan}">
     </h1>
     <br>
-    <a href="/shit" sec:authorize="isAuthenticated()">
-        <button class="sign-up wow bounceInUp" data-wow-delay="1.5s" th:text="#{land.slide.title}"></button>
+    <a href="/user/home" sec:authorize="isAuthenticated()">
+        <button class="sign-up wow bounceInUp" data-wow-delay="1.5s" th:text="#{land.main.btn.title}"></button>
     </a>
     <a href="/registration" sec:authorize="isAnonymous()">
         <button class="sign-up wow bounceInUp" data-wow-delay="1.5s" th:text="#{land.sign.up}"></button>
     </a>
 </section>
-<section class="page2">
+<section class="page2" th:if="${#lists.size(upcomingEvents) > 0}">
     <a name="about"></a>
     <h2 class="about-title wow slideInDown" th:text="#{land.list.of.upcoming}"></h2>
     <img th:src="@{image/line-gray.jpg}" class="line-gray" alt="">
     <div class="about-cont">
         <div class="abouts">
             <div class="about-item wow slideInUp" data-wow-delay="0.5s">
-                <ul>
-                    <!--  start foreach-->
-                    <!--   end foreach-->
-                </ul>
+                <div class="col home-column">
+                    <th:block th:each="event : ${upcomingEvents}">
+                        <div class="card container col-lg-6">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${event.sportEvent.title}"></h5>
+                                <p class="card-text"
+                                   th:text="#{event.time.start} + ': ' + ${event.sportEvent.startDate}"></p>
+                                <p class="card-text"
+                                   th:text="#{event.time.finish} + ': ' + ${event.sportEvent.endDate}"></p>
+                            </div>
+                            <div class="card-footer" sec:authorize="isAuthenticated()">
+                                <a class="btn btn-primary"
+                                   th:href="@{'/user/make-wager?eventId=' + ${event.sportEvent.id}}"
+                                   th:text="#{event.to.bets}"></a>
+                            </div>
+                        </div>
+                        <br>
+                    </th:block>
+                </div>
             </div>
         </div>
     </div>
@@ -118,18 +133,16 @@
     <img th:src="@{/image/line-gray.jpg}" class="line-why" alt="">
     <div class="person-cont">
         <div class="person-slider wow zoomIn" data-wow-delay="0.7s">
-            <div class="person-item" data-wow-delay="0.5s">
-                <img th:src="@{/image/person/p3.png}" class="person-item-img" alt="">
-                <p class="person-item-p"><strong>ADMIN</strong> - puts grades for exams</p>
-            </div>
-            <div class="person-item" data-wow-delay="1.5s">
-                <img th:src="@{/image/person/p1.png}" class="person-item-img" alt="">
-                <p class="person-item-p"><strong>GUEST</strong> - not authorized user</p>
-            </div>
-            <div class="person-item" data-wow-delay="1.5s">
-                <img th:src="@{/image/person/p2.png}" class="person-item-img" alt="">
-                <p class="person-item-p"><strong>STUDENT</strong> - registers for exams</p>
-            </div>
+            <th:block th:each="betType : ${betTypes}">
+                <div class="person-item" data-wow-delay="0.5s">
+                    <img th:src="@{/image/bets/{img}(img=${betType.name() + '.png'})} " class="person-item-img" alt="">
+                    <p class="person-item-p">
+                        <strong th:text="${betType.value}"></strong>
+                        <span th:text="#{with.win.coefficient}"></span>
+                        <strong th:text="${betType.coefficient}"></strong>
+                    </p>
+                </div>
+            </th:block>
         </div>
     </div>
 </section>

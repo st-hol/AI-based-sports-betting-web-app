@@ -29,9 +29,9 @@
         <a href="#team" th:text="#{land.slide.title}">
         </a>
     </li>
-    <li sec:authorize="isAuthenticated()">
-        <a href="/shit" th:text="#{land.slide.title}"></a>
-    </li>
+<!--    <li sec:authorize="isAuthenticated()">-->
+<!--        <a href="/shit" th:text="#{land.slide.title}"></a>-->
+<!--    </li>-->
 
     <li class="contact-us" sec:authorize="isAuthenticated()">
         <a href="/logout">logout</a>

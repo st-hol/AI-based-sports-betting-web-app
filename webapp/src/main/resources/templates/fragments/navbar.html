@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="UTF-8">
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -11,9 +11,10 @@
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="navbar-nav">
-        <a href="#top" class="activeMenuItem nav-item nav-link" id="log">
+        <a href="/" class="activeMenuItem nav-item nav-link" id="log">
             <img th:src="@{image/orangmin.png}" alt="">
         </a>
+        <a class="nav-item nav-link" href="/" th:text="#{navbar.welcome.page}"></a>
         <a class="nav-item nav-link" href="/user/home" th:text="#{navbar.home}"></a>
         <a class="nav-item nav-link" href="/user/wagers" th:text="#{navbar.wagers}"></a>
         <a class="nav-item nav-link" href="/user/events" th:text="#{navbar.events}"></a>

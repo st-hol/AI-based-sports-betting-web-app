@@ -31,11 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/", "/welcome").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/la").permitAll()
-                .antMatchers("/user/**").permitAll()//.hasAnyAuthority("ADMIN", "USER")
-//                .antMatchers("/admin/**").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

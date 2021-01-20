@@ -27,11 +27,6 @@ public class AccountController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/la")
-    public String la(Model model) {
-        model.addAttribute("userForm", new UserDto());
-        return "common/landing";
-    }
 
     @GetMapping("/registration")
     public String registration(Model model) {
