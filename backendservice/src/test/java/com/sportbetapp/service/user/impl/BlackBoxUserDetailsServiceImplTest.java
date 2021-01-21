@@ -1,4 +1,4 @@
-package ua.training.services.impl.blackbox;
+package com.sportbetapp.service.user.impl;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -26,7 +26,6 @@ import org.springframework.security.core.userdetails.User;
 
 import com.sportbetapp.domain.user.role.Role;
 import com.sportbetapp.repository.user.UserRepository;
-import com.sportbetapp.service.user.impl.UserDetailsServiceImpl;
 
 
 /**

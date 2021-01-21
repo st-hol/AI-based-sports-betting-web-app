@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+body {
+    font-family: "Open Sans", sans-serif;
+    background: #eeeeee;
+}
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
+    height: 100%;
+    margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 50px; /* .push must be the same height as .footer */
+}
+.footer {
+    background-color: #dddddd;
+    padding: 15px
+}
+.navbar {
+    margin-bottom: 0;
+}
+.container {
+    margin-top: 40px;
+}

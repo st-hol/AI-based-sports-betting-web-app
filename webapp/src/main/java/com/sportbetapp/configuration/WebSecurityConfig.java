@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.sportbetapp.auth.CustomSuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -21,6 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -41,11 +46,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/user/home", true)
+                .successHandler(customSuccessHandler)
+//                .defaultSuccessUrl("/success-login", true)
                 .permitAll()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+//                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .and()
                 .exceptionHandling()

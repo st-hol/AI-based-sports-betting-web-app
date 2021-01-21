@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title th:text="#{home}"></title>
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
-<div class="row col-lg-7">
-    <div class="home-column col">
-        <h1 class="display-4" th:text="#{home.user.header}"></h1>
+<br>
+<br>
+<h1 style="text-align: center;" th:text="#{home.user.header}"></h1>
+
+<div class="row">
+    <div class="home-column col d-flex justify-content-center align-items-center">
         <form action="/user/home/update-info" method="post">
             <input name="_method" type="hidden" value="PUT"/>
             <input name="id" th:value="${user.id}" type="hidden">
@@ -46,17 +50,20 @@
                            type="text">
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label" for="accountNumber"
-                       th:text="#{home.user.accountNmber}"></label>
-                <div class="col-sm-9">
-                    <input class="form-control" id="accountNumber" name="accountNumber" th:value="${user.accountNumber}"
-                           type="number">
-                </div>
-            </div>
+<!--            <div class="form-group row">-->
+<!--                <label class="col-sm-3 col-form-label" for="accountNumber"-->
+<!--                       th:text="#{home.user.accountNmber}"></label>-->
+<!--                <div class="col-sm-9">-->
+<!--                    <input class="form-control" id="accountNumber" name="accountNumber" th:value="${user.accountNumber}"-->
+<!--                           type="number">-->
+<!--                </div>-->
+<!--            </div>-->
             <button class="btn btn-primary col-sm-12" th:text="#{home.user.submit}" type="submit"></button>
         </form>
     </div>
 </div>
+<br>
+<br>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
 </body>
 </html>

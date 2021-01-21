@@ -1445,3 +1445,7 @@ a.to-main:hover {
     font-weight: bold;
 }
 
+.hdrtitle {
+    margin: 0 auto;
+    text-align: center;
+}

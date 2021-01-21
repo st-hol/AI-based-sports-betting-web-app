@@ -19,7 +19,7 @@ import com.sportbetapp.service.user.UserService;
 
 
 /**
- * @author Stanislav_Holovachuk, Olena_Patsevko
+ * @author Stanislav_Holovachuk
  */
 @RunWith(MockitoJUnitRunner.class)
 public class UserValidatorTest {

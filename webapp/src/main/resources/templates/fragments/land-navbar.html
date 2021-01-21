@@ -34,10 +34,10 @@
 <!--    </li>-->
 
     <li class="contact-us" sec:authorize="isAuthenticated()">
-        <a href="/logout">logout</a>
+        <a href="/logout" th:text="#{navbar.logout}"></a>
     </li>
     <li class="contact-us" sec:authorize="isAnonymous()">
-        <a href="/login">Sign in</a>
+        <a href="/login" th:text="#{land.sign.in}"></a>
     </li>
 
 

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
+    <link rel="stylesheet" type="text/css" href="../../static/css/landing.css"/>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Please sign in</title>
@@ -12,7 +13,12 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
-<div class="container">
+
+<br>
+<h2 class="hdrtitle" th:text="#{form.registration.header}"></h2>
+
+<div class="container d-flex justify-content-center align-items-center">
+
     <div class="registration-page hide">
 
         <form th:object="${userForm}" action="#" th:action="@{/registration}" class="form-registration" method="post">
@@ -24,20 +30,19 @@
                 </div>
             </div>
 
-            <h2 th:text="#{form.registration.header}"></h2>
             <div class="form-group">
-                <label class="sr-only" for="email">Email</label>
+                <label class="sr-only" for="email" th:text="#{field.email}"></label>
                 <input autofocus class="form-control" name="email" required
                        th:placeholder="#{form.login.placeholder.email}"
                        type="text">
             </div>
             <div class="form-group">
-                <label class="sr-only" for="password">Password</label>
+                <label class="sr-only" for="password" th:text="#{passw.field}"></label>
                 <input class="form-control" name="password" required th:placeholder="#{form.login.placeholder.password}"
                        type="password">
             </div>
             <div class="form-group">
-                <label class="sr-only" for="passwordConfirm">Password Confirm</label>
+                <label class="sr-only" for="passwordConfirm" th:text="#{passw.conf.field}"></label>
                 <input class="form-control" name="passwordConfirm" required
                        th:placeholder="#{form.login.placeholder.password.confirm}"
                        type="password">
@@ -51,10 +56,10 @@
                        onfocus="(this.type='date')" th:placeholder="#{form.registration.placeholder.birthDate}"
                        type="text">
             </div>
-            <div class="form-group">
-                <input class="form-control" name="accountNumber" required
-                       th:placeholder="#{form.registration.placeholder.accountNumber}" type="text">
-            </div>
+<!--            <div class="form-group">-->
+<!--                <input class="form-control" name="accountNumber" required-->
+<!--                       th:placeholder="#{form.registration.placeholder.accountNumber}" type="text">-->
+<!--            </div>-->
             <div class="input-group form-group">
                 <input class="form-control" name="balance" required
                        th:placeholder="#{form.registration.placeholder.balance}"

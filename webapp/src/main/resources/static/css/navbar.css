@@ -34,3 +34,27 @@
 .logout-btn{
     margin-left: 20em !important;
 }
+
+
+html {
+    /* important! */
+    position: relative !important;
+    min-height: 100% !important;
+}
+
+body {
+    /* important! */
+    margin-bottom: 64px !important; /* margin bottom = footer height */
+}
+
+footer {
+    /* important! */
+    bottom: 0 !important;
+    height: 64px  !important; /* height = body margin-bottom */
+    position: absolute  !important;
+    width: 100%  !important ;
+
+    /* optional */
+    border-top: 1px solid lightgrey  !important;
+    text-align: center  !important;
+}

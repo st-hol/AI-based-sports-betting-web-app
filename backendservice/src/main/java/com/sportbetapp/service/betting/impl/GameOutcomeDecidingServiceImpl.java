@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -194,19 +196,20 @@ public class GameOutcomeDecidingServiceImpl implements GameOutcomeDecidingServic
 
         List<Guess> guesses = guessService.findAllByEvent(sportEvent);
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         guesses.forEach(guess -> {
             if (betTypePredicateMap.get(guess.getBet().getType()).test(guess, Pair.of(firstTeamRes, secondTeamRes))) {
                 guess.getWagers().forEach(wager -> {
                     wager.setOutcomeType(OutcomeType.SUCCESS);
                     User winnerUser = wager.getUser();
                     BigDecimal winAmount = userService.addWinAmountToBalance(winnerUser, wager);
-                    sendMailNotification(wager, winAmount);
+                    executorService.submit(() -> sendMailNotification(wager, winAmount));
                 });
                 winnerGuesses.add(guess);
             } else {
                 guess.getWagers().forEach(wager -> {
                     wager.setOutcomeType(OutcomeType.FAILURE);
-                    sendMailNotification(wager, BigDecimal.ZERO);
+                    executorService.submit(() -> sendMailNotification(wager, BigDecimal.ZERO));
                 });
             }
         });

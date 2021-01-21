@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -9,10 +9,10 @@
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/pagination/pagination-predict-sp.js}"></script>
-
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<!--<div th:replace="fragments/navbar :: navbar">&nbsp;</div>-->
 
 
 <div class="alert alert-danger" role="alert" th:if="${eventAlreadyStarted}" th:text="#{event.already.started}">
@@ -117,6 +117,6 @@
     </div>
 </div>
 
-
+<div th:replace="fragments/fab :: fab">&nbsp;</div>
 </body>
 </html>

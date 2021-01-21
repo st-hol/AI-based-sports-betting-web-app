@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <title th:text="#{admin.upload.template}"></title>
 
@@ -9,10 +9,12 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/personal-cabinet.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
+
     <script th:src="@{/js/ajax/upload-stats.js}"></script>
 </head>
 <body>
@@ -24,9 +26,9 @@
 <!--<jsp:include page="${pageContext.request.contextPath}/jsp/common/navbar-cabinet.jsp"/>-->
 
 
-<div class="upload-container">
+<div style="text-align: center; margin: 0 auto;" class="upload-container">
     <div class="upload-header">
-        <h3 th:text="#{admin.upload.template}"></h3>
+        <h1 th:text="#{admin.upload.template}"></h1>
     </div>
     <div class="upload-content">
         <div class="single-upload">
@@ -73,5 +75,6 @@
     </div>
 </div>
 
+<div th:replace="fragments/fab :: fab">&nbsp;</div>
 </body>
 </html>

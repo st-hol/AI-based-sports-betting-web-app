@@ -13,4 +13,6 @@ import com.sportbetapp.domain.user.role.Role;
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Long> {
     List<Role> findAllByUsers(User user);
+
+    Role findByName(String nameRole);
 }

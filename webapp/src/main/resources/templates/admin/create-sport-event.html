@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -9,10 +9,11 @@
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/ajax/create-sport-event.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
-<div class="container">
+<!--<div th:replace="fragments/navbar :: navbar">&nbsp;</div>-->
+<div class="container d-flex justify-content-center align-items-center">
     <div class="login-page col-lg-4 col-md-7">
 
         <form action="#" class="form-signin" method="post"
@@ -84,12 +85,8 @@
             </div>
 
         </form>
-
-        <div class="change-view form-group">
-            <a th:href="@{'/user/bets?eventId='}" th:text="#{go.to.bets}"></a>
-        </div>
-
     </div>
 </div>
+<div th:replace="fragments/fab :: fab">&nbsp;</div>
 </body>
 </html>

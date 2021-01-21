@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/libs/slick/slick-theme.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/libs/animate.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/listview.css}">
 
     <!-- SCRIPTS -->
     <script type="text/javascript" th:src="@{/libs/slick/slick.min.js}"></script>
@@ -57,7 +58,7 @@
     <h1 class="some-text wow bounceInDown" data-wow-delay="1s" th:text="#{land.slogan}">
     </h1>
     <br>
-    <a href="/user/home" sec:authorize="isAuthenticated()">
+    <a href="/default-home" sec:authorize="isAuthenticated()">
         <button class="sign-up wow bounceInUp" data-wow-delay="1.5s" th:text="#{land.main.btn.title}"></button>
     </a>
     <a href="/registration" sec:authorize="isAnonymous()">
@@ -71,25 +72,68 @@
     <div class="about-cont">
         <div class="abouts">
             <div class="about-item wow slideInUp" data-wow-delay="0.5s">
-                <div class="col home-column">
-                    <th:block th:each="event : ${upcomingEvents}">
-                        <div class="card container col-lg-6">
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${event.sportEvent.title}"></h5>
-                                <p class="card-text"
-                                   th:text="#{event.time.start} + ': ' + ${event.sportEvent.startDate}"></p>
-                                <p class="card-text"
-                                   th:text="#{event.time.finish} + ': ' + ${event.sportEvent.endDate}"></p>
-                            </div>
-                            <div class="card-footer" sec:authorize="isAuthenticated()">
-                                <a class="btn btn-primary"
-                                   th:href="@{'/user/make-wager?eventId=' + ${event.sportEvent.id}}"
-                                   th:text="#{event.to.bets}"></a>
-                            </div>
+                <section class="container">
+                    <!-- Header Bar -->
+                    <header>
+                        <div class="priority-col">
+                            <label th:text="#{bet.on}"> </label>
                         </div>
-                        <br>
-                    </th:block>
-                </div>
+                        <div class="status-col">
+                            <label th:text="#{sport.event.title}"> </label>
+                        </div>
+                        <div class="progress-col">
+                            <label th:text="#{event.time.start}"> </label>
+                        </div>
+                        <div class="dates-col">
+                            <label th:text="#{event.time.finish}"></label>
+                        </div>
+                    </header>
+                    <!-- List Items -->
+                    <ul class="task-items">
+                        <th:block th:each="event : ${upcomingEvents}">
+                            <!-- List Item -->
+                            <li class="item type1">
+                                <div class="task">
+                                    <a class="btn btn-primary" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"
+                                       th:text="#{event.to.bets}"></a>
+                                </div>
+
+                                <div class="status">
+                                    <div class="icon off"></div>
+                                    <div class="text" th:text="${event.sportEvent.title}"></div>
+                                </div>
+
+                                <div class="dates">
+                                    <div class="bar" th:text="${event.sportEvent.startDate}"></div>
+                                </div>
+                                <div class="priority">
+                                    <div class="bar"  th:text="${event.sportEvent.endDate}"></div>
+                                </div>
+                            </li>
+                        </th:block>
+
+                    </ul>
+
+                </section>
+<!--                <div class="col home-column">-->
+<!--                    <th:block th:each="event : ${upcomingEvents}">-->
+<!--                        <div class="card container col-lg-6">-->
+<!--                            <div class="card-body">-->
+<!--                                <h5 class="card-title" th:text="${event.sportEvent.title}"></h5>-->
+<!--                                <p class="card-text"-->
+<!--                                   th:text="#{event.time.start} + ': ' + ${event.sportEvent.startDate}"></p>-->
+<!--                                <p class="card-text"-->
+<!--                                   th:text="#{event.time.finish} + ': ' + ${event.sportEvent.endDate}"></p>-->
+<!--                            </div>-->
+<!--                            <div class="card-footer" sec:authorize="isAuthenticated()">-->
+<!--                                <a class="btn btn-primary"-->
+<!--                                   th:href="@{'/user/make-wager?eventId=' + ${event.sportEvent.id}}"-->
+<!--                                   th:text="#{event.to.bets}"></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <br>-->
+<!--                    </th:block>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

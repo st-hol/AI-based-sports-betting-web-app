@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -12,8 +12,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
-<div class="container">
-    <div class="login-page col-lg-4 col-md-7">
+<br>
+<h2 class="hdrtitle" th:text="#{form.login.header}"></h2>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="login-page">
         <ul>
             <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
                 <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
@@ -27,14 +29,13 @@
             </div>
             <div class="alert alert-danger" role="alert" th:if="${error}" th:text="#{login.error.alert}"></div>
 
-            <h2 th:text="#{form.login.header}"></h2>
             <div class="form-group">
-                <label class="sr-only" for="username">Username</label>
+                <label class="sr-only" for="username" th:text="#{username.field}"></label>
                 <input autofocus class="form-control" id="username" name="username"
                        required th:placeholder="#{form.login.placeholder.email}" type="text">
             </div>
             <div class="form-group">
-                <label class="sr-only" for="password">Password</label>
+                <label class="sr-only" for="password" th:text="#{passw.field}"></label>
                 <input class="form-control" id="password" name="password"
                        th:placeholder="#{form.login.placeholder.password}"
                        type="password">

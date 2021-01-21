@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.domain.user.role.Role;
 import com.sportbetapp.repository.user.RoleRepository;
 import com.sportbetapp.service.user.RoleService;
-import com.google.common.collect.Lists;
 
 
 
@@ -43,5 +43,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findAllByUser(User user) {
         return roleRepository.findAllByUsers(user);
+    }
+
+    @Override
+    public Role obtainRoleByName(String nameRole) {
+        return roleRepository.findByName(nameRole);
     }
 }

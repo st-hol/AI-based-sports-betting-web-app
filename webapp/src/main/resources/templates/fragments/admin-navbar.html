@@ -15,16 +15,17 @@
             <img th:src="@{image/orangmin.png}" alt="">
         </a>
         <a class="nav-item nav-link" href="/" th:text="#{navbar.welcome.page}"></a>
-        <a class="nav-item nav-link" href="/default-home" th:text="#{navbar.home}"></a>
-        <a class="nav-item nav-link" href="/user/wagers" th:text="#{navbar.wagers}"></a>
-        <a class="nav-item nav-link" href="/user/events" th:text="#{navbar.events}"></a>
+        <a class="nav-item nav-link" href="/admin/home" th:text="#{navbar.home}"></a>
+        <a class="nav-item nav-link" href="/admin/upload-stats" th:text="#{navbar.home}"></a>
+        <a class="nav-item nav-link" href="/admin/predict" th:text="#{navbar.events}"></a>
+        <a class="nav-item nav-link" href="/admin/create-sport-event" th:text="#{navbar.wagers}"></a>
+        <a class="nav-item nav-link" href="/admin/predict-sport-event" th:text="#{navbar.events}"></a>
         <a class="nav-item nav-link" href="/logout" th:text="#{navbar.logout}"></a>
     </div>
     <div class="navbar-nav ml-auto">
-        <div class="navbar-nav"
-             th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">
+        <div th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">
 
-            <div class="navbar-nav" th:if="${(param.lang != null)}" >
+            <div th:if="${(param.lang != null)}">
                 <a class="nav-item nav-link"
                    th:href="@{${urlBuilder.replaceQueryParam('lang', 'ua').build().toUriString()}}"
                    th:text="#{navbar.locale.ua}"
@@ -35,7 +36,7 @@
                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
                 </a>
             </div>
-            <div class="navbar-nav" th:if="${(param.lang == null)}">
+            <div th:if="${(param.lang == null)}">
                 <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=ua)}" th:text="#{navbar.locale.ua}"></a>
                 <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=eng)}" th:text="#{navbar.locale.eng}"></a>
             </div>

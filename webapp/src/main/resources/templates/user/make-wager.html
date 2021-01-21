@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/radio-btn.css}">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/make-wager.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
@@ -43,7 +45,7 @@
             <!-- info-->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${event.title} + ': ' + ${event.startDate}"></h5>
+                    <h5 class="card-title" th:text="${event.title}"></h5>
                     <!--                  type -->
                     <p class="card-text"
                        th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
@@ -246,10 +248,14 @@
         </form>
 
         <div class="change-view form-group">
-            <a th:href="@{'/user/bets?eventId=' + ${event.id}}" th:text="#{go.to.bets}"></a>
+            <a th:href="@{'/user/events'}" th:text="#{go.back.to.events}"></a>
         </div>
 
     </div>
 </div>
+<br>
+<br>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+
 </body>
 </html>

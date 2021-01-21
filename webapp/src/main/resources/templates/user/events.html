@@ -1,39 +1,106 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="UTF-8">
     <title th:text="#{events}"></title>
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/pagination/pagination-events.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/listview.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
-<div class="row">
+<br>
 
+<h1 class="text-center" th:text="#{events.header}"></h1>
+<section class="container">
 
-    <div class="col home-column">
-        <h1 class="display-4 text-center" th:text="#{events.header}"></h1>
+    <!-- Header Bar -->
+    <header>
+<!--        <div class="button-col">-->
+<!--            <button class="btn" name="Add Task"> Add Task</button>-->
+<!--        </div>-->
+        <div class="priority-col">
+            <label th:text="#{bet.on}"> </label>
+        </div>
+        <div class="status-col">
+            <label th:text="#{sport.event.title}"> </label>
+        </div>
+        <div class="progress-col">
+            <label th:text="#{event.time.start}"> </label>
+        </div>
+        <div class="dates-col">
+            <label th:text="#{event.time.finish}"></label>
+        </div>
+<!--        <div class="icon-col">-->
+<!--            <i class="icon fa fa-user-o"> </i>-->
+<!--        </div>-->
+    </header>
+
+    <!-- List Items -->
+    <ul class="task-items">
         <th:block th:each="event : ${events}">
-            <div class="card container col-lg-6">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${event.title}"></h5>
-                    <p class="card-text"
-                       th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>
-                    <p class="card-text"
-                       th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>
-                </div>
-                <div class="card-footer">
+            <!-- List Item -->
+            <li class="item type1">
+                <div class="task">
                     <a class="btn btn-primary" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"
                        th:text="#{event.to.bets}"></a>
+<!--                    <div class="name" style="width:150px"></div>-->
                 </div>
-            </div>
-            <br>
+
+                <div class="status">
+                    <div class="icon off"></div>
+                    <div class="text" th:text="${event.title}"></div>
+                </div>
+
+                <div class="dates">
+                    <div class="bar" th:text="${event.startDate}"></div>
+                </div>
+
+                <div class="priority">
+                    <div class="bar"  th:text="${event.endDate}"></div>
+                </div>
+
+
+<!--                <div class="progress">-->
+<!--                    <progress value="15" max="100"/>-->
+<!--                </div>-->
+
+                <div class="user">
+                    <!--                    <img src="https://source.unsplash.com/40x40/?indian" alt="Image 001" class="owner-img"/>-->
+                </div>
+            </li>
         </th:block>
-    </div>
-</div>
+
+    </ul>
+
+</section>
+
+<!--<div class="row">-->
+<!--    <div class="col home-column">-->
+<!--        <h1 class="display-4 text-center" th:text="#{events.header}"></h1>-->
+<!--        <th:block th:each="event : ${events}">-->
+<!--            <div class="card container col-lg-6">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title" th:text="${event.title}"></h5>-->
+<!--                    <p class="card-text"-->
+<!--                       th:text="#{event.time.start} + ': ' + ${event.startDate}"></p>-->
+<!--                    <p class="card-text"-->
+<!--                       th:text="#{event.time.finish} + ': ' + ${event.endDate}"></p>-->
+<!--                </div>-->
+<!--                <div class="card-footer">-->
+<!--                    <a class="btn btn-primary" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"-->
+<!--                       th:text="#{event.to.bets}"></a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--        </th:block>-->
+<!--    </div>-->
+<!--</div>-->
 <br>
 <br>
 <div class="container mt-2">
@@ -74,5 +141,9 @@
         </div>
     </div>
 </div>
+<br>
+<br>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+
 </body>
 </html>

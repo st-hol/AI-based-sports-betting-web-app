@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title th:text="#{home}"></title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+<div class="overlay"></div>
+<div class="search-input">
+    <h6 class="mb-3 text-center text-white"><b>Feeling Stuck?</b> Search our Knowledge Base</h6>
+    <div class="input-group">
+        <input placeholder="search" class=" search-input-styles form-control"/>
+    </div>
+</div>
+
+
+<div class="top-nav-wrapper">
+    <div class="top-nav">
+        <div class="hamburger-menu">
+            <div class="hamburger-icon">
+                <div class="bar-one"></div>
+                <div class="bar-two"></div>
+                <div class="bar-three"></div>
+            </div>
+        </div>
+        <div class="logo" th:text="#{admin.title}"></div>
+        <div class="nav-slider"></div>
+
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/">
+                <button class="active dashboard-btn nav-btn" th:text="#{navbar.welcome.page}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/default-home">
+                <button class="active dashboard-btn nav-btn" th:text="#{navbar.home}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/admin/upload-stats">
+                <button class="active dashboard-btn nav-btn" th:text="#{admin.navbar.upload.stats}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/admin/predict">
+                <button class="active dashboard-btn nav-btn" th:text="#{admin.navbar.predict}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/admin/create-sport-event">
+                <button class="active dashboard-btn nav-btn" th:text="#{admin.navbar.create.event}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/admin/predict-sport-event">
+                <button class="active dashboard-btn nav-btn" th:text="#{admin.navbar.predict.event}"></button>
+            </a>
+        </div>
+        <div class="dashboard">
+            <a class="nav-item nav-link" href="/logout">
+                <button class="active dashboard-btn nav-btn" th:text="#{navbar.logout}"></button>
+            </a>
+        </div>
+
+
+        <div class="nav-slider"></div>
+        <div class="search">
+            <button class="material-icons not-active-icon search-btn">search</button>
+        </div>
+        <div class="message">
+            <button class="material-icons not-active-icon message-btn">question_answer</button>
+        </div>
+        <div class="profile-info">
+            <button class="material-icons not-active-icon profile-btn">person</button>
+        </div>
+    </div>
+</div>
+
+<!--<div class="mobile-nav">-->
+<!--    <div class="mobile-dashboard-link">Dashboard</div>-->
+<!--    <div class="mobile-dashboard-link">Hosting</div>-->
+<!--    <div class="mobile-dashboard-link">Marketplace</div>-->
+<!--    <div class="mobile-dashboard-link">Domains</div>-->
+<!--</div>-->
+
+<div class="main-page-wrapper">
+    <div class="account-info-drop-down mt-2 hidden temporary-box-shadow">
+        <div class="account-info-header border-bottom">
+            <p class="my-0  pt-2 pl-3" th:text="${user.name}"></p>
+            <p class="my-0 pl-3 pb-2 text-secondary"><small>Client ID: <span th:text="${user.id}"></span></small></p>
+        </div>
+        <div class="mobile-manage-account-link mobile-dropdown-link pl-3 manage-account-btn">Manage account</div>
+        <div class="mobile-request-migration-link mobile-dropdown-link pl-3">Request migration</div>
+        <div class="mobile-request-migration-link mobile-dropdown-link pl-3 border-top">Sign out</div>
+    </div>
+
+</div>
+
+
+<div class="container">
+    <h4 class="mt-4 mb-4" th:text="#{label.info}"></h4>
+    <div class="row">
+
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 mb-4 temporary-box-shadow">
+                <div class="d-flex">
+                    <div class="pl-5 pr-2 d-flex align-items-center justify-content-center">
+                        <div class="material-icons icons">account_circle</div>
+                    </div>
+                    <div class="flex-fill">
+                        <div class="card-body">
+                            <p class="card-title mt-2 text-secondary" th:text="#{land.top.title}"></p>
+                            <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.email}"><span
+                                    th:text="${user.email}"></span></p>
+                            <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.id}"><span
+                                    th:text="${user.id}"></span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="mx-5 small text-secondary" th:text="#{role.admin}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 bg-primary">
+                <div class="card-body">
+                    <h5 class="font-weight-bold title-line-height text-white mb-4"
+                    th:text="#{take.opport}">
+                    </h5>
+                    <p class="text-white mb-4" th:text="#{click.predict}"></p>
+
+                    <a class="nav-item nav-link" href="/admin/predict">
+                        <button class="btn btn-warning text-white mb-2" th:text="#{admin.navbar.predict}"></button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="page my-4 dashboard-page">
+        <div class="mt-5">
+            <h4 class="mb-4" th:text="#{stay.touch}"></h4>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 temporary-box-shadow mysites-card mb-4">
+                        <!-- Temporary Div that will be changed to an img tag STARTS  -->
+                        <div class="card-img-top weebly-bg">
+                            <svg width="66px" height="51px" viewBox="0 0 66 51" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 class="weebly-logo">
+                                <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+                                <desc>Created with Sketch.</desc>
+                                <defs></defs>
+                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Website-Dashboard-Copy-6" transform="translate(-284.000000, -233.000000)"
+                                       fill="#FFFFFF">
+                                        <g id="Group-6" transform="translate(248.000000, 189.000000)">
+                                            <g id="Group-5" transform="translate(36.000000, 44.000000)">
+                                                <path d="M58.8016176,15.0357688 L50.1777936,39.5595769 C49.1248824,42.526448 47.3738232,44.7352604 44.0789712,44.7352604 C40.9921776,44.7352604 39.1697064,43.0018742 38.2591176,40.0318905 L33.0696168,23.7101219 L32.928588,23.7101219 L27.74244,40.0318905 C26.8300296,43.0024063 25.0070304,44.7009688 21.9210288,44.7009688 C18.6256752,44.7009688 16.8730584,42.5106191 15.8219424,39.5434553 L7.2685008,15.1682529 C6.567264,13.1184746 6.2168832,11.8501394 6.2168832,10.3646154 C6.2168832,8.10334152 8.321412,6.27072534 11.2645896,6.27072534 C13.7189712,6.27072534 15.471588,7.90121024 16.032588,10.303295 L21.8521776,29.745728 L21.9914112,29.745728 L27.8811456,10.7317133 C28.6537944,7.97655056 30.0552648,6.27072534 33.0010296,6.27072534 C35.9452632,6.27072534 37.3469712,7.97370402 38.1180888,10.7288401 L44.0080872,29.745728 L44.1472944,29.745728 L49.9687056,10.303295 C50.52894,7.90121024 52.2812928,6.26476622 54.736176,6.26476622 C57.6793536,6.26476622 59.7831168,8.10411301 59.7831168,11.2138967 C59.7831168,12.3437621 59.2906776,13.4788152 58.8016176,15.0355028 L58.8016176,15.0357688 Z M54.736176,0 C49.5871464,0 45.2958528,3.44958663 43.9797072,8.61228777 C41.60706,0.85473493 35.5342944,0.00598572502 33.0010296,0.00598572502 C30.4682928,0.00598572502 24.397824,0.85473493 22.0207944,8.61047875 C20.7041472,3.45272581 16.412352,0.00598572502 11.2645896,0.00598572502 C4.9479408,0.00598572502 0,4.55633389 0,10.3651475 C0,12.9340078 0.6298248,14.9848502 1.3909104,17.2092255 L9.9675576,41.6498985 C12.8393232,49.7555811 18.6898536,50.9659745 21.9212928,50.9659745 C26.9903832,50.9659745 30.9403248,48.3498136 33.000264,43.7132178 C35.061972,48.3705907 39.0124416,51 44.0789712,51 C47.3065296,51 53.1511464,49.7875315 56.0376168,41.6519735 L64.6614408,17.1281655 L64.7287344,16.9257947 C64.8272064,16.6114511 64.9267344,16.316581 65.02056,16.0365022 C65.4797352,14.6673674 66,13.1156014 66,11.2138967 C66,4.71637887 61.2629424,0 54.736176,0 Z"
+                                                      id="Fill-1"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Temporary Div that will be changed to an img tag ENDS  -->
+                        <a href=https://www.topendsports.com/events/calendar-2020.htm>
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h5 class="card-text font-weight-bold">topendsports.com</h5>
+                                    <div class="arrow-group ml-2">
+                                        <div class="arrow-head"></div>
+                                        <div class="arrow-steam"></div>
+                                    </div>
+                                </div>
+                                <p class="card-text">Top End Sports</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 temporary-box-shadow mysites-card mb-4">
+                        <!-- Temporary Div that will be changed to an img tag STARTS  -->
+                        <div class="card-img-top wp-bg">
+                            <svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 class="wp-logo">
+                                <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+                                <desc>Created with Sketch.</desc>
+                                <defs></defs>
+                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Website-Dashboard-Copy-6" transform="translate(-288.000000, -399.000000)"
+                                       fill="#FFFFFF" fill-rule="nonzero">
+                                        <g id="Group-9" transform="translate(248.000000, 358.000000)">
+                                            <g id="1484701428_wordpress-copy"
+                                               transform="translate(40.000000, 41.000000)">
+                                                <path d="M29,0 C13.010125,0 0,13.0097184 0,28.9990938 C0,44.9884691 13.010125,58 29,58 C44.989875,58 58,44.9884691 58,28.9990938 C58,13.0097184 44.989875,0 29,0 Z M2.9271875,28.9990938 C2.9271875,25.2183369 3.737375,21.6315115 5.1855625,18.3890503 L17.621125,52.4629855 C8.92475,48.2381801 2.9271875,39.3191463 2.9271875,28.9990938 Z M29,55.072904 C26.44075,55.072904 23.9703125,54.6995406 21.6358125,54.0126246 L29.4585625,31.28096 L37.4734375,53.2368988 C37.526,53.3637699 37.5894375,53.4833911 37.660125,53.5939502 C34.948625,54.5509203 32.03775,55.072904 29,55.072904 Z M32.592375,16.7741633 C34.162,16.6926034 35.57575,16.527671 35.57575,16.527671 C36.9804375,16.3609262 36.8155,14.2965532 35.409,14.3781132 C35.409,14.3781132 31.1876875,14.7097903 28.459875,14.7097903 C25.897,14.7097903 21.5923125,14.3781132 21.5923125,14.3781132 C20.187625,14.2947408 20.0226875,16.4424862 21.427375,16.527671 C21.427375,16.527671 22.75775,16.6926034 24.1624375,16.7741633 L28.22425,27.9061904 L22.5185,45.0174682 L13.0264375,16.7741633 C14.597875,16.6926034 16.0098125,16.527671 16.0098125,16.527671 C17.410875,16.3609262 17.2495625,14.2965532 15.8430625,14.3781132 C15.8430625,14.3781132 11.6199375,14.7097903 8.892125,14.7097903 C8.40275,14.7097903 7.826375,14.6989157 7.21375,14.6771663 C11.879125,7.59957501 19.8921875,2.92709603 29,2.92709603 C35.7878125,2.92709603 41.9684375,5.52070248 46.6084375,9.7726946 C46.4960625,9.76363239 46.3855,9.74913284 46.2695,9.74913284 C43.7084375,9.74913284 41.8905,11.9802506 41.8905,14.3781132 C41.8905,16.527671 43.13025,18.3437393 44.4515625,20.4932971 C45.443,22.2278054 46.603,24.4589232 46.603,27.6850723 C46.603,29.9143777 45.743875,32.5043592 44.6183125,36.112934 L42.0155625,44.799975 L32.592375,16.7741633 Z M51.8791875,16.4914221 C53.914625,20.206931 55.0728125,24.4661729 55.0728125,28.9990938 C55.0728125,38.6195431 49.8600625,47.0147808 42.1098125,51.536827 L50.0739375,28.5115465 C51.5601875,24.7924127 52.0568125,21.8181932 52.0568125,19.1756508 C52.055,18.2132433 51.993375,17.3233336 51.8791875,16.4914221 Z"
+                                                      id="Shape"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <!-- Temporary Div that will be changed to an img tag ENDS  -->
+                        <a href="https://www.bbc.com/sport/50765073">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h5 class="card-text font-weight-bold">bbc.com</h5>
+                                    <div class="arrow-group ml-2">
+                                        <div class="arrow-head"></div>
+                                        <div class="arrow-steam"></div>
+                                    </div>
+                                </div>
+                                <p class="card-text">BBC</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+
+                    <div class="card border-0 mb-4 temporary-box-shadow">
+                        <div class="d-flex">
+                            <div class="pl-4 pr-2 d-flex align-items-center justify-content-center red">
+                                <div class="material-icons icons"></div>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="card-body">
+                                    <a href="/user/home">
+                                        <p class="card-title font-weight-bold mt-2"  th:text="#{user.home}"></p>
+                                    </a>
+
+                                    <p class="card-subtitle text-secondary ellipsis-length-long mb-2"
+                                       th:text="#{label.plan}"> : <b th:text="#{too.user.cab}"></b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="arrow-group mt-3 mr-3">
+                                    <div class="arrow-head"></div>
+                                    <div class="arrow-steam"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 mb-4 temporary-box-shadow">
+                        <div class="d-flex">
+                            <div class="pl-4 pr-2 d-flex align-items-center justify-content-center red">
+                                <div class="material-icons icons"></div>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="card-body">
+                                    <a href="/user/events">
+                                        <p class="card-title font-weight-bold mt-2" th:text="#{label.all.events}"></p>
+                                    </a>
+                                    <p class="card-subtitle text-secondary ellipsis-length-long mb-2"
+                                       th:text="#{label.plan}"> : <b th:text="#{label.see.cur.ev}"></b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="arrow-group mt-3 mr-3">
+                                    <div class="arrow-head"></div>
+                                    <div class="arrow-steam"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4 class="mb-4" th:text="#{label.bet.types}"></h4>
+                    <div class="card border-0 mb-4 temporary-box-shadow">
+
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="package-title font-weight-bold" th:text="#{label.name}"></div>
+                                <div class="total-title font-weight-bold" th:text="#{label.coefficient}"></div>
+                                <div class="arrow-title"></div>
+                            </div>
+
+                            <th:block th:each="betType : ${betTypes}">
+                                <div class="invoice-table">
+                                    <div class="package py-3">
+                                        <div class="ellipsis-length mr-2" th:text="${betType.value}"></div>
+                                    </div>
+                                    <div class="total py-3" th:text="${betType.coefficient}"></div>
+                                    <div class="arrow py-3"></div>
+                                </div>
+                            </th:block>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h4 class="mb-4" th:text="#{wager.guess.sportEvent.sportType}"></h4>
+                    <div class="card border-0 mb-4 temporary-box-shadow">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="package-title font-weight-bold" th:text="#{label.name}"></div>
+                                <div class="arrow-title"></div>
+                            </div>
+
+                            <th:block th:each="sportType : ${sportTypes}">
+                                <div class="invoice-table">
+                                    <div class="package py-3">
+                                        <div class="ellipsis-length mr-2" th:text="${sportType.value}"></div>
+                                    </div>
+                                    <div class="arrow py-3"></div>
+                                </div>
+                            </th:block>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page mt-4 marketplace-page" th:if="${#lists.size(upcomingEvents) > 0}">
+        <div class="mt-5">
+            <h4 class="mb-4" th:text="#{sport.events}"></h4>
+            <div class="row">
+                <!--                for each-->
+                <th:block th:each="event : ${upcomingEvents}">
+
+                    <div class="col-lg-3 col-md-6 col-sm-12 col-sx-12">
+                        <div class="card border-0 temporary-box-shadow mysites-card mb-4">
+                            <!-- Temporary Div that will be changed to an img tag STARTS -->
+                            <div class="card-img-top"></div>
+                            <!-- Temporary Div that will be changed to an img tag ENDS -->
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h5 class="card-text font-weight-bold" th:text="${event.sportEvent.title}"></h5>
+                                    <div class="arrow-group ml-2">
+                                        <div class="arrow-head"></div>
+                                        <div class="arrow-steam"></div>
+                                    </div>
+                                </div>
+                                <p class="card-text"
+                                   th:text="#{event.time.start} + ': ' + ${event.sportEvent.startDate}"></p>
+                                <p class="card-text"
+                                   th:text="#{event.time.finish} + ': ' + ${event.sportEvent.endDate}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <!--                for each-->
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--    <div class="page mt-4 manage-account-page">-->
+    <!--        <div class="mt-5">-->
+    <!--            <h4 class="mb-4">Manage Account</h4>-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-lg-12">-->
+    <!--                    <div class="card border-0 mb-4 temporary-box-shadow">-->
+    <!--                        <div class="card-body">-->
+    <!--                            <h6 class="card-title font-weight-bold mt-2">Personal Information</h6>-->
+    <!--                            <p class="text-secondary mb-4">Basic info, like your name and email address, that you use on-->
+    <!--                                HostGator services</p>-->
+    <!--                            <p>Account Number: 30056845</p>-->
+    <!--                        </div>-->
+    <!--                        <div class="card-footer bg-white text-primary px-4 py-4"><a href="">Manage your personal-->
+    <!--                            info</a></div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div class="page mt-4 message-page">-->
+    <!--        <div class="mt-5">-->
+    <!--            <h4 class="mb-4">Messaging</h4>-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-lg-8">-->
+
+    <!--                    <div class="card border-0 mb-4 temporary-box-shadow">-->
+    <!--                        <div class="d-flex">-->
+    <!--                            <div class="pl-5 pr-2 d-flex align-items-center justify-content-center">-->
+    <!--                                <div class="material-icons icons">account_circle</div>-->
+    <!--                            </div>-->
+    <!--                            <div class="flex-fill">-->
+    <!--                                <div class="card-body">-->
+    <!--                                    <p class="card-title mt-2 text-secondary">Primarydomain.com</p>-->
+    <!--                                    <p class="card-subtitle ellipsis-length-long mb-2">RE: Ticket #826</p>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                            <div class="d-flex align-items-center justify-content-center">-->
+    <!--                                <div class="mx-5 small text-secondary">2 days ago</div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+
+
+    <!--                <div class="col-lg-4">-->
+
+
+    <!--                    <div class="card border-0 bg-primary">-->
+    <!--                        <div class="card-body">-->
+    <!--                            <h5 class="font-weight-bold title-line-height text-white mb-4">HostGator gives FREE SSL-->
+    <!--                                Certificates to customers!</h5>-->
+    <!--                            <p class="text-white mb-4">Lorem ipsum dolor milk shake in the house?</p>-->
+    <!--                            <button class="btn btn-warning text-white mb-2">Read More</button>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+
+
+</body>
+</html>

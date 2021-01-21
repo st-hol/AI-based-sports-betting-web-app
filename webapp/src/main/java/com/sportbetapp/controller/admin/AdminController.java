@@ -1,9 +1,6 @@
 package com.sportbetapp.controller.admin;
 
-import static com.sportbetapp.domain.type.SportType.FOOTBALL;
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sportbetapp.domain.betting.SportEvent;
-import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.technical.Pager;
 import com.sportbetapp.dto.betting.CreateSportEventDto;
 import com.sportbetapp.dto.betting.PlayerSideDto;
@@ -35,12 +30,14 @@ import com.sportbetapp.dto.predicting.CreatePredictorSportEventDto;
 import com.sportbetapp.dto.predicting.PredictionDto;
 import com.sportbetapp.exception.CanNotPlayAgainstItselfException;
 import com.sportbetapp.exception.EventAlreadyPredictedException;
-import com.sportbetapp.exception.EventAlreadyStartedException;
 import com.sportbetapp.exception.NoPredictAnalysisDataAvailableException;
+import com.sportbetapp.service.betting.BetTypeService;
 import com.sportbetapp.service.betting.SportEventService;
+import com.sportbetapp.service.betting.SportTypeService;
 import com.sportbetapp.service.predicting.PredictSportEventService;
 import com.sportbetapp.service.predicting.PredictionService;
 import com.sportbetapp.service.predicting.StatisticUploadService;
+import com.sportbetapp.service.scheduling.UpcomingEventToPredictService;
 import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.validator.sportevent.ChooseSportTypeValidator;
 import com.sportbetapp.validator.sportevent.CreateSportEventValidator;
@@ -71,7 +68,22 @@ public class AdminController {
     private StatisticUploadService statisticUploadService;
     @Autowired
     private SportEventService sportEventService;
+    @Autowired
+    private UpcomingEventToPredictService upcomingEventToPredictService;
+    @Autowired
+    private BetTypeService betTypeService;
+    @Autowired
+    private SportTypeService sportTypeService;
 
+    @GetMapping({"/home", "/"})
+    public String home(Model model) {
+        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
+        model.addAttribute("upcomingEvents", upcomingEventToPredictService.findTop3Upcoming());
+        model.addAttribute("betTypes", betTypeService.getAllBetTypes());
+        model.addAttribute("sportTypes", sportTypeService.getAllSportTypes());
+
+        return "admin/home";
+    }
 
     @GetMapping("/predict")
     public String formPrediction(Model model) {

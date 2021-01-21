@@ -1,6 +1,8 @@
 package com.sportbetapp.controller.account;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,11 +50,23 @@ public class AccountController {
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-        if (error != null)
+        if (error != null) {
             model.addAttribute("error", "Your username and password is invalid.");
-        if (logout != null)
+        }
+        if (logout != null) {
             model.addAttribute("message", "You have been logged out successfully.");
+        }
         return "common/login";
+    }
+
+    @GetMapping("/success-login")
+    public String defaultAfterLogin(HttpServletRequest request) {
+        if (request.isUserInRole("ADMIN")) {
+            return "redirect:/admin/home";
+        } else if (request.isUserInRole("CLIENT")) {
+            return "redirect:/user/home";
+        }
+        return "redirect:/";
     }
 
 }

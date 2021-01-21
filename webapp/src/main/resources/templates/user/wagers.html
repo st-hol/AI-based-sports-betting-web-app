@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -10,6 +10,8 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script th:src="@{/js/pagination/pagination-wagers.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
@@ -127,6 +129,9 @@
         <!--        </nav>-->
     </div>
 </div>
+<br>
+<br>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
 
 </body>
 </html>

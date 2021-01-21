@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="fab">
+    <a href="/default-home" class="float">
+        <i class="fa fa-home my-float"></i>
+    </a>
+    <div class="label-container">
+        <div class="label-text" th:text="#{home}"></div>
+        <i class="fa fa-play label-arrow"></i>
+    </div>
+</div>
+</body>
+</html>
