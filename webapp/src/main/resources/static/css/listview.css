@@ -158,6 +158,7 @@ ul.task-items li.item .dates .bar,
 ul.task-items li.item .priority .bar {
     background: #eeeeee;
     width: 100px;
+    text-align: center;
     height: 25px;
     border-radius: 15px;
 }

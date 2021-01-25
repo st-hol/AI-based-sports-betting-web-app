@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.betting.guess.Guess;
@@ -26,7 +27,6 @@ import com.sportbetapp.repository.betting.WagerRepository;
 import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.betting.WagerService;
-import com.google.common.collect.Lists;
 import com.sportbetapp.service.user.UserService;
 
 
@@ -72,23 +72,36 @@ public class WagerServiceImpl implements WagerService {
         if (eventAlreadyStarted(idWager)) {
             throw new EventAlreadyStartedException("Sorry, you can not delete the wager " +
                     "on event that already started or starts in one day.");
-        } else if (eventAlreadyPredicted(idWager)) {
+        }
+        if (eventAlreadyPredicted(idWager)) {
             throw new EventAlreadyPredictedException("Sorry, you can not delete the wager " +
                     "on event that already predicted.");
-        } else {
-            Wager wager = wagerRepository.findById(idWager).orElseThrow(IllegalStateException::new);
-            BigDecimal amountCompensation = wager.getAmount();
-            wagerRepository.deleteById(idWager);
-            User user = wager.getUser();
-            userService.compensateBalance(user, amountCompensation);
         }
+        Wager wager = wagerRepository.findById(idWager).orElseThrow(IllegalStateException::new);
+        BigDecimal amountCompensation = wager.getAmount();
+        wagerRepository.deleteById(idWager);
+        User user = wager.getUser();
+        userService.compensateBalance(user, amountCompensation);
+
     }
 
     ///user wager guess bet
     @Override
     @Transactional
     public void createWagerWithGuess(CreateWagerDto createWagerDto)
-            throws NotEnoughBalanceException, NotExistingGuessException {
+            throws NotEnoughBalanceException, NotExistingGuessException,
+            EventAlreadyStartedException, EventAlreadyPredictedException {
+        SportEvent sportEvent = sportEventService.findById(createWagerDto.getSportEventId());
+        boolean alreadyStarted = sportEvent.getStartDate().isEqual(LocalDate.now())
+                || sportEvent.getStartDate().isAfter(LocalDate.now());
+        if (alreadyStarted) {
+            throw new EventAlreadyStartedException("Sorry, you can not make wager " +
+                    "on event that already started or starts in one day.");
+        }
+        if (sportEvent.isAlreadyPredicted()) {
+            throw new EventAlreadyPredictedException("Sorry, you can  not make wager" +
+                    "on event that already predicted.");
+        }
         User currentUser = userService.obtainCurrentPrincipleUser();
         Wager createdWager = populateWager(createWagerDto, currentUser);
         createGuess(createWagerDto, createdWager);

@@ -13,9 +13,7 @@ public class Application {
 }
 
 // todo
-//secuiry
-// to do not allow wager on predicted already
-// ui -
+// security
 // email + spring.mail.password=*
 // integration with payment system - need or not?
 // remove orphan guess, - need fix or not?

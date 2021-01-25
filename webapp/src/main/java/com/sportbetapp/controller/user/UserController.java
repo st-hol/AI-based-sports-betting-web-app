@@ -2,12 +2,9 @@ package com.sportbetapp.controller.user;
 
 import java.util.Optional;
 
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,15 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.Wager;
-import com.sportbetapp.domain.technical.Mail;
 import com.sportbetapp.domain.technical.Pager;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
-import com.sportbetapp.dto.payload.SendFileResponse;
 import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.EventAlreadyPredictedException;
 import com.sportbetapp.exception.EventAlreadyStartedException;
@@ -37,8 +31,8 @@ import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.service.betting.BetService;
 import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.SportEventService;
-import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.service.betting.WagerService;
+import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.validator.wager.MakeNewWagerValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -143,7 +137,8 @@ public class UserController {
     @PostMapping("/make-wager")
     public String createNewWager(@ModelAttribute("guessWagerForm") CreateWagerDto wagerDto,
                                  BindingResult bindingResult, Model model)
-            throws NotEnoughBalanceException, NotExistingGuessException {
+            throws NotEnoughBalanceException, NotExistingGuessException,
+            EventAlreadyStartedException, EventAlreadyPredictedException {
 
         makeNewWagerValidator.validate(wagerDto, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -157,7 +152,6 @@ public class UserController {
         wagerService.createWagerWithGuess(wagerDto);
         return "redirect:/user/wagers";
     }
-
 
     @DeleteMapping("/wager/{idWager}")
     public String deleteWager(@PathVariable Long idWager)
@@ -178,14 +172,14 @@ public class UserController {
 
     @ExceptionHandler(EventAlreadyStartedException.class)
     public String handleEventAlreadyStartedException(Model model, Exception exception) {
-        log.error("Event is already started. Can not delete wager. {}", exception.getMessage());
+        log.error("Event is already started. {}", exception.getMessage());
         model.addAttribute("eventAlreadyStarted", true);
         return listAllWagers(model, Optional.empty(),  Optional.empty());
     }
 
     @ExceptionHandler(EventAlreadyPredictedException.class)
     public String handleEventAlreadyPredictedException(Model model, Exception exception) {
-        log.error("Event is already started. Can not delete wager. {}", exception.getMessage());
+        log.error("Event is already predicted. {}", exception.getMessage());
         model.addAttribute("eventAlreadyPredicted", true);
         return listAllWagers(model, Optional.empty(),  Optional.empty());
     }
