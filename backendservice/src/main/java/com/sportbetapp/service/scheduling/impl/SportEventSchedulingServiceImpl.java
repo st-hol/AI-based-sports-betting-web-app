@@ -38,12 +38,12 @@ public class SportEventSchedulingServiceImpl implements SportEventSchedulingServ
 
     @Override
     public void process() {
-        List<? extends Runnable> tasks = buildCodesGroupProcessingTasks();
+        List<? extends Runnable> tasks = buildUpcomingEventsProcessingTasks();
         BatchExecutionService.execute(tasks, getNumCompilationThreads(), "daily-scheduler",
                 new ClearUpcomingEventsAfterPredictionTask());
     }
 
-    private List<? extends Runnable> buildCodesGroupProcessingTasks() {
+    private List<? extends Runnable> buildUpcomingEventsProcessingTasks() {
         final List<Runnable> tasks = new LinkedList<>();
         Runnable currentTask;
         //1. Get all records from upcoming repo
