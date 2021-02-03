@@ -28,6 +28,7 @@ import com.sportbetapp.service.betting.GuessService;
 import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.betting.WagerService;
 import com.sportbetapp.service.user.UserService;
+import com.sportbetapp.util.Utils;
 
 
 @Service
@@ -82,7 +83,6 @@ public class WagerServiceImpl implements WagerService {
         wagerRepository.deleteById(idWager);
         User user = wager.getUser();
         userService.compensateBalance(user, amountCompensation);
-
     }
 
     ///user wager guess bet
@@ -92,8 +92,7 @@ public class WagerServiceImpl implements WagerService {
             throws NotEnoughBalanceException, NotExistingGuessException,
             EventAlreadyStartedException, EventAlreadyPredictedException {
         SportEvent sportEvent = sportEventService.findById(createWagerDto.getSportEventId());
-        boolean alreadyStarted = sportEvent.getStartDate().isEqual(LocalDate.now())
-                || sportEvent.getStartDate().isAfter(LocalDate.now());
+        boolean alreadyStarted = Utils.isAfterOrEq(LocalDate.now(), sportEvent.getStartDate());
         if (alreadyStarted) {
             throw new EventAlreadyStartedException("Sorry, you can not make wager " +
                     "on event that already started or starts in one day.");
@@ -147,8 +146,7 @@ public class WagerServiceImpl implements WagerService {
         Wager wager = findById(idWager);
         Guess guess = wager.getGuess();
         SportEvent sportEvent = guess.getSportEvent();
-        return sportEvent.getStartDate().isEqual(LocalDate.now())
-                || sportEvent.getStartDate().isAfter(LocalDate.now());
+        return Utils.isAfterOrEq(LocalDate.now(), sportEvent.getStartDate());
     }
 
 
