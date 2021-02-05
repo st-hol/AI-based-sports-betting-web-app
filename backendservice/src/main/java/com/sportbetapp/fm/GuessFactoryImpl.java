@@ -3,19 +3,15 @@ package com.sportbetapp.fm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sportbetapp.domain.betting.PlayerSide;
-import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.betting.guess.GuessBothWillScore;
 import com.sportbetapp.domain.betting.guess.GuessGoals;
 import com.sportbetapp.domain.betting.guess.GuessScore;
 import com.sportbetapp.domain.betting.guess.GuessWinner;
-import com.sportbetapp.domain.type.BetType;
 import com.sportbetapp.domain.type.GoalsDirection;
 import com.sportbetapp.domain.type.SportType;
 import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.exception.NotExistingGuessException;
-import com.sportbetapp.repository.betting.PlayerSideRepository;
 import com.sportbetapp.service.betting.BetService;
 import com.sportbetapp.service.betting.PlayerSideService;
 import com.sportbetapp.service.betting.SportEventService;
@@ -27,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class GuessFactoryImpl extends GuessFactory {
 
-    private static final String GUESS_NOT_EXIST_MESSAGE = "There is no such dish";
+    private static final String GUESS_NOT_EXIST_MESSAGE = "There is no such guess";
 
     @Autowired
     private WagerService wagerService;
