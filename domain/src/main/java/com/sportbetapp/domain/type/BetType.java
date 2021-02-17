@@ -1,5 +1,9 @@
 package com.sportbetapp.domain.type;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.sportbetapp.domain.type.typed.StringTypeEnum;
 
 public enum BetType implements StringTypeEnum {
@@ -12,6 +16,9 @@ public enum BetType implements StringTypeEnum {
     MISSES_BY_TEAM("Misses by team", 2),
     GOALS_MORE_THAN("Hits more than", 0.5),
     MISSES_MORE_THAN("Misses more than", 0.5);
+
+    public static Map<String, Double> typeToCoef = Stream.of(values())
+                    .collect(Collectors.toMap(k -> k.value, v -> v.coefficient));
 
     private String value;
     private double coefficient;

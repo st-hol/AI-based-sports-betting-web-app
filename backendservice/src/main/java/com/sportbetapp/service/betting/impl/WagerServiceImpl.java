@@ -111,6 +111,12 @@ public class WagerServiceImpl implements WagerService {
         return wagerRepository.findAllByUser(user, pageable);
     }
 
+    @Override
+    public int countWagersByUser(User currentUser) {
+
+        return wagerRepository.countWagersByUser(currentUser);
+    }
+
     private Wager populateWager(CreateWagerDto createWagerDto, User currentUser) throws NotEnoughBalanceException {
         final Wager wager = new Wager();
         wager.setUser(currentUser);

@@ -26,4 +26,6 @@ public interface WagerService {
     void createWagerWithGuess(CreateWagerDto wagerDto) throws NotEnoughBalanceException, NotExistingGuessException, EventAlreadyStartedException, EventAlreadyPredictedException;
 
     Page<Wager> findAllByUserPageable(User obtainCurrentPrincipleUser, Pageable pageable);
+
+    int countWagersByUser(User currentUser);
 }

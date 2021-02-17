@@ -17,4 +17,6 @@ public interface WagerRepository extends CrudRepository<Wager, Long> {
     List<Wager> findAllByUser(User user);
 
     Page<Wager> findAllByUser(User user, Pageable pageable);
+
+    int countWagersByUser(User user);
 }
