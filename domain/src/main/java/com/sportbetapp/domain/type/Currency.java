@@ -1,15 +1,11 @@
 package com.sportbetapp.domain.type;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-
 import com.sportbetapp.domain.type.typed.StringTypeEnum;
 import com.sportbetapp.domain.type.typed.TypeEnum;
 
 public enum Currency  implements StringTypeEnum {
 
-    UAH("UAH"),
-    EUR("EUR"),
-    USD("USD");
+    POINTS("Points");
 
     String value;
 

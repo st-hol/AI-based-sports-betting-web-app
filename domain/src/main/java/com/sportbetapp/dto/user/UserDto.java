@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.sportbetapp.domain.type.Currency;
-
 import lombok.Data;
 
 @Data
@@ -18,7 +16,7 @@ public class UserDto {
     private String name;
     private Integer accountNumber;
     private BigDecimal balance;
-    private Currency currency;
+//    private Currency currency;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 }

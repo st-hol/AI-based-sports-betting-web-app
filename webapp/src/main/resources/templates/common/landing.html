@@ -107,7 +107,7 @@
                                     <div class="bar" th:text="${event.sportEvent.startDate}"></div>
                                 </div>
                                 <div class="priority">
-                                    <div class="bar"  th:text="${event.sportEvent.endDate}"></div>
+                                    <div class="bar" th:text="${event.sportEvent.endDate}"></div>
                                 </div>
                             </li>
                         </th:block>
@@ -115,25 +115,6 @@
                     </ul>
 
                 </section>
-<!--                <div class="col home-column">-->
-<!--                    <th:block th:each="event : ${upcomingEvents}">-->
-<!--                        <div class="card container col-lg-6">-->
-<!--                            <div class="card-body">-->
-<!--                                <h5 class="card-title" th:text="${event.sportEvent.title}"></h5>-->
-<!--                                <p class="card-text"-->
-<!--                                   th:text="#{event.time.start} + ': ' + ${event.sportEvent.startDate}"></p>-->
-<!--                                <p class="card-text"-->
-<!--                                   th:text="#{event.time.finish} + ': ' + ${event.sportEvent.endDate}"></p>-->
-<!--                            </div>-->
-<!--                            <div class="card-footer" sec:authorize="isAuthenticated()">-->
-<!--                                <a class="btn btn-primary"-->
-<!--                                   th:href="@{'/user/make-wager?eventId=' + ${event.sportEvent.id}}"-->
-<!--                                   th:text="#{event.to.bets}"></a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <br>-->
-<!--                    </th:block>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
@@ -170,6 +151,7 @@
         </div>
     </div>
 </section>
+
 <section class="page3-4">
     <a name="team"></a>
     <!-- <hr> -->
@@ -190,7 +172,30 @@
         </div>
     </div>
 </section>
+
 <hr>
+
+<section class="page3">
+    <a name="warn"></a>
+    <hr>
+    <h2 class="why-title wow slideInDown" th:text="#{land.u.warn}"></h2>
+    <img th:src="@{/image/line-gray.jpg}" class="line-why" alt="">
+    <br>
+    <div class="txtcontainer wow slideInDow">
+        <h1>
+            <span th:text="#{land.warn.text1}"></span> <a class="highlight" href="#"><span th:text="#{land.warn.text2}"></span></a>
+            <br>    <br>
+            <span th:text="#{land.warn.text3}"></span> <a class="highlight" href="#"><span><span th:text="#{land.warn.text4}"></span></span></a>
+            <br>    <br>
+            <span th:text="#{land.warn.text5}"></span> <a class="highlight" href="#"><span th:text="#{land.warn.text6}"></span></a>
+            <span th:text="#{land.warn.text7}"></span>
+            <br>
+        </h1>
+    </div>
+</section>
+
+<hr>
+
 <footer class="clearfix">
     <div class="footerBlock">
         <p class="footerSlogan" th:text="#{land.bottom.title}"></p>

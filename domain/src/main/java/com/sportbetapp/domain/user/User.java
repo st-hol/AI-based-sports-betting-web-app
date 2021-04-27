@@ -50,7 +50,7 @@ public class User {
     private String name;
     private Integer accountNumber;
     private BigDecimal balance;
-    private Currency currency;
+    private Currency currency = Currency.POINTS;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

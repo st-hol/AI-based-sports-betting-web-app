@@ -16,9 +16,9 @@
 <body>
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
 <div class="container">
-    <div class="login-page col-lg-4 col-md-7">
+    <div class="login-page">
 
-        <div class="alert alert-danger" role="alert" th:if="${notEnoughMoney}" th:text="#{not.enough.money}">
+        <div class="alert alert-danger" role="alert" th:if="${notEnoughMoney}" th:text="#{not.enough.points}">
         </div>
 
         <form action="#" class="form-signin" method="post" th:action="@{/user/make-wager}"
@@ -238,7 +238,7 @@
 
             <div class="form-group">
                 <label for="currency" th:text="#{home.user.currency}"></label>
-                <div class="col-sm-9">
+                <div class="">
                     <input class="form-control" id="currency" name="currency"
                            readonly th:value="${user.currency}" type="text">
                 </div>
