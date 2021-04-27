@@ -11,6 +11,7 @@
     <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script th:src="@{/js/pagination/pagination-wagers.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common-user-pages.css}">
 
 </head>
 <body>
@@ -28,7 +29,8 @@
         <h6 class="text-center text-light font-weight-normal p-2 pl-4" th:text="#{home.wager.header}"></h6>
     </div>
 
-    <table class="w-100">
+    <table class="table table-hover table-striped   w-100">
+        <thead class="">
         <tr>
             <th></th>
             <th th:text="#{wager.guess.bet.type.value}"></th>
@@ -38,6 +40,7 @@
             <th th:text="#{wager.amount}"></th>
             <th th:text="#{wager.outcome.type}"></th>
         </tr>
+        </thead>
         <th:block th:each="wager : ${wagers}">
             <tr>
                 <td>
@@ -52,8 +55,8 @@
                 <td th:text="${wager.guess.sportEvent.title}"></td>
                 <td th:text="${wager.guess.sportEvent.sportType}"></td>
                 <td th:text="${wager.creationTime}"></td>
-                <td th:text="${wager.amount} + ' ' + ${wager.currency}"></td>
-                <td th:text="${wager.outcomeType.value}"></td>
+                <td style="font-weight: 600;" th:text="${wager.amount} + ' ' + ${wager.currency}"></td>
+                <td style="font-weight: 600;"  th:text="${wager.outcomeType.value}"></td>
             </tr>
         </th:block>
     </table>

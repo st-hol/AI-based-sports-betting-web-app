@@ -42,7 +42,9 @@
 
 
 
-
+h1, h2, h3 {
+    font-weight: 100;
+}
 
 .welcome-title-div {
     margin-top: 100px;
@@ -68,14 +70,14 @@
 
 /*menu*/
 ul.topnav {
-    font-weight: bold;
+    /*font-weight: bold;*/
     position: fixed;
     z-index: 9000;
     width: 100%;
     top: 0;
     list-style: none;
     margin: 0;
-    padding: 13px 0;
+    padding: 4.2vh 0;
     transition: 0.5s;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.8);

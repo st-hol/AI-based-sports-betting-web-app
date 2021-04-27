@@ -9,8 +9,10 @@
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
-<body>
+
+<body class="">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
@@ -96,8 +98,8 @@
 <div class="main-page-wrapper">
     <div class="account-info-drop-down mt-2 hidden temporary-box-shadow">
         <div class="account-info-header border-bottom">
-            <p class="my-0  pt-2 pl-3" th:text="${user.name}"></p>
-            <p class="my-0 pl-3 pb-2 text-secondary"><small>Client ID: <span th:text="${user.id}"></span></small></p>
+            <p class="my-0  pt-2 pl-3" th:value="${user.name}"></p>
+            <p class="my-0 pl-3 pb-2 text-secondary"><small>Client ID: <span th:value="${user.id}"></span></small></p>
         </div>
         <div class="mobile-manage-account-link mobile-dropdown-link pl-3 manage-account-btn">Manage account</div>
         <div class="mobile-request-migration-link mobile-dropdown-link pl-3">Request migration</div>
@@ -123,9 +125,9 @@
                         <div class="card-body">
                             <p class="card-title mt-2 text-secondary" th:text="#{land.top.title}"></p>
                             <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.email}"><span
-                                    th:text="${user.email}"></span></p>
+                                    th:value="${user.email}"></span></p>
                             <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.id}"><span
-                                    th:text="${user.id}"></span></p>
+                                    th:value="${user.id}"></span></p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center">

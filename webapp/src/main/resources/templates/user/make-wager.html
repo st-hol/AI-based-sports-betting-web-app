@@ -11,6 +11,7 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/make-wager.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common-user-pages.css}">
 
 </head>
 <body>
@@ -21,7 +22,7 @@
         <div class="alert alert-danger" role="alert" th:if="${notEnoughMoney}" th:text="#{not.enough.points}">
         </div>
 
-        <form action="#" class="form-signin" method="post" th:action="@{/user/make-wager}"
+        <form action="#" class="m0auto w-50 text-center form-signin" method="post" th:action="@{/user/make-wager}"
               th:object="${guessWagerForm}">
 
             <ul>
@@ -244,10 +245,10 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary" th:text="#{form.submit}" type="submit"></button>
+            <button class="w-25 btn btn-primary" th:text="#{form.submit}" type="submit"></button>
         </form>
 
-        <div class="change-view form-group">
+        <div class="backtocab change-view form-group">
             <a th:href="@{'/user/events'}" th:text="#{go.back.to.events}"></a>
         </div>
 

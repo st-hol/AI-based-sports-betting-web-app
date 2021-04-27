@@ -9,22 +9,33 @@
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/pagination/pagination-predict-sp.js}"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/personal-cabinet.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common-user-pages.css}">
+
 </head>
-<body>
+
+
+<body class="bg-light">
 <!--<div th:replace="fragments/navbar :: navbar">&nbsp;</div>-->
 
 
 <div class="alert alert-danger" role="alert" th:if="${eventAlreadyStarted}" th:text="#{event.already.started}">
 </div>
 
-<div class="container border border-primary rounded mt-2">
+<div class="container border border-primary rounded mt-5">
     <div class="row bg-primary">
-        <h6 class="text-center text-light font-weight-normal p-2 pl-4" th:text="#{admin.navbar.predict.event}"></h6>
+        <h6 class="text-center text-light font-weight-normal p-2" th:text="#{admin.navbar.predict.event}"></h6>
     </div>
 
 
-    <table class="w-100">
+    <table class="table table-hover table-striped   w-100">
+        <thead class="">
         <tr>
             <th th:text="#{sport.event.type}"></th>
             <th th:text="#{sport.event.title}"></th>
@@ -34,27 +45,28 @@
             <th th:text="#{sport.event.end.date}"></th>
             <th th:text="#{sport.event.use.only.stat}"></th>
         </tr>
+        </thead>
         <th:block th:each="sportEvent : ${sportEvents}">
             <tr>
-                <td th:text="${sportEvent.sportType}"></td>
-                <td th:text="${sportEvent.title}"></td>
-                <td th:text="${sportEvent.playerSides[0].name}"></td>
-                <td th:text="${sportEvent.playerSides[1].name}"></td>
-                <td th:text="${sportEvent.startDate}"></td>
-                <td th:text="${sportEvent.endDate}"></td>
+                <td class="fs16" th:text="${sportEvent.sportType}"></td>
+                <td class="fs16" th:text="${sportEvent.title}"></td>
+                <td class="fs16" th:text="${sportEvent.playerSides[0].name}"></td>
+                <td class="fs16" th:text="${sportEvent.playerSides[1].name}"></td>
+                <td class="fs16" th:text="${sportEvent.startDate}"></td>
+                <td class="fs16" th:text="${sportEvent.endDate}"></td>
                 <td>
                     <form th:if="${sportEvent.alreadyPredicted == false}"
                           id="predictSportEventForm" method="POST" th:object="${createPredictorForm}"
                           th:action="@{/admin/predict-sport-event/{sportEventId}(sportEventId=${sportEvent.id})}">
                         <input name="_method" type="hidden" value="POST">
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
+                        <div class="mx-auto text-center">
+                            <div class="mx-0 custom-control custom-radio custom-control-inline">
                                 <input type="radio" th:id="'option1-' + ${sportEvent.id}" name="useOnlyStatisticRecords1"
                                        class="custom-control-input" value="true" th:field="*{useOnlyStatisticRecords}">
                                 <label class="custom-control-label" th:for="'option1-' + ${sportEvent.id}"
                                        th:text="#{yes}"></label>
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline">
+                            <div class="mx-0 custom-control custom-radio custom-control-inline">
                                 <input type="radio" th:id="'option2-' + ${sportEvent.id}" name="useOnlyStatisticRecords2"
                                        class="custom-control-input" value="false" th:field="*{useOnlyStatisticRecords}">
                                 <label class="custom-control-label" th:for="'option2-' + ${sportEvent.id}"

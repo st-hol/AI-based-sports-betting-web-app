@@ -9,14 +9,19 @@
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/ajax/create-sport-event.js}"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/personal-cabinet.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}"></head>
+
+<body class="bg-light">
 <!--<div th:replace="fragments/navbar :: navbar">&nbsp;</div>-->
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="login-page col-lg-4 col-md-7">
 
-        <form action="#" class="form-signin" method="post"
+    <div class="mt-3 font-weight-light">
+
+        <form action="#" class="p-5 text-center mw-100 form-signin" method="post"
               th:action="@{/admin/create-sport-event}"
               th:object="${createSportEventForm}">
 
@@ -34,7 +39,8 @@
                  th:text="#{success}">
             </div>
 
-            <h2 th:text="#{choose.sport.type}"></h2>
+            <h4 th:text="#{choose.sport.type}"></h4>
+
             <div class="input-group form-group">
                 <select class="form-control currency-selector" name="sportType" id="sportType" required>
                     <th:block th:each="type : ${listOfTypes}">
@@ -44,7 +50,8 @@
             </div>
 
             <div id="displayAfterSportTypeChosen">
-                <h1 th:text="#{event}"></h1>
+                <h4 th:text="#{event}"></h4>
+                    <hr>
 
                 <div class="form-group">
                     <label class="sr-only" for="title">Title</label>
@@ -68,13 +75,15 @@
                            type="text" required>
                 </div>
 
-                <h2 th:text="#{prediction.home.team.name}"></h2>
+                <h4 th:text="#{prediction.home.team.name}"></h4>
+
                 <div class="input-group form-group">
                     <select id="dropdownTeams1" class="form-control currency-selector" name="homeTeamName" required>
                     </select>
                 </div>
 
-                <h2 th:text="#{prediction.away.team.name}"></h2>
+                <h4 th:text="#{prediction.away.team.name}"></h4>
+
                 <div class="input-group form-group">
                     <select id="dropdownTeams2" class="form-control currency-selector" name="awayTeamName" required>
                     </select>

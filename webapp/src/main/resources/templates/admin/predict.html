@@ -10,14 +10,16 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script th:src="@{/js/predict.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/fab.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/personal-cabinet.css}">
 </head>
-<body>
+<body class="bg-light">
 <!--<div th:replace="fragments/navbar :: navbar">&nbsp;</div>-->
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="login-page col-lg-4 col-md-7">
-
-
-        <form action="#" class="form-signin" method="post" th:action="@{/admin/predict}" th:object="${predictionForm}">
+    <div class="mt-5 font-weight-light">
+        <form action="#" class="p-5 text-center mw-100 form-signin" method="post" th:action="@{/admin/predict}" th:object="${predictionForm}">
 
             <div th:if="${#fields.hasErrors('*')}">
                 <div th:each="e : ${#fields.detailedErrors()}"
@@ -37,7 +39,7 @@
             <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
             <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
 
-            <h2 th:text="#{choose.sport.type}"></h2>
+            <h4 th:text="#{choose.sport.type}"></h4>
             <div class="input-group form-group">
                 <select class="form-control currency-selector" name="sportType" id="sportType" required>
                     <th:block th:each="type : ${listOfTypes}">
@@ -54,13 +56,14 @@
                 <hr>
 
 
-                <h2 th:text="#{prediction.home.team.name}"></h2>
+                <h4 th:text="#{prediction.home.team.name}"></h4>
+
                 <div class="input-group form-group">
                     <select id="dropdownTeams1" class="form-control currency-selector" name="homeTeamName" required>
                     </select>
                 </div>
 
-                <h2 th:text="#{prediction.away.team.name}"></h2>
+                <h4 th:text="#{prediction.away.team.name}"></h4>
                 <div class="input-group form-group">
                     <select id="dropdownTeams2" class="form-control currency-selector" name="awayTeamName" required>
                     </select>
