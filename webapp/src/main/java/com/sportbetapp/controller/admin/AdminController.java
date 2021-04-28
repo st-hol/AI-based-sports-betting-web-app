@@ -141,17 +141,17 @@ public class AdminController {
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
     }
 
-    @ResponseBody
-    @GetMapping("/get-teams-by-sport")
-    public List<PlayerSideDto> getTeamsBySportType(@RequestParam("sportType") String sportType) {
-        return predictSportEventService.getAllTeamsForSportType(sportType);
-    }
-
     @GetMapping("/create-sport-event")
     public String createSportEventForm(Model model) {
         model.addAttribute("listOfTypes", sportEventService.findAllSportTypes());
         model.addAttribute("createSportEventForm", new CreateSportEventDto());
         return "admin/create-sport-event";
+    }
+
+    @ResponseBody
+    @GetMapping("/get-teams-by-sport")
+    public List<PlayerSideDto> getTeamsBySportType(@RequestParam("sportType") String sportType) {
+        return predictSportEventService.getAllTeamsForSportType(sportType);
     }
 
     @PostMapping("/create-sport-event")

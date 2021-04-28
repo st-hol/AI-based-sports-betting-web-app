@@ -10,6 +10,17 @@ $(document).ready(function () {
 
 });
 
+function clearOptions() {
+    $("#dropdownTeams1")
+        .find('option')
+        .remove()
+        .end();
+    $("#dropdownTeams2")
+        .find('option')
+        .remove()
+        .end();
+}
+
 function processSelectChange(event) {
     const sportType = $('#sportType').val();
     if (sportType !== "") {
@@ -27,6 +38,7 @@ function processSelectChange(event) {
                         $('#errorAlert').hide();
                         $('#displayAfterSportTypeChosen').css({'display': 'block'});
 
+                        clearOptions();
                         var $dropdown1 = $("#dropdownTeams1");
                         var $dropdown2 = $("#dropdownTeams2");
                         $.each(result, function () {
@@ -34,14 +46,7 @@ function processSelectChange(event) {
                             $dropdown2.append($("<option />").val(this.name).text(this.name));
                         });
                     } else {
-                        $("#dropdownTeams1")
-                            .find('option')
-                            .remove()
-                            .end();
-                        $("#dropdownTeams2")
-                            .find('option')
-                            .remove()
-                            .end();
+                        clearOptions();
 
                         $('#errorAlert').text("No records found for given Sport Type").show();
                         // $('#successAlert').hide();
