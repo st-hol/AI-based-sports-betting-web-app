@@ -54,7 +54,8 @@
                 <td th:text="${wager.guess.bet.type.value}">index</td>
                 <td th:text="${wager.guess.sportEvent.title}"></td>
                 <td th:text="${wager.guess.sportEvent.sportType}"></td>
-                <td th:text="${wager.creationTime}"></td>
+                <td th:text="${#temporals.format(wager.creationTime, 'dd-MM-yyyy HH:mm')}"></td>
+                <!--                <td th:text="${#dates.format(wager.creationTime, 'dd-MM-yyyy HH:mm')}"></td>-->
                 <td style="font-weight: 600;" th:text="${wager.amount} + ' ' + ${wager.currency}"></td>
                 <td style="font-weight: 600;"  th:text="${wager.outcomeType.value}"></td>
             </tr>

@@ -77,7 +77,7 @@ public class AdminController {
 
     @GetMapping({"/home", "/"})
     public String home(Model model) {
-        model.addAttribute("user", userService.obtainCurrentPrincipleUser());
+        model.addAttribute("usr", userService.obtainCurrentPrincipleUser());
         model.addAttribute("upcomingEvents", upcomingEventToPredictService.findTop3Upcoming());
         model.addAttribute("betTypes", betTypeService.getAllBetTypes());
         model.addAttribute("sportTypes", sportTypeService.getAllSportTypes());

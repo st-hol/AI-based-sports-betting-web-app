@@ -98,8 +98,8 @@
 <div class="main-page-wrapper">
     <div class="account-info-drop-down mt-2 hidden temporary-box-shadow">
         <div class="account-info-header border-bottom">
-            <p class="my-0  pt-2 pl-3" th:value="${user.name}"></p>
-            <p class="my-0 pl-3 pb-2 text-secondary"><small>Client ID: <span th:value="${user.id}"></span></small></p>
+            <p class="my-0  pt-2 pl-3" th:value="${usr.name}"></p>
+            <p class="my-0 pl-3 pb-2 text-secondary"><small>Client ID: <span th:value="${usr.id}"></span></small></p>
         </div>
         <div class="mobile-manage-account-link mobile-dropdown-link pl-3 manage-account-btn">Manage account</div>
         <div class="mobile-request-migration-link mobile-dropdown-link pl-3">Request migration</div>
@@ -123,11 +123,13 @@
                     </div>
                     <div class="flex-fill">
                         <div class="card-body">
-                            <p class="card-title mt-2 text-secondary" th:text="#{land.top.title}"></p>
-                            <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.email}"><span
-                                    th:value="${user.email}"></span></p>
-                            <p class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.id}"><span
-                                    th:value="${user.id}"></span></p>
+                            <span class="card-title mt-2 text-secondary" th:text="#{land.top.title}"></span>
+                            <br>
+                            <span class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.email}"></span>
+                            <span th:text="${usr.email}"></span>
+                            <br>
+                            <span class="card-subtitle ellipsis-length-long mb-2" th:text="#{u.id}"></span>
+                            <span th:text="${usr.id}"></span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center">
