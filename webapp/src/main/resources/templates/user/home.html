@@ -15,11 +15,11 @@
 <div th:replace="fragments/navbar :: navbar">&nbsp;</div>
 <br>
 <br>
-<h1 style="text-align: center;" th:text="#{home.user.header}"></h1>
+<h1 class="mb-5 ml-5" style="text-align: center;" th:text="#{home.user.header}"></h1>
 
-<div class="row">
+<div class="">
     <div class="home-column col d-flex justify-content-center align-items-center">
-        <form action="/user/home/update-info" method="post">
+        <form class="text-right w44"  action="/user/home/update-info" method="post">
             <input name="_method" type="hidden" value="PUT"/>
             <input name="id" th:value="${user.id}" type="hidden">
             <div class="form-group row">
@@ -59,7 +59,7 @@
 <!--                           type="number">-->
 <!--                </div>-->
 <!--            </div>-->
-            <button class="btn btn-primary col-sm-12" th:text="#{home.user.submit}" type="submit"></button>
+            <button class="ml-5 w-25 d-block mx-auto btn btn-warning col-sm-12" th:text="#{home.user.submit}" type="submit"></button>
         </form>
     </div>
 </div>

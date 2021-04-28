@@ -18,3 +18,19 @@ body {
 .fs16{
     font-size: 16px;
 }
+
+.fs12{
+    font-size: 12px  !important;
+}
+
+.w44{
+    width: 34% !important;
+}
+
+
+.bc-drk-org{
+    background-color: darkorange;
+}
+
+.pgselect { width: 50px; text-align-last:center; }
+

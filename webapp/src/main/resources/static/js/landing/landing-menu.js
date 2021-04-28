@@ -6,6 +6,7 @@ $(window).scroll(function () {
         //$('.sdbr-open-btn').css('margin-top', '-26px');
         //$('.sidebar').css('margin-top', '-26px');
         $('.my-nav-soc-li').css('display', 'none');
+        $('.signmeid').css('display', 'none');
     } else {
         $('#myTopnav').removeClass('topnav-downed');
         $('.sdbr-open-btn').removeClass('sidebar-downed');
@@ -13,6 +14,7 @@ $(window).scroll(function () {
         //$('.sdbr-open-btn').css('margin-top', '0px');
         //$('.sidebar').css('margin-top', '0px');
         $('.my-nav-soc-li').css('display', 'block');
+        $('.signmeid').css('display', 'block');
     }
 });
 function myFunction() {

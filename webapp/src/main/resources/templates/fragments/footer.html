@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
 >
 <head>
     <meta charset="UTF-8">
@@ -8,14 +7,41 @@
     <link href="/static/css/landing.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
+<style>
+    .footerdiv {
+        display: flex !important;
+        justify-content: center !important; /*align horizontal */
+        align-items: center !important; /* align vertical */
+    }
+    /*.footerspan {*/
+    /*    display: inline-block;*/
+    /*    vertical-align: middle;*/
+    /*    line-height: normal;*/
+    /*}*/
+</style>
 <body>
-<footer class="footer" th:fragment="footer">
 
-    &copy;
-    <script>document.write(new Date().getFullYear());</script>
-    <span>Stanislav Holovachuk</span>
+<!-- Footer -->
+<footer class="page-footer font-small blue">
 
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <a href="#"> Stanislav Holovachuk</a>
+    </div>
+    <!-- Copyright -->
 
 </footer>
+<!-- Footer -->
+
+<!--<footer class="footerdiv bg-light" th:fragment="footer">-->
+
+<!--    &copy;-->
+
+<!--    <script>document.write(new Date().getFullYear());</script>-->
+
+<!--    <span class="footerspan">Stanislav Holovachuk</span>-->
+
+
+<!--</footer>-->
 </body>
 </html>

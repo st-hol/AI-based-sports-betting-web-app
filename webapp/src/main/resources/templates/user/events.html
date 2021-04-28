@@ -48,7 +48,7 @@
             <!-- List Item -->
             <li class="item type1">
                 <div class="task">
-                    <a class="btn btn-primary" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"
+                    <a class="btn btn-warning" th:href="@{'/user/make-wager?eventId=' + ${event.id}}"
                        th:text="#{event.to.bets}"></a>
 <!--                    <div class="name" style="width:150px"></div>-->
                 </div>
@@ -107,8 +107,8 @@
 <div class="container mt-2">
     <div class="row">
         <div class="form-group col-md-1">
-            <select class="form-control pagination" id="pageSizeSelect">
-                <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+            <select class="pgselect form-control pagination text-warning  bg-light " id="pageSizeSelect">
+                <option class="text-center mx-auto" th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
                         th:selected="${pageSize} == ${selectedPageSize}"></option>
             </select>
         </div>
@@ -116,26 +116,26 @@
         <div th:if="${events.totalPages != 1}" class="form-group col-md-11 pagination-centered">
             <ul class="pagination justify-content-center font-weight-medium">
                 <li class="page-item" th:class="${events.number == 0} ? disabled">
-                    <a class="page-link" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                    <a class="page-link text-warning  bg-light" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>
                 <li class="page-item" th:class="${events.number == 0} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link  text-warning  bg-light"
                        th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.number})}">&larr;</a>
                 </li>
 
                 <li class="page-item" th:class="${events.number == (page - 1)} ? 'active pointer-disabled'"
                     th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
-                    <a class="page-link" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${page})}"
+                    <a class="page-link  text-warning  bg-light" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${page})}"
                        th:text="${page}"></a>
                 </li>
 
                 <li class="page-item" th:class="${events.number + 1 == events.totalPages} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link text-warning  bg-light"
                        th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.number + 2})}">&rarr;</a>
                 </li>
 
                 <li class="page-item" th:class="${events.number + 1 == events.totalPages} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link text-warning  bg-light"
                        th:href="@{/user/events/(pageSize=${selectedPageSize}, page=${events.totalPages})}">&raquo;</a>
                 </li>
             </ul>

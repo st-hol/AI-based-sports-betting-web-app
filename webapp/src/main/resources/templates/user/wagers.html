@@ -24,12 +24,12 @@
 <div class="alert alert-danger" role="alert" th:if="${eventAlreadyPredicted}" th:text="#{event.already.predicted}">
 </div>
 
-<div class="container border border-primary rounded mt-2">
-    <div class="row bg-primary">
-        <h6 class="text-center text-light font-weight-normal p-2 pl-4" th:text="#{home.wager.header}"></h6>
+<div class="mt-5 container border border-warning rounded ">
+    <div class="row bg-warning">
+        <h6 class="text-center text-dark font-weight-normal p-2 pl-4" th:text="#{home.wager.header}"></h6>
     </div>
 
-    <table class="table table-hover table-striped   w-100">
+    <table class=" table table-hover table-striped   w-100">
         <thead class="">
         <tr>
             <th></th>
@@ -47,7 +47,7 @@
                     <form id="removeForm" method="post" th:action="@{/user/wager/{wagerId}(wagerId=${wager.id})}">
                         <input name="_method" type="hidden" value="DELETE">
                         <input name="id" th:value="${wager.id}" type="hidden"/>
-                        <input class="border border-primary rounded bg-primary text-light" th:value="#{form.remove}"
+                        <input class="btn btn-warning border border-warning rounded bg-warning text-dark" th:value="#{form.remove}"
                                type="submit">
                     </form>
                 </td>
@@ -66,7 +66,7 @@
 <div class="container mt-2">
     <div class="row">
         <div class="form-group col-md-1">
-            <select class="form-control pagination" id="pageSizeSelect">
+            <select class="pgselect form-control pagination text-warning bg-light" id="pageSizeSelect">
                 <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
                         th:selected="${pageSize} == ${selectedPageSize}"></option>
             </select>
@@ -75,26 +75,26 @@
         <div th:if="${wagers.totalPages != 1}" class="form-group col-md-11 pagination-centered">
             <ul class="pagination justify-content-center font-weight-medium">
                 <li class="page-item" th:class="${wagers.number == 0} ? disabled">
-                    <a class="page-link" th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                    <a class="page-link text-warning  bg-light" th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>
                 <li class="page-item" th:class="${wagers.number == 0} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link text-warning bg-light "
                        th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=${wagers.number})}">&larr;</a>
                 </li>
 
                 <li class="page-item" th:class="${wagers.number == (page - 1)} ? 'active pointer-disabled'"
                     th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
-                    <a class="page-link" th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=${page})}"
+                    <a class="page-link text-warning  bg-light" th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=${page})}"
                        th:text="${page}"></a>
                 </li>
 
                 <li class="page-item" th:class="${wagers.number + 1 == wagers.totalPages} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link text-warning   bg-light"
                        th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=${wagers.number + 2})}">&rarr;</a>
                 </li>
 
                 <li class="page-item" th:class="${wagers.number + 1 == wagers.totalPages} ? disabled">
-                    <a class="page-link"
+                    <a class="page-link text-warning bg-light"
                        th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=${wagers.totalPages})}">&raquo;</a>
                 </li>
             </ul>

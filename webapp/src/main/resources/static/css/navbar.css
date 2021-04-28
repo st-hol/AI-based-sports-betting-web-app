@@ -10,9 +10,11 @@
     margin-right: 1em;
 }
 .nav-link:hover{
-    color: deepskyblue;
+    color: #ffe09a;
     font-weight: bolder;
-    text-shadow: 1px 1px 1px darkblue;
+    /*text-shadow: 1px 1px 1px darkblue;*/
+    text-shadow: 1px 1px 1px darkorange;
+
     /*transform: rotate(10deg);*/
 }
 .navbar-collapse{
@@ -57,4 +59,12 @@ footer {
     /* optional */
     border-top: 1px solid lightgrey  !important;
     text-align: center  !important;
+}
+
+.logolefted{
+    font-weight: bolder;
+    color: orange;
+    position: relative;
+    left: -5px;
+
 }

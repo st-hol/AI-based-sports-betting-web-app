@@ -9,16 +9,21 @@
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav th:fragment="navbar" class="navbar navbar-light bg-light  navbar-expand-lg ">
+<!--    bg-dark  navbar-dark   navbar-expand-lg -->
     <div class="navbar-nav">
-        <a href="/" class="activeMenuItem nav-item nav-link" id="log">
-            <img th:src="@{image/orangmin.png}" alt="">
+        <a class="activeMenuItem nav-item nav-link navbar-brand" id="log" href="/">
+            <img th:src="@{/image/orangelogo.png}"  width="30" height="30" class="d-inline align-top" alt="">
+            <span class="logolefted"></span>
         </a>
-        <a class="nav-item nav-link" href="/" th:text="#{navbar.welcome.page}"></a>
+<!--        <a href="/" class="activeMenuItem nav-item nav-link" id="log">-->
+<!--            <img th:src="@{image/orangmin.png}" alt="">-->
+<!--        </a>-->
+<!--        <a class="nav-item nav-link" href="/" th:text="#{navbar.welcome.page}"></a>-->
         <a class="nav-item nav-link" href="/default-home" th:text="#{navbar.home}"></a>
         <a class="nav-item nav-link" href="/user/wagers" th:text="#{navbar.wagers}"></a>
         <a class="nav-item nav-link" href="/user/events" th:text="#{navbar.events}"></a>
-        <a class="nav-item nav-link" href="/logout" th:text="#{navbar.logout}"></a>
+        <a class="nav-item nav-link active text-danger" href="/logout" th:text="#{navbar.logout}"></a>
     </div>
     <div class="navbar-nav ml-auto">
         <div class="navbar-nav"
@@ -36,8 +41,8 @@
                 </a>
             </div>
             <div class="navbar-nav" th:if="${(param.lang == null)}">
-                <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=ua)}" th:text="#{navbar.locale.ua}"></a>
-                <a class="nav-item nav-link" th:href="@{${currentUrl}(lang=eng)}" th:text="#{navbar.locale.eng}"></a>
+                <a class="nav-item nav-link text-dark text-capitalize" th:href="@{${currentUrl}(lang=ua)}" th:text="#{navbar.locale.ua}"></a>
+                <a class="nav-item nav-link text-dark text-capitalize" th:href="@{${currentUrl}(lang=eng)}" th:text="#{navbar.locale.eng}"></a>
             </div>
         </div>
 

@@ -118,7 +118,8 @@ label.btn.success.active {
     display: none;
 }
 .md-radio input[type="radio"]:checked + label:before {
-    border-color: #337ab7;
+    /*border-color: #337ab7;*/
+    border-color: darkorange;
     animation: ripple 0.2s linear forwards;
 }
 .md-radio input[type="radio"]:checked + label:after {
@@ -153,7 +154,8 @@ label.btn.success.active {
     width: 10px;
     height: 10px;
     transform: scale(0);
-    background: #337ab7;
+    /*background: #337ab7;*/
+background: orange;
 }
 
 
