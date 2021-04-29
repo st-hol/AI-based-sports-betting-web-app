@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{stats}"></title>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script th:src="@{/js/pagination/pagination-stats.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/listview.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common-user-pages.css}">
+    <script th:src="@{/js/stats.js}"></script>
+</head>
+<body class="hmdrad">
+<div th:replace="fragments/navbar :: navbar">&nbsp;</div>
+<br>
+
+
+<section class="container">
+
+    <!-- List Items -->
+    <main>
+        <!--MDB Tables-->
+        <div class="container mt-4">
+
+            <div class="text-center darken-grey-text mb-4">
+                <h1 class="font-bold mt-4 mb-3 h5" th:text="#{think.about.stat.page}"></h1>
+                <a id="srch_a_me" class="btn btn-warning btn-md"
+                   target="_blank" th:text="#{find.u}"><i class="fa fa-download pl-2"></i></a>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Grid row -->
+                    <div class="row">
+                        <!-- Grid column -->
+                        <div class="col-md-12">
+                            <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" th:text="#{search.txt}"></h2>
+                            <div class="input-group md-form form-sm form-2 pl-0">
+                                <input id="srch"  class="form-control my-0 py-1 pl-3 purple-border" type="text"
+                                       placeholder="Search all wastes by user..." aria-label="Search">
+                                <span class="input-group-addon waves-effect purple lighten-2" id="basic-addon1">
+                                    <a id="srch_a"
+                                            class="pd10px"><i id="srch_i"class="fa fa-search white-text" aria-hidden="true"></i></a></span>
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                    <!--Table-->
+                    <table class=" table table-striped">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th th:text="#{stat.table.num}"></th>
+                            <th th:text="#{stat.table.name}"></th>
+                            <th th:text="#{stat.table.email}"></th>
+                            <th th:text="#{stat.table.allwasted}"></th>
+                            <th th:text="#{stat.table.allwon}"></th>
+                            <th th:text="#{stat.table.diff}"></th>
+                            <th th:text="#{stat.table.curr}"></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <th:block th:each="user, iter : ${topUsersSorted}">
+                            <tr>
+                                <th scope="row" th:text="${iter.index + 1}"></th>
+                                <td th:text="${user.userName}"></td>
+                                <td th:text="${user.userEmail}"></td>
+                                <td th:text="${user.wastedAll}"></td>
+                                <td th:text="${user.wonAll}"></td>
+                                <td th:text="${user.difference}" th:classappend="${user.isProfitable} ? bg-success  : bg-danger"></td>
+                                <td th:text="${user.currency}"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                        <!--Table body-->
+                    </table>
+                    <!--Table-->
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="text-center darken-grey-text mb-4">
+<!--                <h3 class="font-bold mb-3">Here you can find more Tables:</h3>-->
+                <a id="srch_a_all" th:text="#{find.all}" class="btn btn-warning" target="_blank"></a>
+            </div>
+        </div>
+
+    </main>
+
+</section>
+
+<br>
+<br>
+<div class="container mt-2">
+    <div class="row">
+        <div class="form-group col-md-1">
+            <select class="pgselect form-control pagination text-warning  bg-light " id="pageSizeSelect">
+                <option class="text-center mx-auto" th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+                        th:value="${pageSize}"
+                        th:selected="${pageSize} == ${selectedPageSize}"></option>
+            </select>
+        </div>
+
+<!--        <div th:with="searchPresent=${(param.search != null) and (param.search[0] == 'true')}"></div>-->
+<!--        <div th:with="searchValue=${(param.search != null) ? (param.search[0]): ''}"></div>-->
+
+        <div th:if="${topUsersSorted.totalPages > 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="mr-5 pagination justify-content-center font-weight-medium">
+                <li class="page-item" th:class="${topUsersSorted.number == 0} ? disabled">
+                    <a class="page-link text-warning  bg-light"
+                       th:href="@{/user/stats/(pageSize=${selectedPageSize}, page=1, search=${(param.search != null) ? (param.search[0]): ''})}">&laquo;</a>
+                </li>
+                <li class="page-item" th:class="${topUsersSorted.number == 0} ? disabled">
+                    <a class="page-link  text-warning  bg-light"
+                       th:href="@{/user/stats/(pageSize=${selectedPageSize}, page=${topUsersSorted.number}, search=${(param.search != null) ? (param.search[0]): ''})}">&larr;</a>
+                </li>
+
+                <li class="page-item" th:class="${topUsersSorted.number == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                    <a class="page-link  text-warning  bg-light"
+                       th:href="@{/user/stats/(pageSize=${selectedPageSize}, page=${page}, search=${(param.search != null) ? (param.search[0]): ''})}"
+                       th:text="${page}"></a>
+                </li>
+
+                <li class="page-item" th:class="${topUsersSorted.number + 1 == topUsersSorted.totalPages} ? disabled">
+                    <a class="page-link text-warning  bg-light"
+                       th:href="@{/user/stats/(pageSize=${selectedPageSize}, page=${topUsersSorted.number + 2}, search=${(param.search != null) ? (param.search[0]): ''})}">&rarr;</a>
+                </li>
+
+                <li class="page-item" th:class="${topUsersSorted.number + 1 == topUsersSorted.totalPages} ? disabled">
+                    <a class="page-link text-warning  bg-light"
+                       th:href="@{/user/stats/(pageSize=${selectedPageSize}, page=${topUsersSorted.totalPages}, search=${(param.search != null) ? (param.search[0]): ''})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+
+</body>
+</html>

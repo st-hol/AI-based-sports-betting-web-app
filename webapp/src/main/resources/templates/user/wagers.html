@@ -73,8 +73,8 @@
             </select>
         </div>
 
-        <div th:if="${wagers.totalPages != 1}" class="form-group col-md-11 pagination-centered">
-            <ul class="pagination justify-content-center font-weight-medium">
+        <div th:if="${wagers.totalPages > 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="mr-5 pagination justify-content-center font-weight-medium">
                 <li class="page-item" th:class="${wagers.number == 0} ? disabled">
                     <a class="page-link text-warning  bg-light" th:href="@{/user/wagers/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>

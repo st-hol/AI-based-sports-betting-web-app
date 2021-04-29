@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sportbetapp.domain.betting.Wager;
@@ -48,7 +49,7 @@ public class User {
     protected Set<Role> roles = new HashSet<>();
     protected boolean enabled;
     private String name;
-    private Integer accountNumber;
+    private String accountNumber;
     private BigDecimal balance;
     private Currency currency = Currency.POINTS;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -64,6 +65,6 @@ public class User {
             role.setName("USER");
             roles.add(role);
         }
-        //todo acc number
+        this.accountNumber = RandomStringUtils.randomAlphanumeric(10);
     }
 }

@@ -1,5 +1,7 @@
 package com.sportbetapp.validator;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.validation.Validator;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.service.user.UserService;
+import com.sportbetapp.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +26,12 @@ public class UserValidator implements Validator {
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String PASSWORD_CONFIRM = "passwordConfirm";
+    private static final String BIRTH = "birth";
 
     private static final Pattern EMAIL_REGEX =
             Pattern.compile("^[\\w\\d._-]+@[\\w\\d.-]+\\.[\\w\\d]{2,6}$");
+    private static final int MAX_AGE = 130;
+    private static final int ZERO = 0;
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -59,7 +65,22 @@ public class UserValidator implements Validator {
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue(PASSWORD_CONFIRM, "Diff.userForm.passwordConfirm");
         }
-        log.error("{}", errors);
+
+        final int userAge = calculateAge(user.getBirth(), LocalDate.now());
+        final boolean invalidAge = userAge > MAX_AGE || userAge == ZERO;
+        if (Utils.isAfterOrEq(user.getBirth(), LocalDate.now()) || invalidAge) {
+            errors.rejectValue(BIRTH, "Incorrect.birth.date");
+        }
+
+        log.error("user validation failed: {}", errors);
+    }
+
+    private static int calculateAge(LocalDate birthDate, LocalDate currentDate) {
+        if ((birthDate != null) && (currentDate != null)) {
+            return Period.between(birthDate, currentDate).getYears();
+        } else {
+            return ZERO;
+        }
     }
 
 }

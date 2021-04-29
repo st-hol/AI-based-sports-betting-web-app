@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
+import com.sportbetapp.domain.betting.PointsTurnoverStatistic;
 import com.sportbetapp.domain.betting.SportEvent;
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.betting.guess.Guess;
@@ -25,6 +26,7 @@ import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.fm.GuessFactory;
 import com.sportbetapp.repository.betting.WagerRepository;
 import com.sportbetapp.service.betting.GuessService;
+import com.sportbetapp.service.betting.PointsTurnoverStatisticService;
 import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.betting.WagerService;
 import com.sportbetapp.service.user.UserService;
@@ -46,6 +48,9 @@ public class WagerServiceImpl implements WagerService {
     private GuessService guessService;
     @Autowired
     private WagerService wagerService;
+    @Autowired
+    private PointsTurnoverStatisticService pointsTurnoverStatisticService;
+
 
     @Override
     public List<Wager> findAll() {
@@ -82,7 +87,7 @@ public class WagerServiceImpl implements WagerService {
         BigDecimal amountCompensation = wager.getAmount();
         wagerRepository.deleteById(idWager);
         User user = wager.getUser();
-        userService.compensateBalance(user, amountCompensation);
+        userService.compensateBalance(idWager, user, amountCompensation);
     }
 
     ///user wager guess bet
@@ -130,10 +135,20 @@ public class WagerServiceImpl implements WagerService {
             wager.setCurrency(currentUser.getCurrency());
             wager.setOutcomeType(OutcomeType.AWAITING);
             this.save(wager);
+            populateStatRecord(wager);
         } else {
             throw new NotEnoughBalanceException("Not enough money.", createWagerDto);
         }
         return wager;
+    }
+
+    private void populateStatRecord(Wager wager) {
+        PointsTurnoverStatistic statistic = new PointsTurnoverStatistic();
+        statistic.setIsWin(false);
+        statistic.setCurrency(wager.getCurrency());
+        statistic.setAmount(wager.getAmount());
+        statistic.setWager(wager);
+        pointsTurnoverStatisticService.save(statistic);
     }
 
     private void createGuess(CreateWagerDto createWagerDto, Wager wager) throws NotExistingGuessException {

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head>
+>
+<head>
     <meta charset="UTF-8">
     <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="row bg-dark" th:fragment="header">
-    <div class="col-md-12">
+<div class="w-100 bg-dark" th:fragment="header">
+    <div class="row w-100 m-0 pt-3 justify-content-md-center">
         <p></p>
-        <h2 class="text-center text-light" th:text="#{login.header.welcome}"></h2>
-        <p class="text-center text-light" th:text="#{login.header.description}"></p>
+        <div class="container ">
+            <h3 class="text-center text-light" th:text="#{login.header.welcome}"></h3>
+        </div>
+        <div class="container ">
+            <p class="text-center text-light" th:text="#{login.header.description}"></p>
+        </div>
     </div>
 </div>
 </body>

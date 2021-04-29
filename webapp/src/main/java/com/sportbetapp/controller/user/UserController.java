@@ -23,6 +23,7 @@ import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.technical.Pager;
 import com.sportbetapp.domain.user.User;
 import com.sportbetapp.dto.betting.CreateWagerDto;
+import com.sportbetapp.dto.betting.PointsTurnoverStatisticDto;
 import com.sportbetapp.dto.user.UserDto;
 import com.sportbetapp.exception.EventAlreadyPredictedException;
 import com.sportbetapp.exception.EventAlreadyStartedException;
@@ -30,6 +31,7 @@ import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.exception.NotExistingGuessException;
 import com.sportbetapp.service.betting.BetService;
 import com.sportbetapp.service.betting.GuessService;
+import com.sportbetapp.service.betting.PointsTurnoverStatisticService;
 import com.sportbetapp.service.betting.SportEventService;
 import com.sportbetapp.service.betting.WagerService;
 import com.sportbetapp.service.user.UserService;
@@ -59,6 +61,8 @@ public class UserController {
     private BetService betService;
     @Autowired
     private GuessService guessService;
+    @Autowired
+    private PointsTurnoverStatisticService pointsTurnoverStatisticService;
 
 
     @GetMapping({"/home", "/"})
@@ -77,7 +81,7 @@ public class UserController {
      * Handles all requests
      *
      * @param pageSize - the size of the page
-     * @param page - the page number
+     * @param page     - the page number
      * @return model and view
      */
     @GetMapping("/wagers")
@@ -160,6 +164,26 @@ public class UserController {
         return "redirect:/user/wagers";
     }
 
+    @GetMapping("/stats")
+    public String listStats(Model model,
+                            @RequestParam("pageSize") Optional<Integer> pageSize,
+                            @RequestParam("page") Optional<Integer> page,
+                            @RequestParam(value = "search") Optional<String> search) {
+
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
+        Page<PointsTurnoverStatisticDto> topUsersSorted =
+                pointsTurnoverStatisticService.findTopUsersSortedPageable(search.orElse(""), PageRequest.of(evalPage, evalPageSize));
+        Pager pager = new Pager(topUsersSorted.getTotalPages(), topUsersSorted.getNumber(), BUTTONS_TO_SHOW);
+
+        model.addAttribute("topUsersSorted", topUsersSorted);
+        model.addAttribute("selectedPageSize", evalPageSize);
+        model.addAttribute("pageSizes", PAGE_SIZES);
+        model.addAttribute("pager", pager);
+        return "user/stats";
+    }
+
 
     @ExceptionHandler(NotEnoughBalanceException.class)
     public String handleNotEnoughBalanceException(Model model, Exception exception) {
@@ -174,14 +198,14 @@ public class UserController {
     public String handleEventAlreadyStartedException(Model model, Exception exception) {
         log.error("Event is already started. {}", exception.getMessage());
         model.addAttribute("eventAlreadyStarted", true);
-        return listAllWagers(model, Optional.empty(),  Optional.empty());
+        return listAllWagers(model, Optional.empty(), Optional.empty());
     }
 
     @ExceptionHandler(EventAlreadyPredictedException.class)
     public String handleEventAlreadyPredictedException(Model model, Exception exception) {
         log.error("Event is already predicted. {}", exception.getMessage());
         model.addAttribute("eventAlreadyPredicted", true);
-        return listAllWagers(model, Optional.empty(),  Optional.empty());
+        return listAllWagers(model, Optional.empty(), Optional.empty());
     }
 
 }

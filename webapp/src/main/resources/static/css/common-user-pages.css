@@ -27,10 +27,17 @@ body {
     width: 33% !important;
 }
 
+.pd10px{
+    padding: 10px;
+}
 
 .bc-drk-org{
     background-color: darkorange;
 }
 
 .pgselect { width: 50px; text-align-last:center; }
+
+.hmdrad {
+    background-image: linear-gradient(to top, #e3eeff 0%, #f3daa8 99%, #f3daa8 100%) !important;
+}
 

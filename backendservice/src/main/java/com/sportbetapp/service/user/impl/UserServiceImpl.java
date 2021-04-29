@@ -1,7 +1,6 @@
 package com.sportbetapp.service.user.impl;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,16 +15,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sportbetapp.domain.betting.guess.Guess;
+import com.google.common.collect.Lists;
+import com.sportbetapp.domain.betting.PointsTurnoverStatistic;
 import com.sportbetapp.domain.betting.Wager;
 import com.sportbetapp.domain.user.User;
-import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.dto.user.UserDto;
-import com.sportbetapp.exception.NotEnoughBalanceException;
 import com.sportbetapp.repository.user.UserRepository;
-import com.sportbetapp.service.user.UserService;
+import com.sportbetapp.service.betting.PointsTurnoverStatisticService;
 import com.sportbetapp.service.betting.WagerService;
-import com.google.common.collect.Lists;
+import com.sportbetapp.service.user.UserService;
 import com.sportbetapp.util.math.BigDecimalUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +38,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private WagerService wagerService;
-
+    @Autowired
+    private PointsTurnoverStatisticService pointsTurnoverStatisticService;
 
     @Override
     public List<User> findAll() {
@@ -131,15 +130,27 @@ public class UserServiceImpl implements UserService {
         BigDecimal winValue = BigDecimalUtils.multiply(betValue, coefficient);
         BigDecimal newBalance = BigDecimalUtils.add(winValue, winnerUser.getBalance());
         winnerUser.setBalance(newBalance);
+
+        populateStatRecord(wager, winValue);
         this.save(winnerUser);
+
         return winValue;
+    }
+
+    private void populateStatRecord(Wager wager, BigDecimal winValue) {
+        PointsTurnoverStatistic statistic = new PointsTurnoverStatistic();
+        statistic.setIsWin(true);
+        statistic.setCurrency(wager.getCurrency());
+        statistic.setAmount(winValue);
+        statistic.setWager(wager);
+        pointsTurnoverStatisticService.save(statistic);
     }
 
     @Override
     @Transactional
-    public void compensateBalance(User user, BigDecimal amountCompensation) {
-        user.setBalance(
-                BigDecimalUtils.add(user.getBalance(), amountCompensation));
+    public void compensateBalance(Long idWager, User user, BigDecimal amountCompensation) {
+        user.setBalance(BigDecimalUtils.add(user.getBalance(), amountCompensation));
+        pointsTurnoverStatisticService.deleteByWagerId(idWager);
         this.save(user);
     }
 

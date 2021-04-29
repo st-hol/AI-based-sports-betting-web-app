@@ -113,8 +113,8 @@
             </select>
         </div>
 
-        <div th:if="${events.totalPages != 1}" class="form-group col-md-11 pagination-centered">
-            <ul class="pagination justify-content-center font-weight-medium">
+        <div th:if="${events.totalPages > 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="mr-5 pagination justify-content-center font-weight-medium">
                 <li class="page-item" th:class="${events.number == 0} ? disabled">
                     <a class="page-link text-warning  bg-light" th:href="@{/user/events/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>

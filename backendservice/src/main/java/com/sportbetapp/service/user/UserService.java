@@ -5,11 +5,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.sportbetapp.domain.betting.Wager;
-import com.sportbetapp.domain.betting.guess.Guess;
 import com.sportbetapp.domain.user.User;
-import com.sportbetapp.dto.betting.CreateWagerDto;
 import com.sportbetapp.dto.user.UserDto;
-import com.sportbetapp.exception.NotEnoughBalanceException;
 
 public interface UserService {
     List<User> findAll();
@@ -30,5 +27,5 @@ public interface UserService {
 
     BigDecimal addWinAmountToBalance(User winnerUser, Wager wager);
 
-    void compensateBalance(User user, BigDecimal amountCompensation);
+    void compensateBalance(Long idWager, User user, BigDecimal amountCompensation);
 }
