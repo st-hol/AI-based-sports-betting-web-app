@@ -105,7 +105,9 @@ public class LearningPredictor {
      */
     private Map<String, String> decideResult(double average) {
         log.info("Average: " + average);
-        if (average <= 0.3) {
+
+        // bonus probability is on hand Home team. So its always little less probable that Home loses
+        if (average <= 0.465) {
             log.info("Win for away team");
             return Map.of("home", "loss",
                     "away", "win");
