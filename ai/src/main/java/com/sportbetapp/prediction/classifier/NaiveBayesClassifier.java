@@ -1,8 +1,7 @@
 package com.sportbetapp.prediction.classifier;
 
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.tuple.Pair;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +23,14 @@ public class NaiveBayesClassifier {
     private String[][] teamData = new String[6][5];
 
 
-    public double calculate(String[][] teamData, String[][] testData, int homePred, int awayPred) {
+    /**
+     * @param teamData
+     * @param testData
+     * @param homePred
+     * @param awayPred
+     * @return maxProb and corresponding Category
+     */
+    public Pair<Double, String> calculate(String[][] teamData, String[][] testData, int homePred, int awayPred) {
         //sets teamData 2D array
         this.teamData = teamData;
 
@@ -53,7 +59,9 @@ public class NaiveBayesClassifier {
         }
         average = average / N_CATEGORIES;
         log.info("Average: " + average);
-        return max;
+        final Pair<Double, String> resultPair = Pair.of(max, CATEGORIES[maxPosition]);
+        log.info("NBC >>> " + resultPair.toString());
+        return resultPair;
     }
 
     private double calculateProbability(String[] test, String cat, int homePred,
@@ -73,6 +81,7 @@ public class NaiveBayesClassifier {
         for (int j = 0; j < TRAIN_SIZE; j++) {
             //if the category is equal to the category in the final part of the 
             //array, increase the count for that category.
+//            System.out.println("j"+ j + "teamData[j]" + teamData[j] + "teamData[j][NUM_ATTR]" + teamData[j][NUM_ATTR]);
             if (cat.equals(teamData[j][NUM_ATTR])) {
                 numCategory++;
             }

@@ -9,17 +9,22 @@ import java.util.logging.Logger;
 
 import javax.swing.*;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.sportbetapp.prediction.classifier.NaiveBayesClassifier;
 import com.sportbetapp.prediction.neural.LearningPredictor;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @deprecated : it was just for test purpose
  */
+@Slf4j
 @Deprecated
 public class PredictorUI {
 
     //Array of strings for team names
-    private final String[] data = {"Arsenal", "Bournemouth", "Brighton", "Burnley",
+    private final String[] data = {"TestLoser", "TestWinner", "Arsenal", "Bournemouth", "Brighton", "Burnley",
             "Chelsea", "Crystal Palace", "Everton", "Huddersfield", "Leicester",
             "Liverpool", "Manchester City", "Manchester United", "Newcastle",
             "Southampton", "Watford", "West Ham"};
@@ -115,6 +120,11 @@ public class PredictorUI {
     }
 
 
+    /**
+     * returned categories can differ.
+     * For example WIN vs LOSS or DRAW vs DRAW -> then decide result immediately
+     * if returned categories same. For example WIN vs WIN or LOSS vs LOSS -> then decide result by NN
+     */
     public void predict() {
         //create new Naive Bayes classifiers for home and away
         NaiveBayesClassifier team1 = new NaiveBayesClassifier();
@@ -123,17 +133,45 @@ public class PredictorUI {
         //when call calculate probability, send team data and score predictions
         //home and away predictions sent in opposite orders due to method taking 
         //parameter 2 as goals scored and 4 as goals conceded
-        double probTeam1 = team1.calculate(teamData1, testData1, homePred, awayPred);
-        double probTeam2 = team2.calculate(teamData2, testData2, awayPred, homePred);
+        Pair<Double, String> probTeam1 = team1.calculate(teamData1, testData1, homePred, awayPred);
+        Pair<Double, String> probTeam2 = team2.calculate(teamData2, testData2, awayPred, homePred);
 
-        //Create new neural net
-        new LearningPredictor().processLearn(probTeam1, probTeam2);
+        if (inControversialCategories(probTeam1, probTeam2)) {
+            String winnerSide;
+            if (probTeam1.getRight().equals("win")) {
+                winnerSide = "home";
+            } else {
+                winnerSide = "away";
+            }
+            log.info("Win for {} team", winnerSide);
+            return;
+        }
+        if (probTeam1.getRight().equals("draw") && probTeam2.getRight().equals("draw")) {
+            log.info("DRAW");
+            return;
+        }
+        if (probTeam1.getLeft().equals(probTeam2.getLeft()) || oneIsDrawAnotherNot(probTeam1, probTeam2)) {
+            //Create new neural net
+            new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
+            return;
+        }
+        log.warn("Unreachable.");
+    }
+
+    private boolean inControversialCategories(Pair<Double, String> probTeam1, Pair<Double, String> probTeam2) {
+        return probTeam1.getRight().equals("win") && probTeam2.getRight().equals("loss")
+                || probTeam1.getRight().equals("loss") && probTeam2.getRight().equals("win");
+    }
+
+    private boolean oneIsDrawAnotherNot(Pair<Double, String> probTeam1, Pair<Double, String> probTeam2) {
+        return probTeam1.getRight().equals("draw") && !probTeam2.getRight().equals("draw")
+                || probTeam2.getRight().equals("draw") && !probTeam1.getRight().equals("draw");
     }
 
     /**
      * Reads relevant files and populates arrays
      *
-     * @param teamName name
+     * @param teamName   name
      * @param homeOrAway (h or a)
      * @throws FileNotFoundException
      */

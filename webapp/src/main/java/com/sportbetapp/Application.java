@@ -15,5 +15,4 @@ public class Application {
 // todo
 // security
 // email + spring.mail.password=*
-// integration with payment system - need or not?
 // remove orphan guess, - need fix or not?

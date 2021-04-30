@@ -44,6 +44,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PredictionServiceImpl implements PredictionService {
 
+    private static final Map<String, String> AWAY_WIN_MAP = Map.of("away", "win", "home", "loss");
+    private static final Map<String, String> HOME_WIN_MAP = Map.of("away", "loss", "home", "win");
+    private static final Map<String, String> DRAW_MAP = Map.of("home", "draw", "away", "draw");
+
     private final Function<PredictionRecord, String[]> predictionTo2dArrayConverter =
             predictionRecord -> new String[]{
                     predictionRecord.getHitScore().getHitsScored().toString(),
@@ -99,11 +103,43 @@ public class PredictionServiceImpl implements PredictionService {
         //when call calculate probability, send team data and score predictions
         //home and away predictions sent in opposite orders due to method taking
         //parameter 2 as goals scored and 1 as goals conceded
-        double probTeam1 = new NaiveBayesClassifier().calculate(teamData1, testData1, homePred, awayPred);
-        double probTeam2 = new NaiveBayesClassifier().calculate(teamData2, testData2, awayPred, homePred);
+        Pair<Double, String> probTeam1 = new NaiveBayesClassifier().calculate(teamData1, testData1, homePred, awayPred);
+        Pair<Double, String> probTeam2 = new NaiveBayesClassifier().calculate(teamData2, testData2, awayPred, homePred);
 
-        Map<String, String> results = new LearningPredictor().processLearn(probTeam1, probTeam2);
+        Map<String, String> results = DRAW_MAP;
+
+        if (inControversialCategories(probTeam1, probTeam2)) {
+            String winnerSide;
+            if (probTeam1.getRight().equals("win")) {
+                winnerSide = "home";
+            } else {
+                winnerSide = "away";
+            }
+            log.info("Win for {} team", winnerSide);
+            results = populateResult(winnerSide);
+        } else if (probTeam1.getRight().equals("draw") && probTeam2.getRight().equals("draw")) {
+            log.info("DRAW");
+            results = populateResult("draw");
+        } else {
+            new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
+        }
+
         return savePredictedResults(predictionDto, results, teamData1, teamData2);
+    }
+
+    private Map<String, String> populateResult(String winnerSide) {
+        if (winnerSide.equals("away")){
+            return AWAY_WIN_MAP;
+        }
+        if (winnerSide.equals("home")) {
+            return HOME_WIN_MAP;
+        }
+        return DRAW_MAP;
+    }
+
+    private boolean inControversialCategories(Pair<Double, String> probTeam1, Pair<Double, String> probTeam2) {
+        return probTeam1.getRight().equals("win") && probTeam2.getRight().equals("loss")
+                || probTeam1.getRight().equals("loss") && probTeam2.getRight().equals("win");
     }
 
     private List<PredictionRecord> savePredictedResults(PredictionDto dto, Map<String, String> result,
