@@ -2,9 +2,6 @@ package com.sportbetapp.prediction.neural;
 
 import java.util.Random;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -38,10 +35,8 @@ public class NeuralNet {
         for (int i = 0; i < NUM_INPUTS; i++) {
             action += inputLayer[i] * weights[i];
         }
-
         //sigmoid function
         action = 1.0 / (1.0 + Math.exp(-action));
-
         return action;
     }
 
@@ -50,21 +45,17 @@ public class NeuralNet {
         inputLayer[0] = d;
         inputLayer[1] = e;
         inputLayer[2] = 1.0;
-
         return calcWeights(i, input);
     }
 
     public double calcWeights(int test, double[][] input) {
         double result;
-
         result = (input[test][0] * weights[0]) +
                  (input[test][1] * weights[1]) +
                  (input[test][2] * weights[2]) +
                  (input[test][3] * weights[3]) +
                  (1.0 * weights[4]); // bias
-
         result = 1.0 / (1.0 + Math.exp(-result));
-
         return result;
 
     }

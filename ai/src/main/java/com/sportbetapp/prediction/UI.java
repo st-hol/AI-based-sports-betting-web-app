@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Deprecated
-public class PredictorUI {
+public class UI {
 
     //Array of strings for team names
     private final String[] data = {"TestLoser", "TestWinner", "Arsenal", "Bournemouth", "Brighton", "Burnley",
@@ -42,14 +42,6 @@ public class PredictorUI {
     private String[][] teamData2 = new String[numFixt][numFields];
     private String[][] testData2 = new String[3][2];
 
-
-    //constructor
-    public PredictorUI() {
-        //builds GUI
-        buildUI();
-    }
-
-    //methods
 
     /**
      * Builds GUI and calls methods on action listeners
@@ -110,7 +102,7 @@ public class PredictorUI {
                 loadTeams(homeTeamName, 'h');
                 loadTeams(awayTeamName, 'a');
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(PredictorUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
             }
             predict();
         });
@@ -144,28 +136,17 @@ public class PredictorUI {
                 winnerSide = "away";
             }
             log.info("Win for {} team", winnerSide);
-            return;
-        }
-        if (probTeam1.getRight().equals("draw") && probTeam2.getRight().equals("draw")) {
+        } else if (probTeam1.getRight().equals("draw") && probTeam2.getRight().equals("draw")) {
             log.info("DRAW");
-            return;
-        }
-        if (probTeam1.getLeft().equals(probTeam2.getLeft()) || oneIsDrawAnotherNot(probTeam1, probTeam2)) {
+        } else {
             //Create new neural net
             new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
-            return;
         }
-        log.warn("Unreachable.");
     }
 
     private boolean inControversialCategories(Pair<Double, String> probTeam1, Pair<Double, String> probTeam2) {
         return probTeam1.getRight().equals("win") && probTeam2.getRight().equals("loss")
                 || probTeam1.getRight().equals("loss") && probTeam2.getRight().equals("win");
-    }
-
-    private boolean oneIsDrawAnotherNot(Pair<Double, String> probTeam1, Pair<Double, String> probTeam2) {
-        return probTeam1.getRight().equals("draw") && !probTeam2.getRight().equals("draw")
-                || probTeam2.getRight().equals("draw") && !probTeam1.getRight().equals("draw");
     }
 
     /**
@@ -177,7 +158,6 @@ public class PredictorUI {
      */
     private void loadTeams(String teamName, char homeOrAway) throws FileNotFoundException {
         //file path for results files
-//        String filePath = "src\\footballresultspredictionnbnn\\Results\\"+teamName+".txt";
         String filePath = "D:\\TEMP\\study\\diplome\\project\\AI-based-sports-betting-web-app\\ai\\src\\main" +
                 "\\resources\\example_data\\" + teamName + ".txt";
         //todo
