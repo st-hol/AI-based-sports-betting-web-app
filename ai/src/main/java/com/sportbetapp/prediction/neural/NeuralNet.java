@@ -40,6 +40,14 @@ public class NeuralNet {
         return action;
     }
 
+    /**
+     * What proportion of actual positives was identified correctly?
+     * @param d Home
+     * @param e Away
+     * @param i win
+     * @param input
+     * @return double
+     */
     public double recall(double d, double e, int i, double[][] input) {
         //num inputs
         inputLayer[0] = d;
