@@ -121,7 +121,7 @@ public class PredictionServiceImpl implements PredictionService {
             log.info("DRAW");
             results = populateResult("draw");
         } else {
-            new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
+            results = new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
         }
 
         return savePredictedResults(predictionDto, results, teamData1, teamData2);
