@@ -42,17 +42,19 @@ public class NeuralNet {
 
     /**
      * What proportion of actual positives was identified correctly?
-     * @param d Home
-     * @param e Away
+     * @param homeNB Home
+     * @param awayNB Away
      * @param i win
      * @param input
      * @return double
      */
-    public double recall(double d, double e, int i, double[][] input) {
+    public double recall(double homeNB, double awayNB, double homeScore, double awayScore, int i, double[][] input) {
         //num inputs
-        inputLayer[0] = d;
-        inputLayer[1] = e;
-        inputLayer[2] = 1.0;
+        inputAt(0, homeScore);
+        inputAt(1, awayScore);
+        inputAt(2, homeNB);
+        inputAt(3, awayNB);
+        inputAt(4, 1.0);
         return calcWeights(i, input);
     }
 

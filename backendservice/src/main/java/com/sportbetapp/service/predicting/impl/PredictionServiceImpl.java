@@ -106,7 +106,7 @@ public class PredictionServiceImpl implements PredictionService {
         Pair<Double, String> probTeam1 = new NaiveBayesClassifier().calculate(teamData1, testData1, homePred, awayPred);
         Pair<Double, String> probTeam2 = new NaiveBayesClassifier().calculate(teamData2, testData2, awayPred, homePred);
 
-        Map<String, String> results = DRAW_MAP;
+        Map<String, String> results;
 
         if (inControversialCategories(probTeam1, probTeam2)) {
             String winnerSide;
@@ -121,7 +121,7 @@ public class PredictionServiceImpl implements PredictionService {
             log.info("DRAW");
             results = populateResult("draw");
         } else {
-            results = new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
+            results = new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft(), homePred, awayPred);
         }
 
         return savePredictedResults(predictionDto, results, teamData1, teamData2);

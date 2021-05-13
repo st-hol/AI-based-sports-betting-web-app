@@ -104,7 +104,7 @@ public class UI {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            predict();
+            predict(homePred, awayPred);
         });
         teams.add(submit);
         f.add(teams, BorderLayout.SOUTH);
@@ -117,7 +117,7 @@ public class UI {
      * For example WIN vs LOSS or DRAW vs DRAW -> then decide result immediately
      * if returned categories same. For example WIN vs WIN or LOSS vs LOSS -> then decide result by NN
      */
-    public void predict() {
+    public void predict(int homeScore, int awayScore) {
         //create new Naive Bayes classifiers for home and away
         NaiveBayesClassifier team1 = new NaiveBayesClassifier();
         NaiveBayesClassifier team2 = new NaiveBayesClassifier();
@@ -140,7 +140,7 @@ public class UI {
             log.info("DRAW");
         } else {
             //Create new neural net
-            new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft());
+            new LearningPredictor().processLearn(probTeam1.getLeft(), probTeam2.getLeft(), homeScore , awayScore);
         }
     }
 

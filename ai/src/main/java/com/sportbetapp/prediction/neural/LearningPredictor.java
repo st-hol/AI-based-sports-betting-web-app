@@ -3,6 +3,7 @@ package com.sportbetapp.prediction.neural;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +14,7 @@ public class LearningPredictor {
     private static final double NORMALISATION_COEFFICIENT = 0.00392;
     private static final double LEAST_MEAN_SQUARE_ERROR = 0.001;
     private static final double TEACHING_STEP = 0.01;
+    private static final double EXIT_BOUND = 0.461;
 
     private static final double HOME = 1.0;
     private static final double DRAW = 0.5;
@@ -55,21 +57,25 @@ public class LearningPredictor {
     private static final int MAX_TESTS = input.length;
 
 
-    public Map<String, String> processLearn(double homeTeam, double awayTeam) {
+    public Map<String, String> processLearn(double homeTeam, double awayTeam, int homeScore, int awayScore) {
         NeuralNet nn = new NeuralNet();
         nn.initializeNeuralNetwork();
         //train NN
         processTraining(nn);
-        double average = calculateAverage(homeTeam, awayTeam, nn);
+        List<Double> recallAllResult = recallAll(homeTeam, awayTeam, homeScore, awayScore, nn);
+
+        double average = recallAllResult.stream().mapToDouble(x -> x).sum() / MAX_TESTS;
+        log.info("Average is: {}", average);
+
         //Based on result, output either home win/draw/away win
-        return decideResult(average);
+        return decideResultBasedOnRecallProportion(recallAllResult);
     }
 
     private void processTraining(NeuralNet nn) {
         double[] weights = nn.getWeights();
         double output;
         double mse = 99;
-        while (fabs(mse - LEAST_MEAN_SQUARE_ERROR) > 0.081) {
+        while (fabs(mse - LEAST_MEAN_SQUARE_ERROR) > EXIT_BOUND) {
             double error = 0;
 
             for (int i = 0; i < MAX_TESTS; i++) {
@@ -86,45 +92,75 @@ public class LearningPredictor {
         }
     }
 
-    private double calculateAverage(double homeTeam, double awayTeam, NeuralNet nn) {
+    private List<Double> recallAll(double homeTeam, double awayTeam, int homeScore, int awayScore, NeuralNet nn) {
         List<Double> predictionResults = new ArrayList<>();
-        double average = 0;
         for (int i = 0; i < MAX_TESTS; i++) {
-            double result = nn.recall(normalise(homeTeam), normalise(awayTeam), i, input);
+            double result = nn.recall(normalise(homeTeam), normalise(awayTeam),
+                    normalise(homeScore), normalise(awayScore), i, input);
             predictionResults.add(result);
-            average += result;
             log.info("Test " + i + ": " + result);
         }
 
-        average = average / MAX_TESTS;
-        return average;
+        return predictionResults;
     }
 
-    /**
-     * @param average
-     * @return result dto
-     */
-    private Map<String, String> decideResult(double average) {
-        log.info("Average: " + average);
+    private Map<String, String> decideResultBasedOnRecallProportion(List<Double> recallAllResult) {
+        //divide in three parts
+        int firstBreak = IntStream.range(0, input.length)
+                .filter(i -> DRAW == input[i][4])
+                .findFirst()
+                .orElse(-1);
+        int secondBreak = IntStream.range(0, input.length)
+                .filter(i -> AWAY == input[i][4])
+                .findFirst()
+                .orElse(-1);
 
-        // bonus probability is on hand Home team. So its always little less probable that Home loses
-        if (average <= 0.39) {
-            log.info("Win for away team");
-            return Map.of("home", "loss",
-                    "away", "win");
-        } else if (average >= 0.44) {
-            log.info("Win for home team");
-            return Map.of("home", "win",
-                    "away", "loss");
-        } else {
+        List<Double> homePartition = recallAllResult.subList(0, firstBreak);
+        List<Double> drawPartition = recallAllResult.subList(firstBreak, secondBreak);
+        List<Double> awayPartition = recallAllResult.subList(secondBreak, MAX_TESTS);
+
+        double homeDiff = homePartition.stream()
+                .mapToDouble(Math::abs)
+                .sum();
+        double drawDiff = drawPartition.stream()
+                .mapToDouble(Math::abs)
+                .sum(); //Math.abs(drawPartition.size() * 0.5
+        // - drawDiff) < 0.05
+        double awayDiff = awayPartition.stream()
+                .mapToDouble(Math::abs)
+                .sum()
+                * (1 / homeDiff / drawDiff + 1.07)
+                + drawDiff;
+
+        double homeAvg = homePartition.stream()
+                .mapToDouble(Math::abs)
+                .average().orElse(-1);
+        double drawAvg = drawPartition.stream()
+                .mapToDouble(Math::abs)
+                .average().orElse(-1);
+        double awayAvg = awayPartition.stream()
+                .mapToDouble(Math::abs)
+                .average().orElse(-1);
+
+        if (drawAvg > homeAvg && drawAvg > awayAvg) {
             log.info("Draw");
             return Map.of("home", "draw",
                     "away", "draw");
         }
+        if (awayDiff > homeDiff) {
+            log.info("Win for away team");
+            return Map.of("home", "loss",
+                    "away", "win");
+        } else {
+            log.info("Win for home team");
+            return Map.of("home", "win",
+                    "away", "loss");
+        }
     }
 
     private static double normalise(double x) {
-        return NORMALISATION_COEFFICIENT * x;
+        return 100 * x;
+//        return NORMALISATION_COEFFICIENT * x;
     }
 
     private static double fabs(double n) {
@@ -135,4 +171,29 @@ public class LearningPredictor {
         }
     }
 
+
+    /**
+     * @param average
+     * @return result dto
+     * @deprecated use decideResultBasedOnRecallProportion()
+     */
+    @Deprecated
+    private Map<String, String> decideResult(double average) {
+        log.info("Average: " + average);
+
+        // bonus probability is on hand Home team. So its always little less probable that Home loses
+        if (average < 0.5) {
+            log.info("Win for away team");
+            return Map.of("home", "loss",
+                    "away", "win");
+        } else if (average >= 0.5) {
+            log.info("Win for home team");
+            return Map.of("home", "win",
+                    "away", "loss");
+        } else {
+            log.info("Draw");
+            return Map.of("home", "draw",
+                    "away", "draw");
+        }
+    }
 }
