@@ -4,6 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,6 +36,7 @@ public class UserValidatorTest {
     public void givenCorrectInputData_whenCheckingWithValidator_thenShouldBeNoErrors() {
         //everything to make it valid
         UserDto validUser = new UserDto();
+        validUser.setBirth(LocalDate.now().minusYears(50));
         validUser.setPassword("123");
         validUser.setPasswordConfirm("123");
         validUser.setEmail("testusername@gmail.com");
