@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LearningPredictor {
 
-    private static final double NORMALISATION_COEFFICIENT = 0.00392;
+    private static final double NORMALISATION_COEFFICIENT = 0.0392;
     private static final double LEAST_MEAN_SQUARE_ERROR = 0.001;
     private static final double TEACHING_STEP = 0.01;
-    private static final double EXIT_BOUND = 0.461;
+    private static final double EXIT_BOUND = 0.481;
 
     private static final double HOME = 1.0;
     private static final double DRAW = 0.5;
@@ -63,10 +63,8 @@ public class LearningPredictor {
         //train NN
         processTraining(nn);
         List<Double> recallAllResult = recallAll(homeTeam, awayTeam, homeScore, awayScore, nn);
-
         double average = recallAllResult.stream().mapToDouble(x -> x).sum() / MAX_TESTS;
         log.info("Average is: {}", average);
-
         //Based on result, output either home win/draw/away win
         return decideResultBasedOnRecallProportion(recallAllResult);
     }
@@ -159,8 +157,7 @@ public class LearningPredictor {
     }
 
     private static double normalise(double x) {
-        return 100 * x;
-//        return NORMALISATION_COEFFICIENT * x;
+        return NORMALISATION_COEFFICIENT * x;
     }
 
     private static double fabs(double n) {
